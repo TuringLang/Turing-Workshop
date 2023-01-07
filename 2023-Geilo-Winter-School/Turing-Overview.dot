@@ -1,3 +1,4 @@
+// dot -T png -O Turing-Overview.dot
 graph turing {
   size = "15";
   graph [
