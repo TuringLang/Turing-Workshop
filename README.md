@@ -30,6 +30,10 @@ Turing Workshop
    - How to use the exposed interfaces in the Turing ecossystem
    - Case example of Parallel MCMC Tempering
 
+## Getting set up with Julia
+
+See [getting-started.md](./getting-started.md) for how to get set up with Julia.
+
 ## License
 
 This content is licensed under [Creative Commons Attribution-ShareAlike 4.0 Internacional](http://creativecommons.org/licenses/by-sa/4.0/).
