@@ -1,4 +1,4 @@
-# Getting started
+# Getting set up with Julia
 
 These workshops are intended to be somewhat interactive, and so you might be at risk of having to actually write and execute some code on your own device!
 
@@ -54,7 +54,7 @@ Amongst us speakers we're both familiar with Jupyter notebooks, José is a VS Co
 Note that we expect everyone to act civil during the workshops, regardless of the differences in choices of editor people make. 
 In particular, any criticism of `emacs` will be met by loud boos and shaking of fists from Tor in an attempt to quell potential conflicts.
 
-# Additional resources
+## Additional resources
 - Julia Language website: https://www.julialang.org
 - Turing website: https://turing.ml/stable/
 - Julia Language YouTube channel: https://www.youtube.com/thejulialanguage
