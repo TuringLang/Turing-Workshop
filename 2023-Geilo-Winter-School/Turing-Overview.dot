@@ -1,0 +1,32 @@
+// dot -T png -O Turing-Overview.dot
+graph turing {
+  size = "15";
+  graph [
+  	layout=neato,
+	label="Turing Ecosystem"
+	labelloc=b,
+	start=regular,
+	normalize=0,
+	dpi=300,
+        ]
+  node [
+  	shape=circle,
+	width = 1.4,
+       ]
+  edge [
+	len=2,
+       ]
+  turing [label="Turing.jl",fontsize=20]
+  mcmcchains [label="MCMCChains.jl"]
+  dynamicppl [label="DynamicPPL.jl"]
+  advancedhmc [label="AdvancedHMC.jl"]
+  distributionsad [label="DistributionsAD.jl"]
+  bijectors [label="Bijectors.jl"]
+  turing -- {
+  	mcmcchains
+  	dynamicppl
+  	advancedhmc
+  	distributionsad
+  	bijectors
+  }
+}
