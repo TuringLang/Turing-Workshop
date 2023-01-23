@@ -6,14 +6,17 @@ using Turing
 Random.seed!(123)
 dice = Categorical([0.1, 0.1, 0.1, 0.1, 0.1, 0.5])
 my_data = rand(dice, 1_000)
-@model function dice_throw(y)
+# Different more efficient syntax
+@model function dice_throw(N)
     p ~ Dirichlet(6, 1) # a uniform prior
-    for i in eachindex(y)
-        y[i] ~ Categorical(p)
-    end
+    y = Vector{Int}(undef, N)
+    y ~ filldist(Categorical(p), N)
 end
-my_model = dice_throw(my_data)
-my_chains_nuts = sample(my_model, NUTS(), MCMCThreads(), 1_000, 2)
+# instantating a a model
+my_model = dice_throw(1_000)
+# "condition" the model with data
+my_model_cond = my_model | (y = my_data,)
+my_chains_nuts = sample(my_model_cond, NUTS(), MCMCThreads(), 1_000, 2)
 
 # You can get a summary of the internals with summary statistics mean and quantile
 # using kwarg sections=:internals
