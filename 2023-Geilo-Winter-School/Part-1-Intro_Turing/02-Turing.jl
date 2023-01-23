@@ -25,7 +25,7 @@ using Turing
 
     # Since we are supplying y, if we do a ~
     # assignment it will be threated as a likelihood
-    for i in eachindex(y)
+    for i = 1:length(y)
         y[i] ~ Categorical(p)
     end
 end
@@ -43,6 +43,8 @@ my_model = dice_throw(my_data)
 my_chain_mh = sample(my_model, MH(), 1_000)
 my_chain_nuts = sample(my_model, NUTS(), 1_000)
 
+# Example of Sampler: MH, SMC, Gibbs, HMC, NUTS, IS, NestedSampling, Emcee, and the list goes on
+
 # Multiple dispatch sample with the optional parallel algorithm
 # and number of chains
 my_chains_mh = sample(my_model, MH(), MCMCThreads(), 1_000, 4)
@@ -59,11 +61,19 @@ summaries, quantiles = describe(my_chains_nuts)
 summarystats(my_chains_nuts)
 quantile(my_chains_nuts)
 
+# You can also get the whole Markov chain with DataFrames.jl
+using DataFrames
+
+DataFrame(my_chain_nuts)
+
 # Visualizations
-# We can use MCMCCHains.jl to plot chains
+# We can use MCMCChains.jl to plot chains
 using MCMCChains
 using StatsPlots
 
 # there are several visualizations
 # check https://turinglang.github.io/MCMCChains.jl/stable/statsplots/
 plot(my_chain_nuts)
+
+# There are also alternative to plotting
+# ArViZ, Makie, etc.
