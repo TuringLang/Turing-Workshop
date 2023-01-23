@@ -5,16 +5,23 @@
 # We actually just need two things:
 # 1. Length
 # 2. Which index is "hot"
-import Base: size, getindex
 
+# This is a new type that I am creating
 struct OneHotVector <: AbstractVector{Int}
     len::Int
     ind::Int
 end
 
-size(v::OneHotVector) = (v.len,)
+# Similar to Python's:
+# class OneHotVector(AbstractVector[Int]):
+#     def __init__(len, ind):
+#         self.len: Int = len
+#         self.ind: Int = ind
 
-getindex(v::OneHotVector, i::Integer) = Int(i == v.ind)
+# Let's add some auxiliary functions
+# (similar to methods)
+Base.size(v::OneHotVector) = (v.len,)
+Base.getindex(v::OneHotVector, i::Integer) = Int(i == v.ind)
 
 # Since OneHotVector is a struct derived from AbstractVector we can use all of the methods
 # previously defined for AbstractVector and it simply works right off the bat.
@@ -49,9 +56,7 @@ using BenchmarkTools
 
 # We can optimize this.
 # Multiplying a matrix by a one-hot is pretty much column indexing:
-import Base: *
-
-*(A::AbstractMatrix, v::OneHotVector) = A[:, v.ind]
+Base.:*(A::AbstractMatrix, v::OneHotVector) = A[:, v.ind]
 
 # And doing inner on a matrix sandwiched between one-hot vectors is row/column indexing:
 inner(v::OneHotVector, A, w::OneHotVector) = A[v.ind, w.ind]

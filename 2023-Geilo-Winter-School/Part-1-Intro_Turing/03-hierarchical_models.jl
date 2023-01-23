@@ -12,9 +12,9 @@ using Statistics: mean, std
     predictors = size(X, 2),
 )
     # priors
-    α ~ Normal(mean(y), 2.5 * std(y))       # population-level intercept
+    α ~ Normal(0, 2.5)                      # population-level intercept
     β ~ filldist(Normal(0, 2), predictors)  # population-level coefficients
-    σ ~ Exponential(1 / std(y))             # residual SD
+    σ ~ Exponential(1)                      # residual SD
 
     # prior for variance of random intercepts
     # usually requires thoughtful specification
@@ -31,10 +31,8 @@ end;
 # 4 types of different cheeses (A, B, C and D) in two samples.
 using DataFrames
 using CSV
-using Downloads
 
-url = "https://raw.githubusercontent.com/storopoli/Bayesian-Julia/master/datasets/cheese.csv"
-file = Downloads.download(url)
+file = joinpath(@__DIR__, "data", "cheese.csv") # compatible with different filesystems
 cheese = CSV.read(file, DataFrame)
 describe(cheese)
 
@@ -63,9 +61,10 @@ first(cheese, 5)
 # Now let's us instantiate our model with the data:
 X = Matrix(select(cheese, Between(:cheese_A, :cheese_D)))
 y = cheese[:, :y]
+y_standard = (y .- mean(y)) ./ std(y)
 idx = cheese[:, :background_int]
 
-model_cheese = varying_intercept(X, idx, y)
+model_cheese = varying_intercept(X, idx, y_standard)
 
 # and let's sample from it
 chain_cheese = sample(model_cheese, NUTS(), MCMCThreads(), 1_000, 4)
