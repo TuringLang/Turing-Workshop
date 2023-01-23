@@ -15,10 +15,7 @@ end
 my_model = dice_throw(my_data)
 my_chains_nuts = sample(my_model, NUTS(), MCMCThreads(), 1_000, 2)
 
-# First, we can extract a full chain with DataFrame/Array:
-using DataFrames
-DataFrame(my_chains_nuts)
-# Second, you can get a summary of the internals with describe, summarystats, and quantile
+# You can get a summary of the internals with describe, summarystats, and quantile
 # using kwarg sections=:internals
 describe(my_chains_nuts; sections = :internals)
 summarystats(my_chains_nuts; sections = :internals)
