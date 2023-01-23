@@ -15,17 +15,13 @@ end
 my_model = dice_throw(my_data)
 my_chains_nuts = sample(my_model, NUTS(), MCMCThreads(), 1_000, 2)
 
-# You can get a summary of the internals with describe, summarystats, and quantile
+# You can get a summary of the internals with summary statistics mean and quantile
 # using kwarg sections=:internals
-describe(my_chains_nuts; sections = :internals)
-summarystats(my_chains_nuts; sections = :internals)
+mean(my_chains_nuts; sections = :internals)
 quantile(my_chains_nuts; sections = :internals)
 
 # Now for diagnostics.
 # All of the diagnostics are available in MCMCDiagnostics.jl
-# Check: https://turinglang.github.io/MCMCDiagnosticTools.jl/stable/
+# Check them in: https://turinglang.github.io/MCMCDiagnosticTools.jl/stable/
 # MCMCDiagnostics is automatically loaded with Turing
 ess_rhat(my_chains_nuts)
-gelmandiag(my_chains_nuts)
-gewekediag(my_chains_nuts)
-heideldiag(my_chains_nuts)
