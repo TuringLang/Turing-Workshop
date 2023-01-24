@@ -36,6 +36,8 @@ file = joinpath(@__DIR__, "data", "cheese.csv") # compatible with different file
 cheese = CSV.read(file, DataFrame)
 describe(cheese)
 
+# A nice shameless plug for data science in Julia is the open book:
+# https://juliadatascience.io/
 # In order to prepare the data for Turing, I will convert the Strings in variables cheese
 # and background to Ints. Regarding cheese, I will create 4 dummy variables one for each cheese type;
 # and background will be converted to integer data taking two values:
