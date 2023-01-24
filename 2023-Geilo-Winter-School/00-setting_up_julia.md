@@ -6,8 +6,6 @@ If you're already familiar with Julia and have Julia 1.8 or greater already inst
 
 If you're new to Julia, you will unfortunately have to install yet another language on your device. Luckily, it's a fairly straight forward mission.
 
-
-
 ## "Woah there! I have to *execute* Julia code? HOW?!" - Installing Julia
 
 We'll be using Julia **1.8.x** throughout, so we recommend you use the same version to avoid any issues.
