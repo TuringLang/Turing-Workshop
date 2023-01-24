@@ -2065,6 +2065,356 @@ Compare to =model_original=
 print(DataFrame(quantile(chain_quantities_original[:, [:R0, :recovery_time], :])))
 #+END_SRC
 
+** TASK Make =epidemic_model= work for =SEIRProblem=
+1. [ ] Implement a prior which also includes (\sigma) and execute
+   =epidemic_model= with it
+2. [ ] Can we make a better prior for (\sigma)? Do we even need one?
+
+#+begin_src julia :eval no
+@model function prior_original(problem_wrapper::SEIRProblem)
+    # TODO: Implement
+end
+#+end_src julia
+
+** SOLUTION
+   :PROPERTIES:
+   :CUSTOM_ID: solution
+   :END:
+
+#+BEGIN_SRC julia
+@model function prior_original(problem_wrapper::SEIRProblem)
+    β ~ truncated(Normal(2, 1); lower=0)
+    γ ~ truncated(Normal(0.4, 0.5); lower=0)
+    σ ~ truncated(Normal(0.8, 0.5); lower=0)
+
+    return [β, γ, σ]
+end
+#+END_SRC julia
+
+#+BEGIN_SRC julia
+model_seir = epidemic_model(SEIRProblem(N), prior_original)
+print(model_seir())
+#+END_SRC julia
+
+** WARNING Consult with domain experts
+   :PROPERTIES:
+   :CUSTOM_ID: warning-consult-with-domain-experts
+   :END:
+
+This guy should not be the one setting your priors!
+
+[[file:.notes/attachments/A_litle_Norwegian_boy/2023-01-18_14-49-24_471337_3317365246956_1262712540_o.jpg]]
+
+Get an actual scientist to do that...
+
+** Condition
+   :PROPERTIES:
+   :CUSTOM_ID: condition
+   :END:
+
+Now let's actually involve the data
+
+#+BEGIN_HTML
+  <div class="fragment (appear)">
+#+END_HTML
+
+We can condition a =Model= as so
+
+#+BEGIN_SRC julia
+# Condition on the observations.
+model = epidemic_model(SIRProblem(N), prior_improved)
+model_conditioned = model | (in_bed = data.in_bed,)
+#+END_SRC julia
+
+#+BEGIN_HTML
+  </div>
+#+END_HTML
+
+#+BEGIN_HTML
+  <div class="fragment (appear)">
+#+END_HTML
+
+You know what time it is: /inference time/!
+
+#+BEGIN_HTML
+  </div>
+#+END_HTML
+
+** Metropolis-Hastings (MH)
+   :PROPERTIES:
+   :CUSTOM_ID: metropolis-hastings-mh
+   :END:
+
+#+BEGIN_SRC julia
+chain_mh = sample(model_conditioned, MH(), MCMCThreads(), 10_000, 4; discard_initial=5_000);
+#+END_SRC julia
+
+#+BEGIN_SRC julia
+chain_mh
+#+END_SRC julia
+
+Rhat is /okay-ish/ but not great, and ESS is pretty low innit?
+
+#+BEGIN_SRC julia
+plot(chain_mh; size=(800, 500))
+#+END_SRC julia
+
+[[./.ob-jupyter/d944644d54b9d9a76d97087f1f99a907567e3ba2.png]]
+
+Eeehh doesn't look the greatest
+
+Difficult to trust these results, but let's check if it at least did
+/something/ useful
+
+#+BEGIN_SRC julia
+# We're using the unconditioned model!
+predictions_mh = predict(model, chain_mh)
+#+END_SRC julia
+
+#+BEGIN_SRC julia
+plot_trajectories!(plot(legend=false), predictions_mh; include_data=true)
+#+END_SRC julia
+
+[[./.ob-jupyter/bbd3face0b041d4acc92f00d8a9c45db1d96c643.png]]
+
+#+BEGIN_SRC julia
+plot_trajectory_quantiles!(plot(legend=false, size=(600, 300)), predictions_mh; include_data=true)
+#+END_SRC julia
+
+[[./.ob-jupyter/cca448d55db7f5ea0cfc74ddbcaf1a71b6bb8aee.png]]
+
+Okay, it's not /completely/ useless, but my trust-issues are still
+present.
+
+Metropolis-Hastings have disappointed me one too many times before.
+
+Before we proceed, let's just make some functions for the visualizations
+
+** So instead, let's go =NUTS=
+   :PROPERTIES:
+   :CUSTOM_ID: so-instead-lets-go-nuts
+   :END:
+
+That's right, we're reaching to the *No U-Turn sampler (NUTS)*
+
+*** TODO
+    :PROPERTIES:
+    :CUSTOM_ID: section
+    :END:
+
+[[https://chi-feng.github.io/mcmc-demo/app.html][https://chi-feng.github.io/mcmc-demo/app.html]]
+
+** 
+   :PROPERTIES:
+   :CUSTOM_ID: section-1
+   :END:
+
+#+BEGIN_QUOTE
+  Wooaah there! =NUTS= requires gradient information!
+
+  How are you going to get that through that =solve=?
+#+END_QUOTE
+
+Good question, voice in my head
+
+I'm obviously not going to it myself
+
+** Automatic differentiation (AD) in Julia
+   :PROPERTIES:
+   :CUSTOM_ID: automatic-differentiation-ad-in-julia
+   :END:
+
+- [[https://github.com/JuliaDiff/ForwardDiff.jl][ForwardDiff.jl]]:
+  forward-mode AD /(default in Turing.jl)/
+- [[https://github.com/JuliaDiff/ReverseDiff.jl][ReverseDiff.jl]]:
+  tape-based reverse-mode AD
+- [[https://github.com/FluxML/Zygote.jl][Zygote.jl]]: source-to-source
+  reverse-mode AD
+- And more...
+
+Up-and-coming
+
+- [[https://github.com/EnzymeAD/Enzyme.jl][Enzyme.jl]]: Julia bindings
+  for [[https://github.com/EnzymeAD/Enzyme.jl][Enzyme]] which ADs LLVM
+  (low-level)
+- [[https://github.com/JuliaDiff/Diffractor.jl][Diffractor.jl]]:
+  experimental mixed-mode AD meant to replace Zygote.jl
+
+Of importance
+
+- [[https://github.com/JuliaDiff/ChainRulesCore.jl][ChainRulesCore.jl]]:
+  light-weight package for defining rules, compatible with many of the
+  above
+
+*Important*
+
+#+BEGIN_QUOTE
+  When you write code, you don't have to make a choice which one you
+  want to use!
+#+END_QUOTE
+
+All the (stable) ones, will (mostly) work
+
+/But/ how you write code will affect performance characteristics
+
+Takes a bit of know-how + a bit of digging to go properly "vroom!"
+
+** Differentiating through =solve=
+   :PROPERTIES:
+   :CUSTOM_ID: differentiating-through-solve
+   :END:
+
+With that being said, differentiating through numerical =solve= is not
+necessarily trivial to do efficiently
+
+There are numerous ways of approaching this problem
+
+[[file:.notes/attachments/Bayesian_inference/2023-01-22_12-30-07_Screenshot_20230122_122936.png]]
+
+[[https://arxiv.org/abs/1812.01892][https://arxiv.org/abs/1812.01892]]
+is /great/ resource
+
+#+BEGIN_HTML
+  <div class="fragment (appear)">
+#+END_HTML
+
+But this is why we have
+[[https://github.com/SciML/SciMLSensitivity.jl][=SciMLSensitivity.jl=]]
+
+[[https://docs.sciml.ai/SciMLSensitivity/stable/manual/differential_equation_sensitivities/#Choosing-a-Sensitivity-Algorithm][SciMLSensitivity.jl
+docs]] also provides a great overview of different approaches
+
+#+BEGIN_HTML
+  </div>
+#+END_HTML
+
+#+BEGIN_SRC julia
+using SciMLSensitivity
+#+END_SRC julia
+
+let's you make use of the =sensealg= keyword in =solve= to choose
+whatever approach you need
+
+It offers
+
+1. /Discrete sensitivity analysis/ or the /"Direct" method/: just use
+   =ForwardDiff.Dual= in the =solve=.
+2. /Continuous local sensitivity analysis (CSA)/: extends the original
+   system such that the =solve= gives you both the solution and the the
+   gradient simultaenously.
+3. /Adjoint methods/: construct a backwards system whose solution gives
+   us the gradient.
+
+   - Here you can use anything from symbolically derived to "AD-derived"
+     jacobians.
+
+** Back to being =NUTS=
+   :PROPERTIES:
+   :CUSTOM_ID: back-to-being-nuts
+   :END:
+
+#+BEGIN_SRC julia
+chain = sample(model_conditioned, NUTS(0.8), MCMCThreads(), 1000, 4);
+#+END_SRC julia
+
+#+BEGIN_SRC julia
+chain
+#+END_SRC julia
+
+Muuuch better! Both ESS and Rhatc is looking good
+
+#+BEGIN_SRC julia
+plot(chain; size=(800, 500))
+#+END_SRC julia
+
+[[./.ob-jupyter/f198b9606c06a59ed28e9000e05a436b045fda5c.png]]
+
+#+BEGIN_SRC julia
+# Predict using the results from NUTS.
+predictions = predict(model, chain)
+#+END_SRC julia
+
+#+BEGIN_SRC julia
+plot_trajectories!(plot(legend=false, size=(600, 300)), predictions; n = 1000, include_data=true)
+#+END_SRC julia
+
+[[./.ob-jupyter/5818a2844c7cdbb2eaa4ad8c8cf1e0756273a161.png]]
+
+#+BEGIN_SRC julia
+plot_trajectory_quantiles!(plot(legend=false, size=(600, 300)), predictions; include_data=true)
+#+END_SRC julia
+
+[[./.ob-jupyter/813c664e623143776099024e0e736e4fe49800d5.png]]
+
+** Simulation-based calibration (SBC)
+[[https://arxiv.org/abs/1804.06788][Talts et. al. (2018)]]
+   :PROPERTIES:
+   :CUSTOM_ID: simulation-based-calibration-sbc-talts-et-al-2018
+   :END:
+
+1. Sample from prior (\theta_1, \dots, \theta_n \sim p(\theta)).
+2. Sample datasets (\mathcal{D}_i \sim p(\cdot \mid \theta_i)) for (i =
+   1, \dots, n).
+3. Obtain (approximate) (p(\theta \mid \mathcal{D}_i)) for (i = 1,
+   \dots, n).
+
+For large enough (n), the "combination" of the posteriors should recover
+the prior!
+
+"Combination" here usually means computing some statistic and comparing
+against what it should be
+
+[[file:.notes/attachments/Bayesian_inference/2023-01-22_12-09-24_Screenshot_20230122_120848.png]]
+
+That's very expensive → in practice we just do this once or twice
+
+#+BEGIN_SRC julia
+# Sample from the conditioned model so we don't get the `in_bed` variables too
+using Random  # Just making usre the numbers of somewhat interesting
+rng = MersenneTwister(43);
+test_values = rand(rng, NamedTuple, model_conditioned)
+#+END_SRC julia
+
+Now we condition on those values and run once to generate data
+
+#+BEGIN_SRC julia
+model_test = model | test_values
+#+END_SRC julia
+
+#+BEGIN_SRC julia
+in_best_test = rand(rng, model_test).in_bed;
+#+END_SRC julia
+
+Next, inference!
+
+#+BEGIN_SRC julia
+model_test_conditioned = model | (in_bed = in_best_test,)
+#+END_SRC julia
+
+#+BEGIN_SRC julia
+# Let's just do a single chain here.
+chain_test = sample(model_test_conditioned, NUTS(0.8), 1000);
+#+END_SRC julia
+
+Did we recover the parameters?
+
+#+BEGIN_SRC julia
+ps = []
+for sym in [:β, :γ, :ϕ⁻¹]
+    p = density(chain_test[:, [sym], :])
+    vline!([test_values[sym]])
+    push!(ps, p)
+end
+plot(ps..., layout=(3, 1), size=(600, 400))
+#+END_SRC julia
+
+[[./.ob-jupyter/c7f5262cc2962e2920df901926b9172e5bbfb589.png]]
+
+** TODO Choosing AD backend in Turing.jl
+   :PROPERTIES:
+   :CUSTOM_ID: todo-choosing-ad-backend-in-turingjl
+   :END:
+
 
 * Benchmarking                                                     :noexport:
 #+BEGIN_SRC julia
@@ -2398,7 +2748,7 @@ It really just depends on which level of "I hate my life" you're currently at
 
 *** Overall
 
-* References
+* Resources
 - https://mc-stan.org/users/documentation/case-studies/boarding_school_case_study.html
 
 * Debug                                                            :noexport:
