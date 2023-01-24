@@ -1,3 +1,8 @@
+name = "GeiloWinterSchool2023Part2"
+uuid = "66107438-c220-4dd3-9f45-fde6aa9dc0eb"
+authors = ["Tor Erlend Fjelde <tor.erlend95@gmail.com>"]
+version = "0.1.0"
+
 [deps]
 BenchmarkTools = "6e4b80f9-dd63-53aa-95a3-0cdb28fa8baf"
 CSV = "336ed68f-0bac-5ca0-87d4-7b16caf5d00b"
