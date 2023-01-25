@@ -28,5 +28,4 @@ docs/site/
 Manifest.toml
 
 # Jupyter
-*.ipynb
 *.ob-jupyter
