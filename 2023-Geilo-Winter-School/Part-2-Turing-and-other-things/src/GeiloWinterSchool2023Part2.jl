@@ -4,6 +4,7 @@ using DiffEqBase
 using Turing
 using StatsPlots
 using DataFrames
+using SciMLSensitivity
 
 using ReverseDiff: ReverseDiff
 
