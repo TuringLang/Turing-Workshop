@@ -1,7 +1,7 @@
 #+SETUPFILE: ~/org-blog/setup.org
 #+OPTIONS: tex:t toc:nil date:nil
 #+PROPERTY: header-args:R :session :exports both :eval no
-#+PROPERTY: header-args:julia :session geilo-winter-school :tangle tmp.jl :exports both :kernel julia-4-threads-1.8 :async no
+#+PROPERTY: header-args:julia :session geilo-winter-school :tangle main.jl :exports both :kernel julia-4-threads-1.8 :async no
 #+EXCLUDE_TAGS: noexport
 #+TODO: TODO(t) TASK(q) WARNING(w) | DONE(d) SOLUTION(s)
 
@@ -49,7 +49,7 @@ julia --project
 
 or if you're already in a REPL, do
 
-#+begin_src julia
+#+begin_src julia :tangle no
 ]activate .
 #+end_src
 
@@ -62,7 +62,7 @@ to activate the project
 
 And just to check that you're in the correct one
 
-#+begin_src julia
+#+begin_src julia :tangle no
 ]status
 #+end_src
 
@@ -93,7 +93,7 @@ Info Packages marked with ⌃ have new versions available and may be upgradable.
 
 Download and install dependencies
 
-#+begin_src julia 
+#+begin_src julia :tangle no
 ]instantiate
 #+end_src
 
@@ -1244,7 +1244,7 @@ Let's break it down
 
 #+REVEAL: split
 
-#+begin_src julia :eval no
+#+begin_src julia :eval no :tangle no
 β ~ truncated(Normal(2, 1); lower=0)
 γ ~ truncated(Normal(0.4, 0.5); lower=0)
 ϕ⁻¹ ~ Exponential(1/5)
@@ -1257,7 +1257,7 @@ defines our prior
 
 #+REVEAL: split
 
-#+begin_src julia :eval no
+#+begin_src julia :eval no :tangle no
 problem_new = remake(problem, p=[β, γ])  # Replace parameters `p`.
 sol = solve(problem_new, saveat=1)       # Solve!
 #+end_src
@@ -1270,13 +1270,13 @@ We then remake the problem, now with the parameters =[β, γ]= sampled above
 
 Then we extract the timesteps we have observations for
 
-#+begin_src julia :eval no
+#+begin_src julia :eval no :tangle no
 sol_for_observed = sol[2, 2:num_days + 1]  # Timesteps we have observations for.
 #+end_src
 
 and define what's going to be a likelihood (once we add observations)
 
-#+begin_src julia :eval no
+#+begin_src julia :eval no :tangle no
 in_bed = Vector{Int}(undef, num_days)
 for i = 1:length(sol_for_observed)
     # Add a small constant to `sol_for_observed` to make things more stable.
@@ -1288,7 +1288,7 @@ end
 
 Finally we return some values that might be of interest to
 
-#+begin_src julia :eval no
+#+begin_src julia :eval no :tangle no
 # Some quantities we might be interested in.
 return (R0 = β / γ, recovery_time = 1 / γ, infected = sol_for_observed)
 #+end_src
@@ -1388,102 +1388,6 @@ chain_prior = sample(model, Prior(), 10_000);
 
 #+REVEAL: split
 
-#+begin_src julia :eval no
-using StatsPlots
-
-"""
-    plot_trajectories!(p::Plots.Plot, chain::MCMCChains.Chains; kwargs...)
-
-Plot trajectories in `chain`.
-
-# Keyword arguents
-n = 1000, trajectory_color="#BBBBBB", alpha=1/√n
-- `n`: number of trajectories to sample. Default: 1000.
-- `trajectory_color`: color of the trajectories to use. Default: "#BBBBBB".
-- `alpha`: alpha to use when plotting the trajectories. Default: `1/√n`.
-- `include_data`: include the data in the plot. Default: `false`.
-- `tspan`: 2-tuple containing first and last time represented by `chain`. Default: (1, 14)
-"""
-function plot_trajectories!(
-    p::Plots.Plot, chain::MCMCChains.Chains;
-    n = 1000, include_data=false, tspan=(1, 14),
-    trajectory_color="#BBBBBB", alpha=1/√n
-)
-    # Convert the `chain` into a flattened `Array`.
-    chain_arr = Array(chain; append_chains=true)  # Shape: [num_chains × num_iterations, num_params]
-    # Sample a subset of indices to use.
-    total_num_samples = size(chain_arr, 1)
-    indices = rand(1:total_num_samples, n)  # Shape: [n, ]
-    # Plot 'em!
-    chain_arr = chain_arr[indices, :]  # Shape: [n, num_params]
-    for in_bed in eachrow(chain_arr)
-        plot!(p, tspan[1]:tspan[2], in_bed, alpha=alpha, color=trajectory_color)
-    end
-
-    if include_data
-        scatter!(p, 1:14, data.in_bed, label="Data", color="black")
-    end
-
-    return p
-end
-
-"""
-    plot_trajectories(chain::MCMCChains.Chains; kwargs...)
-
-Plot trajectories in `chain`.
-
-See [`plot_trajectories!`](@ref) for more info.
-"""
-plot_trajectories(chain::MCMCChains.Chains; kwargs...) = plot_trajectories!(plot(), chain; kwargs...)
-#+end_src
-
-#+REVEAL: split
-
-#+begin_src julia :eval no
-"""
-    plot_trajectory_quantiles!(p::Plots.Plot, chain::MCMCChains.Chains; kwargs...)
-
-Plot quantiles of trajectories in `chain`.
-
-By default, the 95% quantiles are used.
-
-# Keyword arguments
-- q: quantiles to compute (only three ordered values supported). Default: `[0.025, 0.5, 0.975]`.
-- `include_data`: if `true`, include the data in the plot. Default: `false`.
-- `tspan`: 2-tuple containing first and last time represented by `chain`. Default: (1, 14)
-"""
-function plot_trajectory_quantiles!(
-    p::Plots.Plot, chain::MCMCChains.Chains;
-    q=[0.025, 0.5, 0.975], include_data=false, tspan=(1, 14)
-)
-    # Compute quantiles.
-    qs = Array(DataFrame(quantile(chain; q = q))[:, Not(:parameters)]);
-
-    # Plot!
-    num_timesteps = size(qs, 1)
-    lb, mid, ub = qs[:, 1], qs[:, 2], qs[:, 3]
-    plot!(p, tspan[1]:tspan[2], mid, ribbon=(mid - lb, ub - mid))
-
-    if include_data
-        scatter!(p, 1:14, data.in_bed, label="Data", color="black")
-    end
-
-    return p
-end
-
-
-"""
-    plot_trajectory_quantiles(chain::MCMCChains.Chains; kwargs...)
-
-Plot quantiles of trajectories in `chain`.
-
-See [`plot_trajectory_quantiles!`](@ref) for more info.
-"""
-plot_trajectory_quantiles(chain::MCMCChains.Chains; kwargs...) = plot_trajectory_quantiles!(plot(), chain; kwargs...)
-#+end_src
-
-#+REVEAL: split
-
 Let's have a look at the prior predictive
 
 #+begin_src julia
@@ -1510,7 +1414,7 @@ We can also look at the =generated_quantities=, i.e. the values from the =return
 
 Our =return= looked like this
 
-#+begin_src julia :eval no
+#+begin_src julia :eval no :tangle no
 # Some quantities we might be interested in.
 return (R0 = β / γ, recovery_time = 1 / γ, infected = sol_for_observed)
 #+end_src
@@ -1797,14 +1701,14 @@ When working on larger projects, this really shines
 
 Equipped with =@submodel= we can replace
 
-#+begin_src julia :eval no
+#+begin_src julia :eval no :tangle no
 β ~ truncated(Normal(2, 1); lower=0)
 γ ~ truncated(Normal(0.4, 0.5); lower=0)
 #+end_src
 
 with
 
-#+begin_src julia :eval no
+#+begin_src julia :eval no :tangle no
 @submodel p = prior(problem_wrapper)
 #+end_src
 
@@ -2877,7 +2781,7 @@ Output, for different approaches, looked like this
 
 #+REVEAL: split
 
-#+begin_src julia :eval no
+#+begin_src julia :eval no :tangle no
     # GP-model for R-value.
     @submodel R = SpatioTemporalGP(K_spatial, K_local, K_time, T; σ_spatial, σ_local, ρ_spatial, ρ_time)
 
@@ -2892,7 +2796,7 @@ with
 
 #+HTML: <div class="small-text">
 
-#+begin_src julia :eval no
+#+begin_src julia :eval no :tangle no
 @model function SpatioTemporalGP(
     K_spatial, K_local, K_time,
     ::Type{T} = Float64;
@@ -3946,6 +3850,9 @@ Quantiles
 
 ** Turing.jl
 * Debug                                                            :noexport:
+:PROPERTIES:
+:header-args:julia: :session geilo-winter-school :tangle no :exports both
+:END:
 ** https://github.com/JuliaDiff/ReverseDiff.jl/pull/216?notification_referrer_id=NT_kwDOAKj85LM1MzQ1OTA1MDM5OjExMDc0Nzg4
 #+begin_src julia :eval no
 using ReverseDiff: ReverseDiff
