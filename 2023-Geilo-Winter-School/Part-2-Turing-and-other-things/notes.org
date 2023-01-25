@@ -1240,7 +1240,7 @@ sol = solve(problem_new, saveat=1)       # Solve!
 
 We then remake the problem, now with the parameters =[β, γ]= sampled above
 
-Remember the =saveat = 1= ensures we get solution at timesteps =[0, 1, 2, ..., 14]=
+The =saveat = 1= ensures we get solution at timesteps =[0, 1, 2, ..., 14]=
 
 #+REVEAL: split
 
