@@ -23,7 +23,7 @@ using Statistics: mean, std
 
     # likelihood
     ŷ = α .+ X * β .+ αⱼ[idx]
-    return y ~ MvNormal(ŷ, σ^2 * I)
+    y ~ MvNormal(ŷ, σ^2 * I)
 end;
 
 # There's a famous dataset called cheese which is data from cheese ratings.
