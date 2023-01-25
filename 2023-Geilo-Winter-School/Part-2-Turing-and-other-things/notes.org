@@ -40,7 +40,7 @@ or if you're already in a REPL, do
 #+end_src
 
 #+RESULTS:
-:   Activating project at `~/Projects/public/Turing-Workshop/2023-Geilo-Winter-School/Part-2-Turing-and-other-things`
+: [32m[1m  Activating[22m[39m project at `~/Projects/public/Turing-Workshop/2023-Geilo-Winter-School/Part-2-Turing-and-other-things`
 
 to activate the project
 
@@ -54,26 +54,26 @@ And just to check that you're in the correct one
 
 #+RESULTS:
 #+begin_example
-Project GeiloWinterSchool2023Part2 v0.1.0
-Status `~/Projects/public/Turing-Workshop/2023-Geilo-Winter-School/Part-2-Turing-and-other-things/Project.toml`
-  [6e4b80f9] BenchmarkTools v1.3.2
-  [336ed68f] CSV v0.10.9
-  [a93c6f00] DataFrames v1.4.4
-  [2b5f629d] DiffEqBase v6.114.1
-  [0c46a032] DifferentialEquations v7.6.0
-  [31c24e10] Distributions v0.25.80
-  [f6369f11] ForwardDiff v0.10.34
-  [6fdf6af0] LogDensityProblems v2.1.0
-  [996a588d] LogDensityProblemsAD v1.1.1
-  [429524aa] Optim v1.7.4
-  [37e2e3b7] ReverseDiff v1.14.4 `https://github.com/torfjelde/ReverseDiff.jl#torfjelde/sort-of-support-non-linear-indexing`
-  [0bca4576] SciMLBase v1.81.0
-⌃ [1ed8b502] SciMLSensitivity v7.17.1
-  [f3b207a7] StatsPlots v0.15.4
-  [fce5fe82] Turing v0.24.0
-  [0db1332d] TuringBenchmarking v0.1.1
-  [e88e6eb3] Zygote v0.6.55
-Info Packages marked with ⌃ have new versions available and may be upgradable.
+[36m[1mProject[22m[39m GeiloWinterSchool2023Part2 v0.1.0
+[32m[1mStatus[22m[39m `~/Projects/public/Turing-Workshop/2023-Geilo-Winter-School/Part-2-Turing-and-other-things/Project.toml`
+ [90m [6e4b80f9] [39mBenchmarkTools v1.3.2
+ [90m [336ed68f] [39mCSV v0.10.9
+ [90m [a93c6f00] [39mDataFrames v1.4.4
+ [90m [2b5f629d] [39mDiffEqBase v6.114.1
+ [90m [0c46a032] [39mDifferentialEquations v7.6.0
+ [90m [31c24e10] [39mDistributions v0.25.80
+ [90m [f6369f11] [39mForwardDiff v0.10.34
+ [90m [6fdf6af0] [39mLogDensityProblems v2.1.0
+ [90m [996a588d] [39mLogDensityProblemsAD v1.1.1
+ [90m [429524aa] [39mOptim v1.7.4
+ [90m [37e2e3b7] [39mReverseDiff v1.14.4 `https://github.com/torfjelde/ReverseDiff.jl#torfjelde/sort-of-support-non-linear-indexing`
+ [90m [0bca4576] [39mSciMLBase v1.81.0
+[32m⌃[39m[90m [1ed8b502] [39mSciMLSensitivity v7.17.1
+ [90m [f3b207a7] [39mStatsPlots v0.15.4
+ [90m [fce5fe82] [39mTuring v0.24.0
+ [90m [0db1332d] [39mTuringBenchmarking v0.1.1
+ [90m [e88e6eb3] [39mZygote v0.6.55
+[36m[1mInfo[22m[39m Packages marked with [32m⌃[39m have new versions available and may be upgradable.
 #+end_example
 
 Download and install dependencies
@@ -83,8 +83,6 @@ Download and install dependencies
 #+end_src
 
 #+RESULTS:
-: [32m  ✓ [39mGeiloWinterSchool2023Part2
-:   1 dependency successfully precompiled in 32 seconds. 356 already precompiled.
 
 #+REVEAL: split
 
@@ -95,6 +93,7 @@ using GeiloWinterSchool2023Part2
 #+end_src
 
 #+RESULTS:
+: [36m[1m[ [22m[39m[36m[1mInfo: [22m[39mPrecompiling GeiloWinterSchool2023Part2 [66107438-c220-4dd3-9f45-fde6aa9dc0eb]
 
 to get some functionality I've implemented for the occasion
 
@@ -263,6 +262,8 @@ Stan definitively beats Turing.jl when it comes to great write-ups like these
 mkdir -p data
 #+end_src
 
+#+RESULTS:
+
 #+begin_src R
 install.packages("outbreaks")
 #+end_src
@@ -326,23 +327,6 @@ print(data)
   11 │      11  1978-02-01      68           150
   12 │      12  1978-02-02      29            85
   13 │      13  1978-02-03      14            47
-  14 │      14  1978-02-04       4            20[1m14×4 DataFrame[0m
-[1m Row [0m│[1m Column1 [0m[1m date       [0m[1m in_bed [0m[1m convalescent [0m
-     │[90m Int64   [0m[90m Date       [0m[90m Int64  [0m[90m Int64        [0m
-─────┼───────────────────────────────────────────
-   1 │       1  1978-01-22       3             0
-   2 │       2  1978-01-23       8             0
-   3 │       3  1978-01-24      26             0
-   4 │       4  1978-01-25      76             0
-   5 │       5  1978-01-26     225             9
-   6 │       6  1978-01-27     298            17
-   7 │       7  1978-01-28     258           105
-   8 │       8  1978-01-29     233           162
-   9 │       9  1978-01-30     189           176
-  10 │      10  1978-01-31     128           166
-  11 │      11  1978-02-01      68           150
-  12 │      12  1978-02-02      29            85
-  13 │      13  1978-02-03      14            47
   14 │      14  1978-02-04       4            20
 #+end_example
 
@@ -364,10 +348,7 @@ using StatsPlots
 #+end_src
 
 #+RESULTS:
-:RESULTS:
-[[file:./.ob-jupyter/b3509a2dc6a73f94b6bbc412b904063b0490b9d0.svg]]
-[[file:./.ob-jupyter/48b3c1e7b7b7baf2402f518d4371d99a431a56ae.svg]]
-:END:
+[[file:./.ob-jupyter/5fa270eb9d3e9e96f9f979dd99e7be88bd571385.svg]]
 
 * Differential equations
 
@@ -450,10 +431,7 @@ end
 #+end_src
 
 #+RESULTS:
-:RESULTS:
 : SIR! (generic function with 1 method)
-: SIR! (generic function with 1 method)
-:END:
 
 
 Not too bad!
@@ -466,10 +444,7 @@ last(data.date) - first(data.date) + Day(1) # add 1 since we have an observation
 #+end_src
 
 #+RESULTS:
-:RESULTS:
 : 14 days
-: 14 days
-:END:
 
 That is, we have 14 days of observations.
 
@@ -483,16 +458,10 @@ u0 = [N - 1, 1, 0.0]
 #+end_src
 
 #+RESULTS:
-:RESULTS:
 : 3-element Vector{Float64}:
 :  762.0
 :    1.0
 :    0.0
-: 3-element Vector{Float64}:
-:  762.0
-:    1.0
-:    0.0
-:END:
 
 #+REVEAL: split
 
@@ -506,20 +475,12 @@ end
 #+end_src
 
 #+RESULTS:
-:RESULTS:
 : [38;2;86;182;194mODEProblem[0m with uType [38;2;86;182;194mVector{Float64}[0m and tType [38;2;86;182;194mFloat64[0m. In-place: [38;2;86;182;194mtrue[0m
 : timespan: (0.0, 14.0)
 : u0: 3-element Vector{Float64}:
 :  762.0
 :    1.0
 :    0.0
-: [38;2;86;182;194mODEProblem[0m with uType [38;2;86;182;194mVector{Float64}[0m and tType [38;2;86;182;194mFloat64[0m. In-place: [38;2;86;182;194mtrue[0m
-: timespan: (0.0, 14.0)
-: u0: 3-element Vector{Float64}:
-:  762.0
-:    1.0
-:    0.0
-:END:
 
 #+REVEAL: split
 
@@ -530,7 +491,6 @@ sol = solve(problem)
 #+end_src
 
 #+RESULTS:
-:RESULTS:
 #+begin_example
 retcode: Success
 Interpolation: specialized 4th order "free" interpolation, specialized 2nd order "free" stiffness-aware interpolation
@@ -583,59 +543,8 @@ u: 23-element Vector{Vector{Float64}}:
  [32.08996839417716, 6.105264616193066, 724.8047669896299]
  [32.08428686823946, 6.070415830241046, 724.8452973015196]
 #+end_example
-#+begin_example
-retcode: Success
-Interpolation: specialized 4th order "free" interpolation, specialized 2nd order "free" stiffness-aware interpolation
-t: 23-element Vector{Float64}:
-  0.0
-  0.0023558376404244326
-  0.025914214044668756
-  0.11176872871946908
-  0.26714420676761075
-  0.47653584778586056
-  0.7436981238065388
-  1.0701182881347182
-  1.4556696154809898
-  1.8994815718103506
-  2.4015425820305163
-  2.9657488203418048
-  3.6046024613854746
-  4.325611232479916
-  5.234036476235002
-  6.073132270491685
-  7.323851265223563
-  8.23100744184026
-  9.66046960467715
- 11.027717843180652
- 12.506967592177675
- 13.98890399536329
- 14.0
-u: 23-element Vector{Vector{Float64}}:
- [762.0, 1.0, 0.0]
- [761.9952867607622, 1.003297407481751, 0.001415831756055325]
- [761.9472927630898, 1.036873767352754, 0.015833469557440357]
- [761.7584189579304, 1.1690001128296739, 0.0725809292398516]
- [761.353498610305, 1.4522140137552049, 0.19428737593979384]
- [760.6490369821046, 1.9447820690728455, 0.4061809488225752]
- [759.3950815454128, 2.8210768113583082, 0.7838416432288186]
- [757.0795798160242, 4.437564277195732, 1.4828559067800167]
- [752.6094742865345, 7.552145919430467, 2.8383797940350495]
- [743.573784947305, 13.823077731564027, 5.603137321131049]
- [724.5575481927715, 26.909267078762316, 11.533184728466205]
- [683.6474029897502, 54.51612001957392, 24.836476990675976]
- [598.1841629858786, 109.41164143668018, 55.40419557744127]
- [450.08652743810205, 192.396449154863, 120.51702340703504]
- [259.11626253270623, 256.9925778114915, 246.89115965580237]
- [148.3573731526537, 240.10301213899098, 374.53961470835543]
- [76.52998017846475, 160.6373332952353, 525.8326865263001]
- [55.70519994004921, 108.7634182279299, 598.531381832021]
- [41.39587834423381, 55.09512088924873, 666.5090007665176]
- [35.87067243374374, 27.821838135708532, 699.3074894305479]
- [33.252184333490774, 13.087185981359177, 716.6606296851502]
- [32.08996839417716, 6.105264616193066, 724.8047669896299]
- [32.08428686823946, 6.070415830241046, 724.8452973015196]
-#+end_example
-:END:
+
+
 #+REVEAL: split
 
 We didn't specify a solver
@@ -673,8 +582,8 @@ scatter!(1:14, data.in_bed, label="Data", color="black")
 
 #+RESULTS:
 :RESULTS:
-[[file:./.ob-jupyter/caab965077cb841340c151f9bdf7ebb3e5efac69.svg]]
-[[file:./.ob-jupyter/680067ac95a7970fe036b77912126f86e60b00fa.svg]]
+[[file:./.ob-jupyter/9c2493efe3c238c996080bda5befe46a0647a6c5.svg]]
+[[file:./.ob-jupyter/2361d9cd46e80d7fd046b04a898c61eee1e12ecf.svg]]
 :END:
 
 Doesn't really match the data; let's do better
@@ -710,10 +619,7 @@ end
 #+end_src
 
 #+RESULTS:
-:RESULTS:
 : loss (generic function with 1 method)
-: loss (generic function with 1 method)
-:END:
 
 #+HTML: </div>
 
@@ -735,28 +641,35 @@ opt = optimize(
 #+end_src
 
 #+RESULTS:
+:RESULTS:
+# [goto error]
 #+begin_example
-,* Status: success
+MethodError: [0mCannot `convert` an object of type [92mVector{Float64}[39m[0m to an object of type [91mFloat64[39m
+[0mClosest candidates are:
+[0m  convert(::Type{T}, [91m::Gray24[39m) where T<:Real at ~/.julia/packages/ColorTypes/1dGw6/src/conversions.jl:114
+[0m  convert(::Type{T}, [91m::Gray[39m) where T<:Real at ~/.julia/packages/ColorTypes/1dGw6/src/conversions.jl:113
+[0m  convert(::Type{R}, [91m::T[39m) where {R<:Real, T<:ReverseDiff.TrackedReal} at ~/.julia/packages/ReverseDiff/ftbg2/src/tracked.jl:262
+[0m  ...
 
-,* Candidate solution
-   Final objective value:     4.116433e+03
-
-,* Found with
-   Algorithm:     Fminbox with Nelder-Mead
-
-,* Convergence measures
-   |x - x'|               = 0.00e+00 ≤ 0.0e+00
-   |x - x'|/|x'|          = 0.00e+00 ≤ 0.0e+00
-   |f(x) - f(x')|         = 0.00e+00 ≤ 0.0e+00
-   |f(x) - f(x')|/|f(x')| = 0.00e+00 ≤ 0.0e+00
-   |g(x)|                 = 7.86e+04 ≰ 1.0e-08
-
-,* Work counters
-   Seconds run:   3  (vs limit Inf)
-   Iterations:    4
-   f(x) calls:    565
-   ∇f(x) calls:   1
+Stacktrace:
+ [1] setproperty!(x::OnceDifferentiable{Float64, Vector{Float64}, Vector{Float64}}, f::Symbol, v::Vector{Float64})
+   @ Base ./Base.jl:39
+ [2] value!!(obj::OnceDifferentiable{Float64, Vector{Float64}, Vector{Float64}}, x::Vector{Float64})
+   @ NLSolversBase ~/.julia/packages/NLSolversBase/kavn7/src/interface.jl:9
+ [3] value!!
+   @ ~/.julia/packages/Optim/tP8PJ/src/multivariate/solvers/constrained/fminbox.jl:71 [inlined]
+ [4] initial_state(method::NelderMead{Optim.AffineSimplexer, Optim.AdaptiveParameters}, options::Optim.Options{Float64, Nothing}, d::Optim.BarrierWrapper{OnceDifferentiable{Float64, Vector{Float64}, Vector{Float64}}, Optim.BoxBarrier{Vector{Int64}, Vector{Float64}}, Float64, Float64, Vector{Float64}}, initial_x::Vector{Float64})
+   @ Optim ~/.julia/packages/Optim/tP8PJ/src/multivariate/solvers/zeroth_order/nelder_mead.jl:171
+ [5] optimize(df::OnceDifferentiable{Float64, Vector{Float64}, Vector{Float64}}, l::Vector{Int64}, u::Vector{Float64}, initial_x::Vector{Float64}, F::Fminbox{NelderMead{Optim.AffineSimplexer, Optim.AdaptiveParameters}, Float64, Optim.var"#49#51"}, options::Optim.Options{Float64, Nothing})
+   @ Optim ~/.julia/packages/Optim/tP8PJ/src/multivariate/solvers/constrained/fminbox.jl:322
+ [6] #optimize#65
+   @ ~/.julia/packages/Optim/tP8PJ/src/multivariate/solvers/constrained/fminbox.jl:269 [inlined]
+ [7] optimize (repeats 2 times)
+   @ ~/.julia/packages/Optim/tP8PJ/src/multivariate/solvers/constrained/fminbox.jl:259 [inlined]
+ [8] top-level scope
+   @ In[14]:4
 #+end_example
+:END:
 
 #+REVEAL: split
 
@@ -765,9 +678,14 @@ opt = optimize(
 #+end_src
 
 #+RESULTS:
-: 2-element Vector{Float64}:
-:  1.6692320164955483
-:  0.44348639177622445
+:RESULTS:
+# [goto error]
+: syntax: incomplete: premature end of input
+: 
+: Stacktrace:
+:  [1] top-level scope
+:    @ In[15]:1
+:END:
 
 #+REVEAL: split
 
@@ -783,7 +701,14 @@ scatter!(1:14, data.in_bed, label="Data", color="black")
 #+end_src
 
 #+RESULTS:
-[[file:./.ob-jupyter/9126a373c3e60e83f0cbba8ae5cc0cb6d9bd63e1.svg]]
+:RESULTS:
+# [goto error]
+: UndefVarError: β not defined
+: 
+: Stacktrace:
+:  [1] top-level scope
+:    @ In[16]:2
+:END:
 
 That's better than our /totally/ "random" guess from earlier!
 
@@ -921,7 +846,7 @@ scatter!(1:14, data.in_bed, label="Data")
 #+end_src
 
 #+RESULTS:
-[[file:./.ob-jupyter/49511097d3c51c1b35c1805ae5db86316a8691c9.svg]]
+[[file:./.ob-jupyter/6f8d8279a7c43754f49fd2070b2f300eafcd2fc0.svg]]
 
 Don't look so good. Let's try Optim.jl again.
 
@@ -962,7 +887,7 @@ opt = optimize(Base.Fix1(loss_seir, problem_seir), [0, 0, 0], [Inf, Inf, Inf], [
    |g(x)|                 = 1.77e+05 ≰ 1.0e-08
 
 ,* Work counters
-   Seconds run:   1  (vs limit Inf)
+   Seconds run:   2  (vs limit Inf)
    Iterations:    3
    f(x) calls:    13259
    ∇f(x) calls:   1
@@ -987,7 +912,7 @@ scatter!(1:14, data.in_bed, label="Data", color="black")
 #+end_src
 
 #+RESULTS:
-[[file:./.ob-jupyter/3f9b86d79f9b94581ddc14503df40ad7853d95b4.svg]]
+[[file:./.ob-jupyter/31ffc1a24f87c69ea5100dc0d6788fb037f3877b.svg]]
 
 #+REVEAL: split
 
@@ -1016,7 +941,7 @@ struct SIRProblem{P} <: AbstractEpidemicProblem
     N::Int
 end
 
-function SIRProblem(N::Int; u0 = [N - 1, 1, 0.], tspan = (0, 14), p = [#+end_src)
+function SIRProblem(N::Int; u0 = [N - 1, 1, 0.], tspan = (0, 14), p = [2.0, 0.6])
     return SIRProblem(ODEProblem(SIR!, u0, tspan, p), N)
 end
 #+end_src
@@ -1229,6 +1154,10 @@ plot(
 #+end_src
 
 #+RESULTS:
+:RESULTS:
+[[file:./.ob-jupyter/4e14c8699cef3e14fa4f4b2e4ac090a8e9ce7a35.svg]]
+[[file:./.ob-jupyter/1e1c654633358f993fa1fb0cee5411ffeaa13971.svg]]
+:END:
 
 #+REVEAL: split
 
@@ -1272,7 +1201,7 @@ gif(anim, "negative_binomial.gif", fps=2);
 #+end_src
 
 #+RESULTS:
-: [ Info: Saved animation to /home/tor/Projects/public/Turing-Workshop/2023-Geilo-Winter-School/Part-2-Turing-and-other-things/negative_binomial.gif
+: [36m[1m[ [22m[39m[36m[1mInfo: [22m[39mSaved animation to /home/tor/Projects/public/Turing-Workshop/2023-Geilo-Winter-School/Part-2-Turing-and-other-things/negative_binomial.gif
 
 [[./negative_binomial.gif]]
 
@@ -1388,20 +1317,20 @@ model().infected
 #+RESULTS:
 #+begin_example
 14-element Vector{Float64}:
-   2.825264961270304
-   7.837717092596966
-  20.69593030954763
-  48.360933746687124
-  88.11351800342295
- 111.82293478346571
- 100.21466601464007
-  70.81459707125047
-  43.72880969776908
-  25.13830589818062
-  13.916126106568317
-   7.56132370980261
-   4.063980443129785
-   2.172405735636434
+ 1.1857683457454615
+ 1.4031919767742504
+ 1.656501961849903
+ 1.9500209359015739
+ 2.287944460412949
+ 2.6740361120025615
+ 3.111176509979438
+ 3.600932367775885
+ 4.142728351325811
+ 4.733320828600479
+ 5.366032539264102
+ 6.030041459774789
+ 6.710165445559259
+ 7.386878485450631
 #+end_example
 
 Hey, it does!
@@ -1437,7 +1366,7 @@ print(model())
 #+end_src
 
 #+RESULTS:
-: (R0 = 105.51342057750587, recovery_time = 30.1914342607537, infected = [30.609519425500903, 430.59227554161345, 717.7009429592763, 711.5600299723577, 689.0173694690227, 666.5953381596374, 644.879179061704, 623.8694263038603, 603.5441060488636, 583.8809706315462, 564.8584492042928, 546.4556710719582, 528.652445326909, 511.4292389241275])
+: (R0 = 6.174580137616607, recovery_time = 3.0267623349095656, infected = [5.483299311382417, 28.974245800730344, 128.35118173215392, 329.29151087862596, 414.4789821605425, 360.6446377573956, 278.5555061002017, 207.0431826308263, 151.66706467241767, 110.384438266176, 80.07525672471148, 57.981313102167036, 41.93887942093339, 30.31346189122374])
 
 #+HTML: </div>
 
@@ -1451,7 +1380,7 @@ chain_prior = sample(model, Prior(), 10_000);
 #+end_src
 
 #+RESULTS:
-: [32mSampling: 100%|█████████████████████████████████████████| Time: 0:00:02[39m
+: [32mSampling: 100%|█████████████████████████████████████████| Time: 0:00:01[39m
 
 #+HTML: </div>
 
@@ -1562,10 +1491,10 @@ hline!([N], color="red")
 #+end_src
 
 #+RESULTS:
-[[file:./.ob-jupyter/f67a83891fd5a17f36751d4471f18ea98da28002.svg]]
+[[file:./.ob-jupyter/e0c50ce1d6f177973a157b7cd4e3f19ee7786c4d.svg]]
 
 #+ATTR_REVEAL: :frag (appear)
-For certain values we get n#+end_srcinfected /larger/ than the actual population
+For certain values we get number of infected /larger/ than the actual population
 
 #+ATTR_REVEAL: :frag (appear)
 But this is includes the randomness from =NegativeBinomial2= likelihood
@@ -1583,7 +1512,7 @@ print(quantities_prior[1])
 #+end_src
 
 #+RESULTS:
-: (R0 = 12.278595504743134, recovery_time = 6.8180946580167285, infected = [5.195906118908742, 26.27661208732607, 117.10575290522013, 342.69897192005413, 522.6649315287999, 537.7784190203737, 487.9601076628196, 427.96446786011944, 371.64411414076966, 321.68066769931005, 278.09268310278196, 240.2870268994555, 207.57132528957226, 179.2883407222227])
+: (R0 = 2.0715463788829003, recovery_time = 0.8385288472971612, infected = [3.5546803657847446, 12.238946523701003, 37.961499609155815, 88.87291138985437, 126.2123344060398, 108.73692364982254, 68.8764959389241, 37.54407436413875, 19.08575138085335, 9.405193541760713, 4.562579207496782, 2.1974712380264863, 1.0547587303188242, 0.5055505721139222])
 
 This is simply a =Matrix= of =NamedTuple=
 
@@ -1592,7 +1521,7 @@ typeof(quantities_prior)
 #+end_src
 
 #+RESULTS:
-: Matrix{NamedTuple{(:R0, :recovery_time, :infected), Tuple{Float64, Float64, Vector{Float64}}}} (alias for Array{NamedTuple{(:R0, :recovery_time, :infected), Tuple{Float64, Float64, Array{Float64, 1}}}, 2})
+: Matrix{NamedTuple{(:R0, :recovery_time, :infected), Tuple{Float64, Float64, Vector{Float64}}}}[90m (alias for [39m[90mArray{NamedTuple{(:R0, :recovery_time, :infected), Tuple{Float64, Float64, Array{Float64, 1}}}, 2}[39m[90m)[39m
 
 #+REVEAL: split
 
@@ -1607,7 +1536,7 @@ hline!([N], color="red")
 #+end_src
 
 #+RESULTS:
-[[file:./.ob-jupyter/163b853a07bf527c0c99296b0d686d6013037205.svg]]
+[[file:./.ob-jupyter/a7d31ea8a13b07b25b87476f9837c0c4306add79.svg]]
 
 #+HTML: <div class="x-small-text">
 
@@ -1626,7 +1555,7 @@ hline!(p, [N], color="red")
 #+end_src
 
 #+RESULTS:
-[[file:./.ob-jupyter/6ba4d716967abe71e49015edbc0c26baeaa662f1.svg]]
+[[file:./.ob-jupyter/25c29e662134f8d20f18f326801d65b463999862.svg]]
 
 #+REVEAL: split
 
@@ -1636,12 +1565,12 @@ print(DataFrame(quantile(chain_quantities_prior[:, [:R0, :recovery_time], :])))
 #+end_src
 
 #+RESULTS:
-: 2×6 DataFrame
-:  Row │ parameters     2.5%      25.0%    50.0%    75.0%    97.5%   
-:      │ Symbol         Float64   Float64  Float64  Float64  Float64 
+: [1m2×6 DataFrame[0m
+: [1m Row [0m│[1m parameters    [0m[1m 2.5%     [0m[1m 25.0%   [0m[1m 50.0%   [0m[1m 75.0%   [0m[1m 97.5%   [0m
+:      │[90m Symbol        [0m[90m Float64  [0m[90m Float64 [0m[90m Float64 [0m[90m Float64 [0m[90m Float64 [0m
 : ─────┼─────────────────────────────────────────────────────────────
-:    1 │ R0             0.548036  2.0974   3.71824  7.38071  66.6828
-:    2 │ recovery_time  0.695667  1.20366  1.86041  3.48945  32.4622
+:    1 │ R0             0.497929  2.07564  3.67904  7.26254  67.9117
+:    2 │ recovery_time  0.701711  1.20069  1.84906  3.54543  33.549
 
 Compare to our prior knowledge of $R_0 \in [1, 2]$ and $(1/\gamma) \approx 1$ for influenza
 
@@ -1670,7 +1599,7 @@ plot(truncated(Normal(0.4, 0.5); lower=0), label=nothing, title="γ", size=(500,
 #+end_src
 
 #+RESULTS:
-[[file:./.ob-jupyter/0e183191a98453b3cdf5f894ee565a5743596fd0.svg]]
+[[file:./.ob-jupyter/7342b55ba745721526033d31eb28a0b20f4f3d60.svg]]
 
 We should probably be putting less probability mass near 0
 
@@ -1701,7 +1630,7 @@ plot!(truncated(Normal(0.4, 0.5); lower=0), label="old", color="red")
 #+end_src
 
 #+RESULTS:
-[[file:./.ob-jupyter/5b8ba7e6fad9ec30f5084bd6c74d3a3c22926670.svg]]
+[[file:./.ob-jupyter/0247b4dcb70152eed6f428bb582ac8475dec5f42.svg]]
 
 - [X] Bounded at 1
 - [X] Allows smaller values (i.e. longer recovery time) but rapidly decreases near zero
@@ -1777,7 +1706,7 @@ println(B()())
 #+end_src
 
 #+RESULTS:
-: (x = 100.93569737229646, y = 100.91546059962127)
+: (x = 102.02147019958039, y = 102.4569833493446)
 
 #+HTML: </div>
 
@@ -1789,13 +1718,13 @@ println(rand(B()))
 #+end_src
 
 #+RESULTS:
-: (x_hidden_from_B = -0.7029882097274394, y = 102.07903748938203)
+: (x_hidden_from_B = 0.09002971780890297, y = 99.53876150986615)
 
 #+HTML: </div>
 
 #+REVEAL: split
 
-And if you want to make sure you avoid clashes of variable-names, we can specify a =prefix=
+To avoid clashes of variable-names, we can specify a =prefix=
 
 #+begin_src julia
 @model A() = (x ~ Normal(); return x + 100)
@@ -1817,7 +1746,7 @@ print(rand(B()))
 #+end_src
 
 #+RESULTS:
-: (var"inner.x" = -0.20502868778446368, x = 100.25542669778142)
+: (var"inner.x" = -2.1171807144026573, x = 97.78951321099801)
 
 #+REVEAL: split
 
@@ -1835,9 +1764,6 @@ Equipped with =@submodel= we can replace
 β ~ truncated(Normal(2, 1); lower=0)
 γ ~ truncated(Normal(0.4, 0.5); lower=0)
 #+end_src
-
-#+RESULTS:
-: eca43919-60be-4de0-9fa9-a745e4ac5588
 
 with
 
@@ -2006,7 +1932,7 @@ hline!([N], color="red", linestyle=:dash)
 #+end_src
 
 #+RESULTS:
-[[file:./.ob-jupyter/ec83804c27a283b0e15719b58b966e1e90f38ea6.svg]]
+[[file:./.ob-jupyter/6b9bdb1e1ef7d1c6478aa686571343d62abdaec9.svg]]
 
 #+REVEAL: split
 
@@ -2023,7 +1949,7 @@ plot(plt1, plt2, layout=(2, 1))
 #+end_src
 
 #+RESULTS:
-[[file:./.ob-jupyter/e6ef94aa85d70a44eb6f43a9b493a6ccb2c5adce.svg]]
+[[file:./.ob-jupyter/652a9ac21f83162c24db53105a825401e995a795.svg]]
 
 This makes sense: if half of the population is immediately infected ⟹ number of infected tapers wrt. time as they recover
 
@@ -2031,8 +1957,8 @@ This makes sense: if half of the population is immediately infected ⟹ number o
 
 For =model_improved= we then have
 
-#+begin_src julia
-print(DataFrame(quantile(chain_quantities_improved[:, [:R0, :recovery_time], :])))
+#+begin_src julia :display text/plain
+DataFrame(quantile(chain_quantities_improved[:, [:R0, :recovery_time], :]))
 #+end_src
 
 #+RESULTS:
@@ -2040,13 +1966,13 @@ print(DataFrame(quantile(chain_quantities_improved[:, [:R0, :recovery_time], :])
 :  Row │ parameters     2.5%      25.0%    50.0%    75.0%    97.5%   
 :      │ Symbol         Float64   Float64  Float64  Float64  Float64 
 : ─────┼─────────────────────────────────────────────────────────────
-:    1 │ R0             0.293029  2.2265   4.42959  8.30344  33.7325
-:    2 │ recovery_time  1.57205   2.59292  3.82319  6.32029  23.6731
+:    1 │ R0             0.300784  2.31056  4.55175  8.47499  32.8491
+:    2 │ recovery_time  1.57986   2.60513  3.8181   6.1612   22.21
 
 Compare to =model_original=
 
-#+begin_src julia
-print(DataFrame(quantile(chain_quantities_original[:, [:R0, :recovery_time], :])))
+#+begin_src julia :display text/plain
+DataFrame(quantile(chain_quantities_original[:, [:R0, :recovery_time], :]))
 #+end_src
 
 #+RESULTS:
@@ -2054,8 +1980,8 @@ print(DataFrame(quantile(chain_quantities_original[:, [:R0, :recovery_time], :])
 :  Row │ parameters     2.5%      25.0%    50.0%    75.0%    97.5%   
 :      │ Symbol         Float64   Float64  Float64  Float64  Float64 
 : ─────┼─────────────────────────────────────────────────────────────
-:    1 │ R0             0.496952  2.13455  3.77299  7.43143  66.5364
-:    2 │ recovery_time  0.695163  1.21459  1.87825  3.51528  29.118
+:    1 │ R0             0.520941  2.08502  3.67668  7.23638  55.9529
+:    2 │ recovery_time  0.694916  1.20042  1.86243  3.44323  27.7041
 
 ** TASK Make =epidemic_model= work for =SEIRProblem=
 1. [ ] Implement a prior which also includes $\sigma$ and execute
@@ -2088,7 +2014,7 @@ print(model_seir())
 #+end_src
 
 #+RESULTS:
-: (R0 = 95.80419931156645, recovery_time = 27.304012395796352, infected = [1.6371339022556468, 4.098976186100829, 10.73296565753573, 27.644530276022106, 67.61991732070156, 147.91379180747037, 268.4632180310939, 393.0596786087126, 486.52761445004467, 544.4539174283068, 575.7674250445274, 589.1694092956135, 590.8194898841384, 584.8625962624448])
+: (R0 = 3.3798912373416354, recovery_time = 1.596384635483695, infected = [0.9327629817712743, 1.4504535116350157, 2.4274041326310885, 4.0812797236598035, 6.830377676414988, 11.329833167669367, 18.5177057467429, 29.561354139876126, 45.51569649645974, 66.42832577682445, 90.12807147660341, 111.77652084107878, 125.50529805033085, 127.53881283140989])
 
 ** WARNING Consult with domain experts
 This guy should not be the one setting your priors!
@@ -2147,8 +2073,8 @@ Chains MCMC chain (10000×4×4 Array{Float64, 3}):
 Iterations        = 5001:1:15000
 Number of chains  = 4
 Samples per chain = 10000
-Wall duration     = 9.09 seconds
-Compute duration  = 35.0 seconds
+Wall duration     = 4.47 seconds
+Compute duration  = 17.29 seconds
 parameters        = β, γ, ϕ⁻¹
 internals         = lp
 
@@ -2156,18 +2082,18 @@ Summary Statistics
  [1m parameters [0m [1m    mean [0m [1m     std [0m [1m naive_se [0m [1m    mcse [0m [1m      ess [0m [1m    rhat [0m [1m e[0m ⋯
  [90m     Symbol [0m [90m Float64 [0m [90m Float64 [0m [90m  Float64 [0m [90m Float64 [0m [90m  Float64 [0m [90m Float64 [0m [90m  [0m ⋯
 
-           β    1.7321    0.0547     0.0003    0.0029   194.5516    1.0379     ⋯
-           γ    0.5327    0.0452     0.0002    0.0026   174.0121    1.0091     ⋯
-         ϕ⁻¹    0.1440    0.0721     0.0004    0.0040   178.1756    1.0198     ⋯
+           β    1.7264    0.0518     0.0003    0.0027   223.2349    1.0343     ⋯
+           γ    0.5302    0.0425     0.0002    0.0025   149.4968    1.0498     ⋯
+         ϕ⁻¹    0.1263    0.0642     0.0003    0.0035   194.8981    1.0359     ⋯
 [36m                                                                1 column omitted[0m
 
 Quantiles
  [1m parameters [0m [1m    2.5% [0m [1m   25.0% [0m [1m   50.0% [0m [1m   75.0% [0m [1m   97.5% [0m
  [90m     Symbol [0m [90m Float64 [0m [90m Float64 [0m [90m Float64 [0m [90m Float64 [0m [90m Float64 [0m
 
-           β    1.6367    1.6889    1.7309    1.7644    1.8515
-           γ    0.4482    0.4995    0.5329    0.5621    0.6230
-         ϕ⁻¹    0.0420    0.0889    0.1286    0.1801    0.3128
+           β    1.6375    1.6882    1.7235    1.7627    1.8417
+           γ    0.4562    0.4999    0.5268    0.5629    0.6100
+         ϕ⁻¹    0.0390    0.0759    0.1138    0.1706    0.2792
 #+end_example
 
 Rhat is /okay-ish/ but not great, and ESS is pretty low innit?
@@ -2177,7 +2103,7 @@ plot(chain_mh; size=(800, 500))
 #+end_src
 
 #+RESULTS:
-[[file:./.ob-jupyter/a0a1a86169de78133ebe32cbbf92932e715d7b72.svg]]
+[[file:./.ob-jupyter/988ab4c3c127a6eb13010bf4e5698720cae79a19.svg]]
 
 Eeehh doesn't look the greatest
 
@@ -2203,43 +2129,43 @@ Summary Statistics
  [1m parameters [0m [1m     mean [0m [1m     std [0m [1m naive_se [0m [1m    mcse [0m [1m        ess [0m [1m    rhat [0m
  [90m     Symbol [0m [90m  Float64 [0m [90m Float64 [0m [90m  Float64 [0m [90m Float64 [0m [90m    Float64 [0m [90m Float64 [0m
 
-   in_bed[1]     3.3144    2.2316     0.0112    0.0181   23614.4245    1.0002
-   in_bed[2]    10.8587    5.5427     0.0277    0.0822    3161.7697    1.0016
-   in_bed[3]    33.9237   15.7850     0.0789    0.3435    1244.8786    1.0023
-   in_bed[4]    92.2374   42.1648     0.2108    1.0907     884.2866    1.0028
-   in_bed[5]   186.2201   80.9130     0.4046    1.8413    1161.6561    1.0023
-   in_bed[6]   247.5569   99.7724     0.4989    1.5551    2849.9161    1.0005
-   in_bed[7]   235.2958   93.5116     0.4676    1.1572    6052.0211    1.0002
-   in_bed[8]   184.0908   73.5063     0.3675    0.9943    3933.1202    1.0013
-   in_bed[9]   131.3395   53.9336     0.2697    0.8872    2474.1635    1.0028
-  in_bed[10]    88.3932   37.4812     0.1874    0.7072    1785.3656    1.0037
-  in_bed[11]    58.6672   26.0273     0.1301    0.5462    1387.1217    1.0049
-  in_bed[12]    38.0125   17.5818     0.0879    0.3822    1423.6268    1.0041
-  in_bed[13]    24.5957   12.2420     0.0612    0.2964    1076.1571    1.0052
-  in_bed[14]    15.9224    8.4410     0.0422    0.2125    1024.1254    1.0059
+   in_bed[1]     3.2795    2.1585     0.0108    0.0153   32694.5546    1.0002
+   in_bed[2]    10.7760    5.2658     0.0263    0.0779    3557.5324    1.0012
+   in_bed[3]    33.6594   15.2592     0.0763    0.3440    1282.3247    1.0029
+   in_bed[4]    91.5026   40.5910     0.2030    1.0385     945.4664    1.0041
+   in_bed[5]   184.7449   75.2160     0.3761    1.7343    1141.8664    1.0043
+   in_bed[6]   247.0100   93.0535     0.4653    1.5299    2398.1072    1.0022
+   in_bed[7]   235.1672   87.2715     0.4364    1.0820    4982.5456    1.0020
+   in_bed[8]   185.9009   69.2182     0.3461    0.9262    3736.8174    1.0029
+   in_bed[9]   132.4858   50.7510     0.2538    0.8011    2449.1440    1.0034
+  in_bed[10]    89.9888   35.3940     0.1770    0.6587    1732.4037    1.0047
+  in_bed[11]    59.4109   24.3851     0.1219    0.4870    1356.2842    1.0064
+  in_bed[12]    38.7201   16.5152     0.0826    0.3607    1154.3386    1.0077
+  in_bed[13]    25.0717   11.2314     0.0562    0.2613     999.9566    1.0082
+  in_bed[14]    16.1404    7.7939     0.0390    0.1878     946.6562    1.0090
 
 Quantiles
  [1m parameters [0m [1m    2.5% [0m [1m    25.0% [0m [1m    50.0% [0m [1m    75.0% [0m [1m    97.5% [0m
  [90m     Symbol [0m [90m Float64 [0m [90m  Float64 [0m [90m  Float64 [0m [90m  Float64 [0m [90m  Float64 [0m
 
    in_bed[1]    0.0000     2.0000     3.0000     5.0000     8.0000
-   in_bed[2]    2.0000     7.0000    10.0000    14.0000    24.0000
-   in_bed[3]   10.0000    23.0000    32.0000    42.0000    72.0000
-   in_bed[4]   30.0000    63.0000    86.0000   113.0000   193.0000
-   in_bed[5]   64.0000   131.0000   174.0000   228.0000   381.0000
-   in_bed[6]   91.0000   179.0000   235.0000   301.0000   479.0000
-   in_bed[7]   87.0000   171.0000   224.0000   285.0000   454.0000
-   in_bed[8]   68.0000   134.0000   175.0000   223.0000   355.0000
-   in_bed[9]   46.0000    95.0000   125.0000   160.0000   258.0000
-  in_bed[10]   30.0000    63.0000    83.0000   108.0000   176.0000
-  in_bed[11]   20.0000    41.0000    55.0000    72.0000   119.0000
-  in_bed[12]   12.0000    26.0000    35.0000    47.0000    79.0000
-  in_bed[13]    7.0000    16.0000    23.0000    31.0000    53.0000
-  in_bed[14]    4.0000    10.0000    15.0000    20.0000    36.0000
+   in_bed[2]    3.0000     7.0000    10.0000    14.0000    23.0000
+   in_bed[3]   11.0000    23.0000    31.0000    41.0000    70.0000
+   in_bed[4]   32.0000    65.0000    86.0000   111.0000   187.0000
+   in_bed[5]   69.0000   133.0000   175.0000   224.0000   361.0000
+   in_bed[6]   96.0000   183.0000   236.0000   298.0000   463.0000
+   in_bed[7]   91.0000   175.0000   226.0000   283.0000   437.0000
+   in_bed[8]   74.0000   139.0000   178.0000   223.0000   347.0000
+   in_bed[9]   51.0000    98.0000   126.0000   160.0000   251.0000
+  in_bed[10]   34.0000    66.0000    86.0000   109.0000   173.0000
+  in_bed[11]   21.0000    43.0000    56.0000    73.0000   116.0000
+  in_bed[12]   13.0000    27.0000    37.0000    48.0000    78.0000
+  in_bed[13]    8.0000    17.0000    24.0000    31.0000    51.0000
+  in_bed[14]    4.0000    11.0000    15.0000    20.0000    34.0000
 #+end_example
 
 #+begin_src julia
-plot_trajectories!(plot(legend=false), predictions_mh; include_data=true)
+plot_trajectories!(plot(legend=false), predictions_mh; data=data)
 #+end_src
 
 #+RESULTS:
@@ -2251,11 +2177,11 @@ plot_trajectories!(plot(legend=false), predictions_mh; include_data=true)
 :  [1] plot_trajectories!(p::Plots.Plot{Plots.GRBackend}, chain::Chains{Float64, AxisArrays.AxisArray{Float64, 3, Array{Float64, 3}, Tuple{AxisArrays.Axis{:iter, StepRange{Int64, Int64}}, AxisArrays.Axis{:var, Vector{Symbol}}, AxisArrays.Axis{:chain, UnitRange{Int64}}}}, Missing, NamedTuple{(:parameters, :internals), Tuple{Vector{Symbol}, Vector{Symbol}}}, NamedTuple{(:start_time, :stop_time), Tuple{Vector{Nothing}, Vector{Nothing}}}}; n::Int64, include_data::Bool, tspan::Tuple{Int64, Int64}, trajectory_color::String, alpha::Float64)
 :    @ GeiloWinterSchool2023Part2 ~/Projects/public/Turing-Workshop/2023-Geilo-Winter-School/Part-2-Turing-and-other-things/src/GeiloWinterSchool2023Part2.jl:131
 :  [2] top-level scope
-:    @ In[111]:1
+:    @ In[239]:1
 :END:
 
 #+begin_src julia
-plot_trajectory_quantiles!(plot(legend=false, size=(600, 300)), predictions_mh; include_data=true)
+plot_trajectory_quantiles!(plot(legend=false, size=(600, 300)), predictions_mh; data=data)
 #+end_src
 
 #+RESULTS:
@@ -2267,7 +2193,7 @@ plot_trajectory_quantiles!(plot(legend=false, size=(600, 300)), predictions_mh; 
 :  [1] plot_trajectory_quantiles!(p::Plots.Plot{Plots.GRBackend}, chain::Chains{Float64, AxisArrays.AxisArray{Float64, 3, Array{Float64, 3}, Tuple{AxisArrays.Axis{:iter, StepRange{Int64, Int64}}, AxisArrays.Axis{:var, Vector{Symbol}}, AxisArrays.Axis{:chain, UnitRange{Int64}}}}, Missing, NamedTuple{(:parameters, :internals), Tuple{Vector{Symbol}, Vector{Symbol}}}, NamedTuple{(:start_time, :stop_time), Tuple{Vector{Nothing}, Vector{Nothing}}}}; q::Vector{Float64}, include_data::Bool, tspan::Tuple{Int64, Int64})
 :    @ GeiloWinterSchool2023Part2 ~/Projects/public/Turing-Workshop/2023-Geilo-Winter-School/Part-2-Turing-and-other-things/src/GeiloWinterSchool2023Part2.jl:171
 :  [2] top-level scope
-:    @ In[112]:1
+:    @ In[240]:1
 :END:
 
 Okay, it's not /completely/ useless, but my trust-issues are still
@@ -2281,19 +2207,24 @@ Before we proceed, let's just make some functions for the visualizations
 That's right, we're reaching to the *No U-Turn sampler (NUTS)*
 
 *** TODO
+:PROPERTIES:
+:reveal_background_iframe: file:///home/tor/Projects/public/mcmc-demo/app.html?closeControls=true&algorithm=HamiltonianMH&target=standard&seed=1&autoplay=true&histBins=100
+:END:
 
+#+ATTR_REVEAL: :frag (appear)
 [[https://chi-feng.github.io/mcmc-demo/app.html][https://chi-feng.github.io/mcmc-demo/app.html]]
 
 ** 
 
-#+BEGIN_QUOTE
+#+begin_quote
 Wooaah there! =NUTS= requires gradient information!
 
 How are you going to get that through that =solve=?
-#+END_QUOTE
+#+end_quote
 
 Good question, voice in my head
 
+#+REVEAL: :frag (appear)
 I'm obviously not going to it myself
 
 ** Automatic differentiation (AD) in Julia
@@ -2312,10 +2243,10 @@ Of importance
 
 *Important*
 
-#+BEGIN_QUOTE
+#+begin_quote
 When you write code, you don't have to make a choice which one you
 want to use!
-#+END_QUOTE
+#+end_quote
 
 All the (stable) ones, will (mostly) work
 
@@ -2345,14 +2276,6 @@ using SciMLSensitivity
 #+end_src
 
 #+RESULTS:
-: 911ff56c-149b-431c-8362-84c07e10b24c
-
-let's you  make use of the =sensealg= keyword in =solve= to choose
-whatever approach you need
-
-#+begin_src julia :eval no
-solve()
-#+end_src
 
 It offers
 
@@ -2364,8 +2287,7 @@ It offers
 3. /Adjoint methods/: construct a backwards system whose solution gives
    us the gradient.
 
-   - Here you can use anything from symbolically derived to "AD-derived"
-     jacobians.
+Just do =solve(problem, solver, sensealg=...)=
 
 ** Back to being =NUTS=
    :PROPERTIES:
@@ -2376,9 +2298,60 @@ It offers
 chain = sample(model_conditioned, NUTS(0.8), MCMCThreads(), 1000, 4);
 #+end_src
 
+#+RESULTS:
+#+begin_example
+[36m[1m┌ [22m[39m[36m[1mInfo: [22m[39mFound initial step size
+[36m[1m└ [22m[39m  ϵ = 0.2
+[36m[1m┌ [22m[39m[36m[1mInfo: [22m[39mFound initial step size
+[36m[1m└ [22m[39m  ϵ = 0.05
+[36m[1m┌ [22m[39m[36m[1mInfo: [22m[39mFound initial step size
+[36m[1m└ [22m[39m  ϵ = 0.05
+[36m[1m┌ [22m[39m[36m[1mInfo: [22m[39mFound initial step size
+[36m[1m└ [22m[39m  ϵ = 0.0125
+[33m[1m┌ [22m[39m[33m[1mWarning: [22m[39mThe current proposal will be rejected due to numerical error(s).
+[33m[1m│ [22m[39m  isfinite.((θ, r, ℓπ, ℓκ)) = (true, false, false, false)
+[33m[1m└ [22m[39m[90m@ AdvancedHMC ~/.julia/packages/AdvancedHMC/4fByY/src/hamiltonian.jl:49[39m
+[33m[1m┌ [22m[39m[33m[1mWarning: [22m[39mThe current proposal will be rejected due to numerical error(s).
+[33m[1m│ [22m[39m  isfinite.((θ, r, ℓπ, ℓκ)) = (true, false, false, false)
+[33m[1m└ [22m[39m[90m@ AdvancedHMC ~/.julia/packages/AdvancedHMC/4fByY/src/hamiltonian.jl:49[39m
+[33m[1m┌ [22m[39m[33m[1mWarning: [22m[39mThe current proposal will be rejected due to numerical error(s).
+[33m[1m│ [22m[39m  isfinite.((θ, r, ℓπ, ℓκ)) = (true, false, false, false)
+[33m[1m└ [22m[39m[90m@ AdvancedHMC ~/.julia/packages/AdvancedHMC/4fByY/src/hamiltonian.jl:49[39m
+#+end_example
+
 #+begin_src julia
 chain
 #+end_src
+
+#+RESULTS:
+#+begin_example
+Chains MCMC chain (1000×15×4 Array{Float64, 3}):
+
+Iterations        = 501:1:1500
+Number of chains  = 4
+Samples per chain = 1000
+Wall duration     = 12.35 seconds
+Compute duration  = 48.24 seconds
+parameters        = β, γ, ϕ⁻¹
+internals         = lp, n_steps, is_accept, acceptance_rate, log_density, hamiltonian_energy, hamiltonian_energy_error, max_hamiltonian_energy_error, tree_depth, numerical_error, step_size, nom_step_size
+
+Summary Statistics
+ [1m parameters [0m [1m    mean [0m [1m     std [0m [1m naive_se [0m [1m    mcse [0m [1m       ess [0m [1m    rhat [0m [1m [0m ⋯
+ [90m     Symbol [0m [90m Float64 [0m [90m Float64 [0m [90m  Float64 [0m [90m Float64 [0m [90m   Float64 [0m [90m Float64 [0m [90m [0m ⋯
+
+           β    1.7329    0.0539     0.0009    0.0012   2398.5607    1.0010    ⋯
+           γ    0.5314    0.0449     0.0007    0.0010   1967.4775    1.0004    ⋯
+         ϕ⁻¹    0.1402    0.0794     0.0013    0.0017   2224.5760    1.0024    ⋯
+[36m                                                                1 column omitted[0m
+
+Quantiles
+ [1m parameters [0m [1m    2.5% [0m [1m   25.0% [0m [1m   50.0% [0m [1m   75.0% [0m [1m   97.5% [0m
+ [90m     Symbol [0m [90m Float64 [0m [90m Float64 [0m [90m Float64 [0m [90m Float64 [0m [90m Float64 [0m
+
+           β    1.6297    1.6980    1.7315    1.7662    1.8420
+           γ    0.4426    0.5029    0.5296    0.5595    0.6247
+         ϕ⁻¹    0.0423    0.0862    0.1212    0.1740    0.3406
+#+end_example
 
 Muuuch better! Both ESS and Rhatc is looking good
 
@@ -2386,36 +2359,82 @@ Muuuch better! Both ESS and Rhatc is looking good
 plot(chain; size=(800, 500))
 #+end_src
 
-[[./.ob-jupyter/f198b9606c06a59ed28e9000e05a436b045fda5c.png]]
+#+RESULTS:
+[[file:./.ob-jupyter/3a9218dea4c65ad448c63fb7f0ee6ed93c5077d0.svg]]
 
 #+begin_src julia
 # Predict using the results from NUTS.
 predictions = predict(model, chain)
 #+end_src
 
+#+RESULTS:
+#+begin_example
+Chains MCMC chain (1000×14×4 Array{Float64, 3}):
+
+Iterations        = 1:1:1000
+Number of chains  = 4
+Samples per chain = 1000
+parameters        = in_bed[1], in_bed[2], in_bed[3], in_bed[4], in_bed[5], in_bed[6], in_bed[7], in_bed[8], in_bed[9], in_bed[10], in_bed[11], in_bed[12], in_bed[13], in_bed[14]
+internals         = 
+
+Summary Statistics
+ [1m parameters [0m [1m     mean [0m [1m     std [0m [1m naive_se [0m [1m    mcse [0m [1m       ess [0m [1m    rhat [0m
+ [90m     Symbol [0m [90m  Float64 [0m [90m Float64 [0m [90m  Float64 [0m [90m Float64 [0m [90m   Float64 [0m [90m Float64 [0m
+
+   in_bed[1]     3.2818    2.2830     0.0361    0.0327   3930.6385    1.0000
+   in_bed[2]    11.0312    5.6609     0.0895    0.1019   3653.4098    1.0002
+   in_bed[3]    33.8620   15.8738     0.2510    0.3061   2771.4115    1.0005
+   in_bed[4]    92.3748   41.9339     0.6630    0.7057   3328.0017    0.9994
+   in_bed[5]   185.8487   80.5422     1.2735    1.1935   3417.9609    0.9993
+   in_bed[6]   247.2337   98.3721     1.5554    1.9674   3647.9418    0.9994
+   in_bed[7]   235.7463   92.1978     1.4578    1.5893   3912.2214    0.9993
+   in_bed[8]   183.9038   72.1293     1.1405    1.2327   3833.4234    1.0005
+   in_bed[9]   130.7645   52.6417     0.8323    0.8735   3642.9173    1.0001
+  in_bed[10]    88.5115   36.3456     0.5747    0.5694   3845.7641    1.0007
+  in_bed[11]    59.4015   24.8915     0.3936    0.4629   3547.8437    1.0001
+  in_bed[12]    38.2405   17.2619     0.2729    0.2957   3565.4226    1.0002
+  in_bed[13]    24.9578   12.0465     0.1905    0.2265   3501.2093    1.0012
+  in_bed[14]    15.9085    8.1581     0.1290    0.1361   3149.3072    1.0006
+
+Quantiles
+ [1m parameters [0m [1m    2.5% [0m [1m    25.0% [0m [1m    50.0% [0m [1m    75.0% [0m [1m    97.5% [0m
+ [90m     Symbol [0m [90m Float64 [0m [90m  Float64 [0m [90m  Float64 [0m [90m  Float64 [0m [90m  Float64 [0m
+
+   in_bed[1]    0.0000     2.0000     3.0000     5.0000     8.0000
+   in_bed[2]    3.0000     7.0000    10.0000    14.0000    25.0000
+   in_bed[3]   10.0000    23.0000    32.0000    42.0000    70.0000
+   in_bed[4]   32.9750    64.0000    86.0000   112.0000   195.0000
+   in_bed[5]   62.0000   131.0000   174.0000   228.2500   373.0250
+   in_bed[6]   94.0000   181.0000   236.0000   295.2500   485.0000
+   in_bed[7]   86.0000   174.0000   226.0000   286.0000   445.0250
+   in_bed[8]   64.0000   135.0000   177.0000   223.0000   345.0000
+   in_bed[9]   46.0000    95.0000   125.0000   159.0000   250.0000
+  in_bed[10]   31.0000    64.0000    84.0000   108.0000   174.0000
+  in_bed[11]   20.0000    43.0000    56.0000    73.0000   116.0000
+  in_bed[12]   12.0000    27.0000    36.0000    47.0000    78.0000
+  in_bed[13]    7.0000    17.0000    23.0000    31.0000    54.0000
+  in_bed[14]    4.0000    10.0000    15.0000    20.0000    35.0000
+#+end_example
+
 #+begin_src julia
-plot_trajectories!(plot(legend=false, size=(600, 300)), predictions; n = 1000, include_data=true)
+plot_trajectories!(plot(legend=false, size=(600, 300)), predictions; n = 1000, data=data)
 #+end_src
 
-[[./.ob-jupyter/5818a2844c7cdbb2eaa4ad8c8cf1e0756273a161.png]]
+#+RESULTS:
+[[file:./.ob-jupyter/e864be19f1edb0f234c9b06f07b1fdfb98ca4c65.svg]]
 
 #+begin_src julia
-plot_trajectory_quantiles!(plot(legend=false, size=(600, 300)), predictions; include_data=true)
+plot_trajectory_quantiles!(plot(legend=false, size=(600, 300)), predictions; data=data)
 #+end_src
 
-[[./.ob-jupyter/813c664e623143776099024e0e736e4fe49800d5.png]]
+#+RESULTS:
+[[file:./.ob-jupyter/ac3b5ff03cc2ba6a783ce621d4692ecdee9d0d0f.svg]]
 
 ** Simulation-based calibration (SBC)
 [[https://arxiv.org/abs/1804.06788][Talts et. al. (2018)]]
-   :PROPERTIES:
-   :CUSTOM_ID: simulation-based-calibration-sbc-talts-et-al-2018
-   :END:
-
-1. Sample from prior (\theta_1, \dots, \theta_n \sim p(\theta)).
-2. Sample datasets (\mathcal{D}_i \sim p(\cdot \mid \theta_i)) for (i =
-   1, \dots, n).
-3. Obtain (approximate) (p(\theta \mid \mathcal{D}_i)) for (i = 1,
-   \dots, n).
+1. Sample from prior $\theta_1, \dots, \theta_n \sim p(\theta)$.
+2. Sample datasets $\mathcal{D}_i \sim p(\cdot \mid \theta_i)$ for $i = 1, \dots, n$.
+3. Obtain (approximate) $p(\theta \mid \mathcal{D}_i)$ for $i = 1, \dots, n$.
 
 For large enough (n), the "combination" of the posteriors should recover
 the prior!
@@ -2434,15 +2453,27 @@ rng = MersenneTwister(43);
 test_values = rand(rng, NamedTuple, model_conditioned)
 #+end_src
 
+#+RESULTS:
+| β | = | 1.2254566808077714 | γ | = | 0.27594266205681933 | ϕ⁻¹ | = | 0.13984179162984164 |
+
 Now we condition on those values and run once to generate data
 
 #+begin_src julia
 model_test = model | test_values
 #+end_src
 
+#+RESULTS:
+: Model(
+:   args = (:problem_wrapper, :prior)
+:   defaults = ()
+:   context = ConditionContext((β = 1.2254566808077714, γ = 0.27594266205681933, ϕ⁻¹ = 0.13984179162984164), DynamicPPL.DefaultContext())
+: )
+
 #+begin_src julia
 in_best_test = rand(rng, model_test).in_bed;
 #+end_src
+
+#+RESULTS:
 
 Next, inference!
 
@@ -2450,10 +2481,27 @@ Next, inference!
 model_test_conditioned = model | (in_bed = in_best_test,)
 #+end_src
 
+#+RESULTS:
+: Model(
+:   args = (:problem_wrapper, :prior)
+:   defaults = ()
+:   context = ConditionContext((in_bed = [1, 9, 11, 45, 159, 136, 270, 123, 463, 376, 231, 148, 99, 162],), DynamicPPL.DefaultContext())
+: )
+
 #+begin_src julia
 # Let's just do a single chain here.
 chain_test = sample(model_test_conditioned, NUTS(0.8), 1000);
 #+end_src
+
+#+RESULTS:
+: [36m[1m┌ [22m[39m[36m[1mInfo: [22m[39mFound initial step size
+: [36m[1m└ [22m[39m  ϵ = 0.025
+: [33m[1m┌ [22m[39m[33m[1mWarning: [22m[39mInstability detected. Aborting
+: [33m[1m└ [22m[39m[90m@ SciMLBase ~/.julia/packages/SciMLBase/QqtZA/src/integrator_interface.jl:525[39m
+: [33m[1m┌ [22m[39m[33m[1mWarning: [22m[39mThe current proposal will be rejected due to numerical error(s).
+: [33m[1m│ [22m[39m  isfinite.((θ, r, ℓπ, ℓκ)) = (true, true, false, true)
+: [33m[1m└ [22m[39m[90m@ AdvancedHMC ~/.julia/packages/AdvancedHMC/4fByY/src/hamiltonian.jl:49[39m
+: [32mSampling: 100%|█████████████████████████████████████████| Time: 0:00:01[39m
 
 Did we recover the parameters?
 
@@ -2467,7 +2515,8 @@ end
 plot(ps..., layout=(3, 1), size=(600, 400))
 #+end_src
 
-[[./.ob-jupyter/c7f5262cc2962e2920df901926b9172e5bbfb589.png]]
+#+RESULTS:
+[[file:./.ob-jupyter/10338b56fec7065ed90c521a09de72a16e4dcee1.svg]]
 
 ** TODO Choosing AD backend in Turing.jl
    :PROPERTIES:
@@ -2477,6 +2526,7 @@ plot(ps..., layout=(3, 1), size=(600, 400))
 
 * Benchmarking                                                     :noexport:
 #+begin_src julia
+using SciMLSensitivity
 using BenchmarkTools
 using TuringBenchmarking
 #+end_src
@@ -2492,22 +2542,113 @@ using ReverseDiff, Zygote
 #+begin_src julia
 suite = TuringBenchmarking.make_turing_suite(
     model_conditioned;
-    adbackends=[Turing.Essential.ForwardDiffAD{40,true}(),]
+    adbackends=[
+        TuringBenchmarking.ForwardDiffAD{40,true}(),
+        TuringBenchmarking.ReverseDiffAD{false}(),
+        TuringBenchmarking.ZygoteAD()
+    ]
 );
 run(suite)
 #+end_src
 
 #+RESULTS:
-: 2-element BenchmarkTools.BenchmarkGroup:
-:   tags: []
-:   "linked" => 2-element BenchmarkTools.BenchmarkGroup:
-: 	  tags: []
-: 	  "evaluation" => Trial(29.706 μs)
-: 	  "Turing.Essential.ForwardDiffAD{40, true}()" => Trial(116.476 μs)
-:   "not_linked" => 2-element BenchmarkTools.BenchmarkGroup:
-: 	  tags: []
-: 	  "evaluation" => Trial(30.364 μs)
-: 	  "Turing.Essential.ForwardDiffAD{40, true}()" => Trial(139.420 μs)
+#+begin_example
+2-element BenchmarkTools.BenchmarkGroup:
+  tags: []
+  "linked" => 4-element BenchmarkTools.BenchmarkGroup:
+	  tags: []
+	  "Turing.Essential.ReverseDiffAD{false}()" => Trial(355.822 μs)
+	  "evaluation" => Trial(24.767 μs)
+	  "Turing.Essential.ForwardDiffAD{40, true}()" => Trial(58.919 μs)
+	  "Turing.Essential.ZygoteAD()" => Trial(1.960 ms)
+  "not_linked" => 4-element BenchmarkTools.BenchmarkGroup:
+	  tags: []
+	  "Turing.Essential.ReverseDiffAD{false}()" => Trial(385.950 μs)
+	  "evaluation" => Trial(24.704 μs)
+	  "Turing.Essential.ForwardDiffAD{40, true}()" => Trial(66.128 μs)
+	  "Turing.Essential.ZygoteAD()" => Trial(1.985 ms)
+#+end_example
+
+** More data
+
+#+begin_src julia 
+# NOTE: We now use 10 000 days instead of just 14.
+model_fake = epidemic_model(SIRProblem(N; tspan=(0, 10_000)), prior_improved);
+#+end_src
+
+#+RESULTS:
+
+#+begin_src julia 
+res = rand(model_fake)
+model_fake_conditioned = model_fake | (in_bed = res.in_bed,);
+#+end_src
+
+#+RESULTS:
+
+#+begin_src julia 
+model_fake_conditioned().infected
+#+end_src
+
+#+RESULTS:
+#+begin_example
+10000-element Vector{Float64}:
+   3.4591065706011754
+  11.823855240804278
+  38.846712816915314
+ 113.22621417215724
+ 249.00423432194611
+ 363.2836760043962
+ 379.9524732308858
+ 334.3214462120579
+ 272.7293663300036
+ 215.20475420317462
+ 167.1209021303059
+ 128.69305226586874
+  98.63230523728232
+   ⋮
+  -5.599481956029313e-16
+  -5.217777806853145e-16
+  -4.835930010286005e-16
+  -4.453938566328089e-16
+  -4.071803474979301e-16
+  -3.6895247362396395e-16
+  -3.3071023501090054e-16
+  -2.9245363165872987e-16
+  -2.5418266356750175e-16
+  -2.1589733073717632e-16
+  -1.7759763316777352e-16
+  -1.3928357085927344e-16
+#+end_example
+
+#+begin_src julia 
+suite = TuringBenchmarking.make_turing_suite(
+    model_fake_conditioned;
+    adbackends=[
+        TuringBenchmarking.ForwardDiffAD{40,true}(),
+        TuringBenchmarking.ReverseDiffAD{false}(),
+        TuringBenchmarking.ZygoteAD()
+    ]
+);
+run(suite)
+#+end_src
+
+#+RESULTS:
+#+begin_example
+2-element BenchmarkTools.BenchmarkGroup:
+  tags: []
+  "linked" => 4-element BenchmarkTools.BenchmarkGroup:
+	  tags: []
+	  "Turing.Essential.ReverseDiffAD{false}()" => Trial(31.085 ms)
+	  "evaluation" => Trial(1.671 ms)
+	  "Turing.Essential.ForwardDiffAD{40, true}()" => Trial(3.157 ms)
+	  "Turing.Essential.ZygoteAD()" => Trial(22.828 ms)
+  "not_linked" => 4-element BenchmarkTools.BenchmarkGroup:
+	  tags: []
+	  "Turing.Essential.ReverseDiffAD{false}()" => Trial(30.813 ms)
+	  "evaluation" => Trial(1.672 ms)
+	  "Turing.Essential.ForwardDiffAD{40, true}()" => Trial(3.003 ms)
+	  "Turing.Essential.ZygoteAD()" => Trial(22.511 ms)
+#+end_example
 
 ** Model v2
 #+begin_src julia
@@ -2582,6 +2723,8 @@ using SciMLSensitivity
 using TuringBenchmarking
 #+end_src
 
+#+RESULTS:
+
 #+begin_src julia
 suite = TuringBenchmarking.make_turing_suite(
     model_conditioned;
@@ -2593,16 +2736,14 @@ run(suite)
 #+end_src
 
 #+RESULTS:
-: 2-element BenchmarkTools.BenchmarkGroup:
-:   tags: []
-:   "linked" => 2-element BenchmarkTools.BenchmarkGroup:
-: 	  tags: []
-: 	  "evaluation" => Trial(27.966 μs)
-: 	  "Turing.Essential.ForwardDiffAD{40, true}()" => Trial(114.943 μs)
-:   "not_linked" => 2-element BenchmarkTools.BenchmarkGroup:
-: 	  tags: []
-: 	  "evaluation" => Trial(29.664 μs)
-: 	  "Turing.Essential.ForwardDiffAD{40, true}()" => Trial(136.706 μs)
+:RESULTS:
+# [goto error]
+: UndefVarError: model_conditioned not defined
+: 
+: Stacktrace:
+:  [1] top-level scope
+:    @ In[102]:1
+:END:
 
 #+begin_src julia
 suite = TuringBenchmarking.make_turing_suite(
@@ -2619,14 +2760,35 @@ run(suite)
 :   tags: []
 :   "linked" => 2-element BenchmarkTools.BenchmarkGroup:
 : 	  tags: []
-: 	  "evaluation" => Trial(19.393 μs)
-: 	  "Turing.Essential.ForwardDiffAD{40, true}()" => Trial(95.070 μs)
+: 	  "evaluation" => Trial(22.184 μs)
+: 	  "Turing.Essential.ForwardDiffAD{40, true}()" => Trial(105.255 μs)
 :   "not_linked" => 2-element BenchmarkTools.BenchmarkGroup:
 : 	  tags: []
-: 	  "evaluation" => Trial(19.801 μs)
-: 	  "Turing.Essential.ForwardDiffAD{40, true}()" => Trial(122.377 μs)
+: 	  "evaluation" => Trial(21.940 μs)
+: 	  "Turing.Essential.ForwardDiffAD{40, true}()" => Trial(122.538 μs)
 
 Here it doesn't make much of a difference because we're working with so few observations, but indeed =model_v2= is somewhat faster than =model= for both evaluation and gradient computation (using =ForwardDiff=).
+
+* TODO Use-case: COVID modeling
+
+#+begin_src julia :eval no
+    # GP-model for R-value.
+    @submodel R = SpatioTemporalGP(K_spatial, K_local, K_time, T; σ_spatial, σ_local, ρ_spatial, ρ_time)
+
+    # Latent infections.
+    @submodel X = RegionalFluxWithoutCond(
+        F_id, F_in, F_out,
+        W, R,
+        X_cond_means,
+        populations,
+        T;
+        days_per_step, σ_ξ
+    )
+
+    # Likelihood.
+    @submodel logitπ = DebiasedLikelihood(logitπ, σ_debias, populations, X, D, num_cond, observation_projection, T; skip_weeks_observe)
+#+end_src
+
 
 * TODO Showing off
 ** =Gibbs=
@@ -2652,16 +2814,6 @@ true_vals = rand(lin_reg)
 lin_reg_conditioned = lin_reg | (y = true_vals.y,)
 #+end_src
 
-#+RESULTS:
-: Model(
-:   args = (:X,)
-:   defaults = ()
-:   context = ConditionContext(
-:     (y = [0.3242032989648078, 1.0927828698345088, -0.7332477681370562, -5.062789065066403, -0.5510236918192273, 3.849292275620334, -3.1453844688196386, -1.0761023645067103, -0.35920155367909423, 1.1632762258546507  …  1.557561970476609, 3.575676520486435, 0.07694907753939595, -2.102027398588007, -8.469490043524004, 3.4605534596978993, 4.7196306430050665, -1.7976651698542838, -0.6009882061621101, 1.397842282973244],),
-:     DynamicPPL.DefaultContext()
-:   )
-: )
-
 #+REVEAL: split
 
 Can of course just use =HMC= on it
@@ -2675,12 +2827,12 @@ MCMCChains.ess_rhat(chain_hmc)
 :RESULTS:
 : [32mSampling: 100%|█████████████████████████████████████████| Time: 0:00:02[39m
 : ESS
-:  [1m parameters [0m [1m      ess [0m [1m    rhat [0m [1m ess_per_sec [0m
-:  [90m     Symbol [0m [90m  Float64 [0m [90m Float64 [0m [90m     Float64 [0m
+:  [1m parameters [0m [1m       ess [0m [1m    rhat [0m [1m ess_per_sec [0m
+:  [90m     Symbol [0m [90m   Float64 [0m [90m Float64 [0m [90m     Float64 [0m
 : 
-:         β[1]   433.7061    1.0007      155.9533
-:         β[2]   434.2894    1.0014      156.1630
-:           σ²   749.5058    1.0003      269.5095
+:         β[1]   3000.0000    0.9992      428.9391
+:         β[2]   3000.0000    0.9992      428.9391
+:           σ²    834.7326    1.0001      119.3498
 : 
 :END:
 
@@ -2693,32 +2845,183 @@ MCMCChains.ess_rhat(chain_ess_hmc)
 
 #+RESULTS:
 :RESULTS:
-: Sampling: 100%|█████████████████████████████████████████| Time: 0:00:02
+: [32mSampling: 100%|█████████████████████████████████████████| Time: 0:00:02[39m
 : ESS
-:   parameters        ess      rhat   ess_per_sec 
-:       Symbol    Float64   Float64       Float64 
+:  [1m parameters [0m [1m       ess [0m [1m    rhat [0m [1m ess_per_sec [0m
+:  [90m     Symbol [0m [90m   Float64 [0m [90m Float64 [0m [90m     Float64 [0m
 : 
-:         β[1]    68.1919    1.0140       32.6433
-:         β[2]   170.8266    1.0017       81.7744
-:           σ²   156.3485    1.0043       74.8437
+:         β[1]    402.6994    1.0008       52.7577
+:         β[2]   1018.7260    0.9992      133.4634
+:           σ²    400.4298    1.0018       52.4603
 : 
 :END:
 
 This is much improved (depending on which random seed you're using)!
 
-* Concluding remarks
-** TODO Julia: The Good, the Bad, and the Ugly
+* Julia: The Good, the Bad, and the Ugly
 
-An honest take from a little Norwegian boy
+An honest take from a little 27-year old Norwegian boy
 
 *** The Good
 - Speed
 - Composability (thank you multiple dispatch)
 - No need to tie yourself to an underlying computational framework (looking at you Python)
 - Interactive
-- /Transparency/
+- Transparency
 
-Most of these you have already, but the transparency is maybe not something we've seen too much of
+*** Speed
+
+I think you got this already...
+
+*** Composability
+
+We've seen some of that
+
+Defining =infected(problem_wrapper, u)= allowed us to abstract away how to extract the compartment of interest
+
+*** Transparency
+
+For starters, almost all the code you'll end up using is pure Julia
+
+Hence, you can always look at the code
+
+You can find the implementation by using =@which=
+
+#+begin_src julia 
+# Without arguments
+@which sum
+#+end_src
+
+#+RESULTS:
+: Base
+
+#+begin_src julia :display text/plain
+# With arguments
+@which sum([1.0])
+#+end_src
+
+#+RESULTS:
+: sum(a::AbstractArray; dims, kw...) in Base at reducedim.jl:994
+
+#+REVEAL: split
+
+And yeah, you can even look into the macros
+
+#+HTML: <div class="small-text">
+
+#+begin_src julia 
+@macroexpand @model f() = x ~ Normal()
+#+end_src
+
+#+RESULTS:
+#+begin_example
+quote
+    function f(__model__::DynamicPPL.Model, __varinfo__::DynamicPPL.AbstractVarInfo, __context__::AbstractPPL.AbstractContext; )
+        #= In[116]:1 =#
+        begin
+            var"##dist#874" = Normal()
+            var"##vn#871" = (DynamicPPL.resolve_varnames)((AbstractPPL.VarName){:x}(), var"##dist#874")
+            var"##isassumption#872" = begin
+                    if (DynamicPPL.contextual_isassumption)(__context__, var"##vn#871")
+                        if !((DynamicPPL.inargnames)(var"##vn#871", __model__)) || (DynamicPPL.inmissings)(var"##vn#871", __model__)
+                            true
+                        else
+                            x === missing
+                        end
+                    else
+                        false
+                    end
+                end
+            begin
+                #= /home/tor/.julia/packages/DynamicPPL/WBmMU/src/compiler.jl:539 =#
+                var"##retval#876" = if var"##isassumption#872"
+                        begin
+                            (var"##value#875", __varinfo__) = (DynamicPPL.tilde_assume!!)(__context__, (DynamicPPL.unwrap_right_vn)((DynamicPPL.check_tilde_rhs)(var"##dist#874"), var"##vn#871")..., __varinfo__)
+                            x = var"##value#875"
+                            var"##value#875"
+                        end
+                    else
+                        if !((DynamicPPL.inargnames)(var"##vn#871", __model__))
+                            x = (DynamicPPL.getvalue_nested)(__context__, var"##vn#871")
+                        end
+                        (var"##value#873", __varinfo__) = (DynamicPPL.tilde_observe!!)(__context__, (DynamicPPL.check_tilde_rhs)(var"##dist#874"), x, var"##vn#871", __varinfo__)
+                        var"##value#873"
+                    end
+                #= /home/tor/.julia/packages/DynamicPPL/WBmMU/src/compiler.jl:540 =#
+                return (var"##retval#876", __varinfo__)
+            end
+        end
+    end
+    begin
+        $(Expr(:meta, :doc))
+        function f(; )
+            #= In[116]:1 =#
+            return (DynamicPPL.Model)(f, NamedTuple(), NamedTuple())
+        end
+    end
+end
+#+end_example
+
+#+HTML: </div>
+
+#+REVEAL: split
+
+I told you didn't want to see that.
+
+Can make it /a bit/ cleaner by removing linenums:
+
+#+HTML: <div class="x-small-text">
+
+#+begin_src julia 
+@macroexpand(@model f() = x ~ Normal()) |> Base.remove_linenums!
+#+end_src
+
+#+RESULTS:
+#+begin_example
+quote
+    function f(__model__::DynamicPPL.Model, __varinfo__::DynamicPPL.AbstractVarInfo, __context__::AbstractPPL.AbstractContext; )
+        begin
+            var"##dist#892" = Normal()
+            var"##vn#889" = (DynamicPPL.resolve_varnames)((AbstractPPL.VarName){:x}(), var"##dist#892")
+            var"##isassumption#890" = begin
+                    if (DynamicPPL.contextual_isassumption)(__context__, var"##vn#889")
+                        if !((DynamicPPL.inargnames)(var"##vn#889", __model__)) || (DynamicPPL.inmissings)(var"##vn#889", __model__)
+                            true
+                        else
+                            x === missing
+                        end
+                    else
+                        false
+                    end
+                end
+            begin
+                var"##retval#894" = if var"##isassumption#890"
+                        begin
+                            (var"##value#893", __varinfo__) = (DynamicPPL.tilde_assume!!)(__context__, (DynamicPPL.unwrap_right_vn)((DynamicPPL.check_tilde_rhs)(var"##dist#892"), var"##vn#889")..., __varinfo__)
+                            x = var"##value#893"
+                            var"##value#893"
+                        end
+                    else
+                        if !((DynamicPPL.inargnames)(var"##vn#889", __model__))
+                            x = (DynamicPPL.getvalue_nested)(__context__, var"##vn#889")
+                        end
+                        (var"##value#891", __varinfo__) = (DynamicPPL.tilde_observe!!)(__context__, (DynamicPPL.check_tilde_rhs)(var"##dist#892"), x, var"##vn#889", __varinfo__)
+                        var"##value#891"
+                    end
+                return (var"##retval#894", __varinfo__)
+            end
+        end
+    end
+    begin
+        $(Expr(:meta, :doc))
+        function f(; )
+            return (DynamicPPL.Model)(f, NamedTuple(), NamedTuple())
+        end
+    end
+end
+#+end_example
+
+#+HTML: </div>
 
 #+REVEAL: split
 
@@ -2729,15 +3032,6 @@ f(x) = 2x
 #+RESULTS:
 : f (generic function with 1 method)
 
-#+begin_src julia
-f(1)
-#+end_src
-
-#+RESULTS:
-: 2
-
-#+REVEAL: split
-
 You can inspect the type-inferred and lowered code
 
 #+begin_src julia
@@ -2746,8 +3040,8 @@ You can inspect the type-inferred and lowered code
 
 #+RESULTS:
 : CodeInfo(
-: [90m1 ─[39m %1 = Base.mul_int(2, x)[36m::Int64[39m
-: [90m└──[39m      return %1
+: 1 ─ %1 = Base.mul_int(2, x)::Int64
+: └──      return %1
 : ) => Int64
 
 #+REVEAL: split
@@ -2759,14 +3053,14 @@ You can inspect the LLVM code
 #+end_src
 
 #+RESULTS:
-: [90m;  @ In[2]:1 within `f`[39m
-: [95mdefine[39m [36mi64[39m [93m@julia_f_2659[39m[33m([39m[36mi64[39m [95msignext[39m [0m%0[33m)[39m [0m#0 [33m{[39m
-: [91mtop:[39m
-: [90m; ┌ @ int.jl:88 within `*`[39m
-:    [0m%1 [0m= [96m[1mshl[22m[39m [36mi64[39m [0m%0[0m, [33m1[39m
-: [90m; └[39m
-:   [96m[1mret[22m[39m [36mi64[39m [0m%1
-: [33m}[39m
+: ;  @ In[120]:1 within `f`
+: define i64 @julia_f_27231(i64 signext %0) #0 {
+: top:
+: ; ┌ @ int.jl:88 within `*`
+:    %1 = shl i64 %0, 1
+: ; └
+:   ret i64 %1
+: }
 
 #+REVEAL: split
 
@@ -2780,11 +3074,11 @@ And even the resulting machine code
 #+begin_example
 	.text
 	.file	"f"
-	.globl	julia_f_2696                    # -- Begin function julia_f_2696
+	.globl	julia_f_27233                   # -- Begin function julia_f_27233
 	.p2align	4, 0x90
-	.type	julia_f_2696,@function
-julia_f_2696:                           # @julia_f_2696
-; ┌ @ In[2]:1 within `f`
+	.type	julia_f_27233,@function
+julia_f_27233:                          # @julia_f_27233
+; ┌ @ In[120]:1 within `f`
 	.cfi_startproc
 # %bb.0:                                # %top
 ; │┌ @ int.jl:88 within `*`
@@ -2792,7 +3086,7 @@ julia_f_2696:                           # @julia_f_2696
 ; │└
 	retq
 .Lfunc_end0:
-	.size	julia_f_2696, .Lfunc_end0-julia_f_2696
+	.size	julia_f_27233, .Lfunc_end0-julia_f_27233
 	.cfi_endproc
 ; └
                                         # -- End function
@@ -2802,13 +3096,497 @@ julia_f_2696:                           # @julia_f_2696
 It really just depends on which level of "I hate my life" you're currently at
 
 *** The Bad
+Sometimes
+- your code might just slow down without a seemingly good reason,
+- someone did bad, and Julia can't tell which method to call, or
+- someone forces the Julia compiler to compile insane amounts of code
+
+*** "Why is my code suddenly slow?"
+
+One word: *type-instability*
+
+Sometimes the Julia compiler can't quite infer what types fully
+
+#+HTML: <div class="fragment (appear)">
+
+*Result:* python-like performance (for those particular function calls)
+
+#+begin_src julia 
+# NOTE: this is NOT `const`, and so it could become some other type
+# at any given point without `my_func` knowing about it!
+global_variable = 1
+my_func_unstable(x) = global_variable * x
+#+end_src
+
+#+RESULTS:
+: my_func_unstable (generic function with 1 method)
+
+#+begin_src julia 
+@btime my_func_unstable(2.0);
+#+end_src
+
+#+RESULTS:
+:   22.063 ns (2 allocations: 32 bytes)
+
+#+HTML: </div>
+
+#+REVEAL: split
+
+Luckily there are tools for inspecting this
+
+#+begin_src julia 
+@code_warntype my_func_unstable(2.0)
+#+end_src
+
+#+RESULTS:
+: MethodInstance for my_func_unstable(::Float64)
+:   from my_func_unstable(x) in Main at In[132]:4
+: Arguments
+:   #self#::Core.Const(my_func_unstable)
+:   x::Float64
+: Body::Any
+: 1 ─ %1 = (Main.global_variable * x)::Any
+: └──      return %1
+: 
+
+See that =Any= there? _'tis a big no-no!_
+
+#+REVEAL: split
+
+Once discovered, it can be fixed
+
+#+begin_src julia 
+const constant_global_variable = 1
+my_func_fixed(x) = constant_global_variable * x
+@code_warntype my_func_fixed(2.0)
+#+end_src
+
+#+RESULTS:
+: MethodInstance for my_func_fixed(::Float64)
+:   from my_func_fixed(x) in Main at In[130]:2
+: Arguments
+:   #self#::Core.Const(my_func_fixed)
+:   x::Float64
+: Body::Float64
+: 1 ─ %1 = (Main.constant_global_variable * x)::Float64
+: └──      return %1
+: 
+
+So long Python performance!
+
+#+begin_src julia 
+@btime my_func_fixed(2.0);
+#+end_src
+
+#+RESULTS:
+:   1.493 ns (0 allocations: 0 bytes)
+
+
+#+REVEAL: split
+
+/But/ this is not always so easy to discover (though this is generally rare)
+
+#+begin_src julia 
+# HACK: Here we explicitly tell Julia what type `my_func_unstable`
+# returns. This is _very_ rarely a good idea because it just hides
+# the underlying problem from `@code_warntype`!
+my_func_forced(x) = my_func_unstable(x)::typeof(x)
+@code_warntype my_func_forced(2.0)
+#+end_src
+
+#+RESULTS:
+#+begin_example
+MethodInstance for my_func_forced(::Float64)
+  from my_func_forced(x) in Main at In[135]:4
+Arguments
+  #self#::Core.Const(my_func_forced)
+  x::Float64
+Body::Float64
+1 ─ %1 = Main.my_func_unstable(x)::Any
+│   %2 = Main.typeof(x)::Core.Const(Float64)
+│   %3 = Core.typeassert(%1, %2)::Float64
+└──      return %3
+#+end_example
+
+We can still see the =Any= in there, but on a first glance it looks like =my_func_forced= is type-stable
+
+There are more natural cases where this might occur, e.g. unfortunate closures deep in your callstack
+
+#+REVEAL: split
+
+To discovery these there are a couple of more advanced tools:
+- [[https://github.com/JuliaDebug/Cthulhu.jl][Cthulhu.jl]]: Allows you to step through your code like a debugger and perform =@code_warntype=
+- [[https://github.com/aviatesk/JET.jl][JET.jl]]: Experimental package which attempts to automate the process
+
+And even simpler: profile using [[https://github.com/timholy/ProfileView.jl][ProfileView.jl]] and look for code-paths that /should/ be fast but take up a lot of the runtime
+
+#+REVEAL: split
+
+#+begin_src julia 
+using ProfileView
+#+end_src
+
+#+RESULTS:
+
+#+begin_src julia :eval no
+@profview foreach(_ -> my_func_unstable(2.0), 1_000_000)
+#+end_src
+
+#+DOWNLOADED: file:///tmp/Spectacle.wcviMK/Screenshot_20230125_011603.png @ 2023-01-25 01:16:13
+#+ATTR_HTML: :height 350px
+#+ATTR_ORG: :width 600
+[[file:.notes/attachments/Julia:_The_Good,_the_Bad,_and_the_Ugly/2023-01-25_01-16-13_Screenshot_20230125_011603.png]]
+
+Note that there's no sign of multiplication here
+
+But most of the runtime is the =./reflection.jl= at the top there
+
+That's Julia looking up the type at runtime
+
+*** Method ambiguity
+#+begin_src julia 
+ambiguous_function(x, y::Int) = y
+ambiguous_function(x::Int, y) = x
+
+# NOTE: Here we have `ambiguous_function(x::Int, y::Int)`
+# Which one should we hit?!
+ambiguous_function(1, 2)
+#+end_src
+
+#+RESULTS:
+:RESULTS:
+# [goto error]
+: MethodError: ambiguous_function(::Int64, ::Int64) is ambiguous. Candidates:
+:   ambiguous_function(x, y::Int64) in Main at In[137]:1
+:   ambiguous_function(x::Int64, y) in Main at In[137]:2
+: Possible fix, define
+:   ambiguous_function(::Int64, ::Int64)
+: 
+: Stacktrace:
+:  [1] top-level scope
+:    @ In[137]:6
+:END:
+
+But here Julia warns us, and so we can fix this by just doing as it says: define =ambiguous_function(::Int64, ::Int64)=
+
+#+begin_src julia 
+ambiguous_function(::Int64, ::Int64) = "neato"
+ambiguous_function(1, 2)
+#+end_src
+
+#+RESULTS:
+: "neato"
+
+*** Long compilation times
+In Julia, for better or worse, we can generate code
+
+*Problem:* it can be /lots/ of code of we really want to
+
+*Result:* first execution can be /slow/
+
+#+HTML: <div class="fragment (appear)">
+
+*Time to first plot (TTFP)* is Julia's worst enemy
+
+But things are always improving
+
+#+DOWNLOADED: file:///tmp/Spectacle.wcviMK/Screenshot_20230125_012853.png @ 2023-01-25 01:29:05
+[[file:.notes/attachments/Julia:_The_Good,_the_Bad,_and_the_Ugly/2023-01-25_01-29-05_Screenshot_20230125_012853.png]]
+
+#+HTML: </div>
+
+*** Another example: mis-use of =@generated=
+
+#+begin_src julia 
+# NOTE: `@generated` only has access to static information, e.g. types of arguments.
+# Here I'm using the special type `Val` to make a number `N` static.
+@generated function unrolled_addition(::Val{N}) where {N}
+    expr = Expr(:block)
+    push!(expr.args, :(x = 0))
+    for i = 1:N
+        push!(expr.args, :(x += $(3.14 * i)))
+    end
+
+    return expr
+end
+#+end_src
+
+#+RESULTS:
+: unrolled_addition (generic function with 2 methods)
+
+When I call this with some =Val(N)=, Julia will execute this /at compile-time/!
+
+#+begin_src julia 
+# NOTE: At runtime, it then just returns the result immediately
+@code_typed unrolled_addition(Val(10))
+#+end_src
+
+#+RESULTS:
+: CodeInfo(
+: 1 ─     return 172.70000000000002
+: ) => Float64
+
+But if I just change the value =10= to =11=, it's a /completely/ different type!
+
+#+REVEAL: split
+
+So Julia has to compile =unrolled_addition= from scratch
+
+#+begin_src julia 
+@time @eval unrolled_addition(Val(11));
+#+end_src
+
+#+RESULTS:
+:   0.000864 seconds (1.74 k allocations: 87.812 KiB, 78.38% compilation time)
+
+Or a bit crazier
+
+#+begin_src julia 
+@time @eval unrolled_addition(Val(10_001));
+#+end_src
+
+#+RESULTS:
+:   0.234423 seconds (1.19 M allocations: 48.918 MiB, 99.92% compilation time)
+
+Here it took ~0.4s, of which 99.95% was compilation time
+
+I think you get the idea
+
+#+REVEAL: split
+
+But boy is it fast to run!
+
+#+begin_src julia 
+@btime unrolled_addition(Val(10_001));
+#+end_src
+
+#+RESULTS:
+:   1.492 ns (0 allocations: 0 bytes)
+
+#+begin_src julia 
+function not_unrolled_addition(N)
+    x = 0
+    for i = 1:N
+        x += 3.14 * i
+    end
+
+    return x
+end
+#+end_src
+
+#+RESULTS:
+: not_unrolled_addition (generic function with 1 method)
+
+#+begin_src julia 
+@btime not_unrolled_addition(10_001);
+#+end_src
+
+#+RESULTS:
+:   9.777 μs (0 allocations: 0 bytes)
+
+#+REVEAL: split
+
+*Funny side-note:* at first I did the following
+
+#+begin_src julia 
+@generated function unrolled_addition_old(::Val{N}) where {N}
+    expr = Expr(:block)
+    push!(expr.args, :(x = 0))
+    for i = 1:N
+        push!(expr.args, :(x += $i))  # NOTE: No 3.14!
+    end
+    return expr
+end
+function not_unrolled_addition_old(N)
+    x = 0
+    for i = 1:N
+        x += i  # NOTE: No 3.14!
+    end
+    return x
+end
+#+end_src
+
+#+RESULTS:
+: not_unrolled_addition_old (generic function with 1 method)
+
+#+begin_src julia 
+@btime unrolled_addition_old(Val(10_001));
+@btime not_unrolled_addition_old(10_001);
+#+end_src
+
+#+RESULTS:
+:   1.508 ns (0 allocations: 0 bytes)
+:   2.335 ns (0 allocations: 0 bytes)
+
+LLVM probably recognized the pattern of =not_unrolled_addition_old= and unrolls it for us
+
+Let's check!
+
+#+REVEAL: split
+
+#+begin_src julia 
+# NOTE: The one LLVM failed to unroll
+@code_llvm not_unrolled_addition(10_001)
+#+end_src
+
+#+RESULTS:
+#+begin_example
+;  @ In[182]:1 within `not_unrolled_addition`
+define { {}*, i8 } @julia_not_unrolled_addition_29862([8 x i8]* noalias nocapture align 8 dereferenceable(8) %0, i64 signext %1) #0 {
+top:
+;  @ In[182]:3 within `not_unrolled_addition`
+; ┌ @ range.jl:5 within `Colon`
+; │┌ @ range.jl:393 within `UnitRange`
+; ││┌ @ range.jl:400 within `unitrange_last`
+     %.inv = icmp sgt i64 %1, 0
+     %. = select i1 %.inv, i64 %1, i64 0
+; └└└
+  br i1 %.inv, label %L18.preheader, label %union_move16
+
+L18.preheader:                                    ; preds = %top
+;  @ In[182]:5 within `not_unrolled_addition`
+; ┌ @ range.jl:883 within `iterate`
+; │┌ @ promotion.jl:477 within `==`
+    %.not30 = icmp eq i64 %., 1
+; └└
+  br i1 %.not30, label %union_move, label %L51
+
+L51:                                              ; preds = %L51, %L18.preheader
+  %value_phi1032 = phi double [ %value_phi10, %L51 ], [ 3.140000e+00, %L18.preheader ]
+  %value_phi431 = phi i64 [ %2, %L51 ], [ 1, %L18.preheader ]
+; ┌ @ range.jl:883 within `iterate`
+   %2 = add i64 %value_phi431, 1
+; └
+;  @ In[182]:4 within `not_unrolled_addition`
+; ┌ @ promotion.jl:389 within `*`
+; │┌ @ promotion.jl:359 within `promote`
+; ││┌ @ promotion.jl:336 within `_promote`
+; │││┌ @ number.jl:7 within `convert`
+; ││││┌ @ float.jl:146 within `Float64`
+       %3 = sitofp i64 %2 to double
+; │└└└└
+; │ @ promotion.jl:389 within `*` @ float.jl:385
+   %4 = fmul double %3, 3.140000e+00
+; └
+;  @ In[182] within `not_unrolled_addition`
+  %value_phi10 = fadd double %value_phi1032, %4
+;  @ In[182]:5 within `not_unrolled_addition`
+; ┌ @ range.jl:883 within `iterate`
+; │┌ @ promotion.jl:477 within `==`
+    %.not = icmp eq i64 %2, %.
+; └└
+  br i1 %.not, label %L18.union_move_crit_edge, label %L51
+
+post_union_move:                                  ; preds = %union_move16, %union_move
+  %tindex_phi1429 = phi i8 [ 2, %union_move16 ], [ 1, %union_move ]
+;  @ In[182]:7 within `not_unrolled_addition`
+  %5 = insertvalue { {}*, i8 } { {}* null, i8 undef }, i8 %tindex_phi1429, 1
+  ret { {}*, i8 } %5
+
+L18.union_move_crit_edge:                         ; preds = %L51
+;  @ In[182]:5 within `not_unrolled_addition`
+  %phi.cast = bitcast double %value_phi10 to i64
+  br label %union_move
+
+union_move:                                       ; preds = %L18.union_move_crit_edge, %L18.preheader
+  %value_phi10.lcssa = phi i64 [ %phi.cast, %L18.union_move_crit_edge ], [ 4614253070214989087, %L18.preheader ]
+;  @ In[182]:7 within `not_unrolled_addition`
+  %6 = bitcast [8 x i8]* %0 to i64*
+  store i64 %value_phi10.lcssa, i64* %6, align 8
+  br label %post_union_move
+
+union_move16:                                     ; preds = %top
+  %7 = bitcast [8 x i8]* %0 to i64*
+  store i64 0, i64* %7, align 8
+  br label %post_union_move
+}
+#+end_example
+
+#+REVEAL: split
+
+#+begin_src julia 
+# NOTE: The one LLVM seems to have unrolled.
+@code_llvm not_unrolled_addition_old(10_001)
+#+end_src
+
+#+RESULTS:
+#+begin_example
+;  @ In[184]:11 within `not_unrolled_addition_old`
+define i64 @julia_not_unrolled_addition_old_29860(i64 signext %0) #0 {
+top:
+;  @ In[184]:13 within `not_unrolled_addition_old`
+; ┌ @ range.jl:5 within `Colon`
+; │┌ @ range.jl:393 within `UnitRange`
+; ││┌ @ range.jl:400 within `unitrange_last`
+     %.inv = icmp sgt i64 %0, 0
+     %. = select i1 %.inv, i64 %0, i64 0
+; └└└
+  br i1 %.inv, label %L18.preheader, label %L35
+
+L18.preheader:                                    ; preds = %top
+;  @ In[184]:15 within `not_unrolled_addition_old`
+  %1 = shl nuw i64 %., 1
+  %2 = add nsw i64 %., -1
+  %3 = zext i64 %2 to i65
+  %4 = add nsw i64 %., -2
+  %5 = zext i64 %4 to i65
+  %6 = mul i65 %3, %5
+  %7 = lshr i65 %6, 1
+  %8 = trunc i65 %7 to i64
+  %9 = add i64 %1, %8
+  %10 = add i64 %9, -1
+;  @ In[184]:17 within `not_unrolled_addition_old`
+  br label %L35
+
+L35:                                              ; preds = %L18.preheader, %top
+  %value_phi10 = phi i64 [ 0, %top ], [ %10, %L18.preheader ]
+  ret i64 %value_phi10
+}
+#+end_example
 
 *** The Ugly
 
+#+REVEAL: split
+
+_*Reverse-mode automatic differentiation*_
+
+ForwardDiff.jl is a pure joy, but slows down as dimensionality grows
+
+Then one should reach for ReverseDiff.jl or Zygote.jl
+
+#+HTML: <div class="fragment (appear)">
+Most of the time it works really well, but sometimes you hit a real sharp edge
+
+And sharp edges cut; they cut /deep/
+
+Like _"16X slower when the function is implemented more efficiently"-deep_
+
+#+DOWNLOADED: file:///tmp/Spectacle.wcviMK/Screenshot_20230125_010111.png @ 2023-01-25 01:01:31
+[[file:.notes/attachments/Julia:_The_Good,_the_Bad,_and_the_Ugly/2023-01-25_01-01-31_Screenshot_20230125_010111.png]]
+
+#+HTML: </div>
+
+#+HTML: <div class="fragment (appear)">
+
+If you want to see a man in pain, you can find the full issue [[https://github.com/TuringLang/Turing.jl/issues/1934][here]]
+
+On the flip-side, once addressed (a type-instability), it's [[https://github.com/TuringLang/DistributionsAD.jl/pull/231][3X faster than before]]
+
+#+HTML: </div>
+
 *** Overall
 
-* Resources
-- https://mc-stan.org/users/documentation/case-studies/boarding_school_case_study.html
+Julia is pretty darn awesome
+
+Easy to get going, and you can always make it faster by just optimizing your Julia code
+
+No need to drop down to C++
+
+#+REVEAL: split
+Buuuut it can't beat Python at deep learning
+
+#+REVEAL: split
+Otherwise, it's worth a try
 
 * Debugging                                                        :noexport:
 - [[/home/tor/.julia/packages/SciMLSensitivity/DSyJO/src/reversediff.jl::67]]
