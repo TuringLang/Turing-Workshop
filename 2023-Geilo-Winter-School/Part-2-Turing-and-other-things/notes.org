@@ -356,11 +356,11 @@ using StatsPlots
 
 Suppose we have some function $f$ which describes how a state $x$ evolves wrt. $t$
 \begin{equation*}
-\dv{x}{t} = f(x, t)
+\frac{\mathrm{d} x}{\mathrm{d} t} = f(x, t)
 \end{equation*}
 which we then need to integrate to obtain the actual state at some time $t$
 \begin{equation*}
-x(t) = \int_{0}^{t} \dv{x}{t} \dd{t} = \int_{0}^{t} f(x, t) \dd{t}
+x(t) = \int_{0}^{t} \frac{\mathrm{d} x}{\mathrm{d} t} \mathrm{t} = \int_{0}^{t} f(x, t) \mathrm{t}
 \end{equation*}
 
 In many interesting scenarios numerical methods are required to obtain $x(t)$
@@ -395,9 +395,9 @@ One particular example of an (ordinary) differential equation that you might hav
 The temporal dynamics of the sizes of each of the compartments are governed by the following system of ODEs:
 \begin{equation*}
 \begin{split}
-  \dv{S}{t} &= - \beta S \frac{I}{N} \\
-  \dv{I}{t} &= \beta S \frac{I}{N} - \gamma I \\
-  \dv{R}{t} &= \gamma I
+  \frac{\mathrm{d} S}{\mathrm{d} t} &= - \beta S \frac{I}{N} \\
+  \frac{\mathrm{d} I}{\mathrm{d} t} &= \beta S \frac{I}{N} - \gamma I \\
+  \frac{\mathrm{d} R}{\mathrm{d} t} &= \gamma I
 \end{split}
 \end{equation*}
 where
@@ -718,10 +718,10 @@ Now we're going to add another compartment to our SIR model: the /(E)xposed/ sta
 
 \begin{equation*}
 \begin{split}
-  \dv{S}{t} &= - \beta S \frac{I}{N} \\
-  \dv{E}{t} &= \frac{\beta I S}{N} - \sigma E \\
-  \dv{I}{t} &= \sigma E - \gamma I \\
-  \dv{R}{t} &= \gamma I
+  \frac{\mathrm{d} S}{\mathrm{d} t} &= - \beta S \frac{I}{N} \\
+  \frac{\mathrm{d} E}{\mathrm{d} t} &= \frac{\beta I S}{N} - \sigma E \\
+  \frac{\mathrm{d} I}{\mathrm{d} t} &= \sigma E - \gamma I \\
+  \frac{\mathrm{d} R}{\mathrm{d} t} &= \gamma I
 \end{split}
 \end{equation*}
 
@@ -1582,9 +1582,9 @@ Here's the SIR model
 
 \begin{equation*}
 \begin{split}
-  \dv{S}{t} &= - \beta S \frac{I}{N} \\
-  \dv{I}{t} &= \beta S \frac{I}{N} - \gamma I \\
-  \dv{R}{t} &= \gamma I
+  \frac{\mathrm{d} S}{\mathrm{d} t} &= - \beta S \frac{I}{N} \\
+  \frac{\mathrm{d} I}{\mathrm{d} t} &= \beta S \frac{I}{N} - \gamma I \\
+  \frac{\mathrm{d} R}{\mathrm{d} t} &= \gamma I
 \end{split}
 \end{equation*}
 
@@ -1607,9 +1607,9 @@ We should probably be putting less probability mass near 0
 
 \begin{equation*}
 \begin{split}
-  \dv{S}{t} &= - \beta S \frac{I}{N} \\
-  \dv{I}{t} &= \beta S \frac{I}{N} - {\color{red} \gamma I} \\
-  \dv{R}{t} &= {\color{red} \gamma I}
+  \frac{\mathrm{d} S}{\mathrm{d} t} &= - \beta S \frac{I}{N} \\
+  \frac{\mathrm{d} I}{\mathrm{d} t} &= \beta S \frac{I}{N} - {\color{red} \gamma I} \\
+  \frac{\mathrm{d} R}{\mathrm{d} t} &= {\color{red} \gamma I}
 \end{split}
 \end{equation*}
 
@@ -1638,7 +1638,7 @@ plot!(truncated(Normal(0.4, 0.5); lower=0), label="old", color="red")
 ** SOLUTION What if $\beta > N$?
 Then for $t = 0$ we have
 \begin{equation*}
-\dv{S}{t} \bigg|_{t = 0} = - \beta S \frac{I}{N} > - N (N - 1) \frac{1}{N} = - (N - 1)
+\frac{\mathrm{d} S}{\mathrm{d} t} \bigg|_{t = 0} = - \beta S \frac{I}{N} > - N (N - 1) \frac{1}{N} = - (N - 1)
 \end{equation*}
 
 i.e. we /immediately/ infect everyone on the very first time-step
@@ -2265,7 +2265,7 @@ It offers
 3. /Adjoint methods/: construct a backwards system whose solution gives
    us the gradient.
 
-Just do =solve(problem, solver, sensealg=...)=
+Just do =solve(problem, solver, sensealg = ...)=
 
 ** Back to being =NUTS=
    :PROPERTIES:
@@ -2296,6 +2296,8 @@ chain = sample(model_conditioned, NUTS(0.8), MCMCThreads(), 1000, 4);
 [33m[1m│ [22m[39m  isfinite.((θ, r, ℓπ, ℓκ)) = (true, false, false, false)
 [33m[1m└ [22m[39m[90m@ AdvancedHMC ~/.julia/packages/AdvancedHMC/4fByY/src/hamiltonian.jl:49[39m
 #+end_example
+
+#+REVEAL: split
 
 #+begin_src julia
 chain
@@ -2333,12 +2335,16 @@ Quantiles
 
 Muuuch better! Both ESS and Rhatc is looking good
 
+#+REVEAL: split
+
 #+begin_src julia
 plot(chain; size=(800, 500))
 #+end_src
 
 #+RESULTS:
 [[file:./.ob-jupyter/3a9218dea4c65ad448c63fb7f0ee6ed93c5077d0.svg]]
+
+#+REVEAL: split
 
 #+begin_src julia
 # Predict using the results from NUTS.
@@ -2394,12 +2400,16 @@ Quantiles
   in_bed[14]    4.0000    10.0000    15.0000    20.0000    35.0000
 #+end_example
 
+#+REVEAL: split
+
 #+begin_src julia
 plot_trajectories!(plot(legend=false, size=(600, 300)), predictions; n = 1000, data=data)
 #+end_src
 
 #+RESULTS:
 [[file:./.ob-jupyter/e864be19f1edb0f234c9b06f07b1fdfb98ca4c65.svg]]
+
+#+REVEAL: split
 
 #+begin_src julia
 plot_trajectory_quantiles!(plot(legend=false, size=(600, 300)), predictions; data=data)
@@ -2417,7 +2427,7 @@ For large enough (n), the "combination" of the posteriors should recover the pri
 
 "Combination" here usually means computing some statistic and comparing against what it should be
 
-#+ATTR_HTML: :width 400px
+#+ATTR_HTML: :width 800px
 #+ATTR_ORG: :width 400
 [[file:.notes/attachments/Bayesian_inference/2023-01-22_12-09-24_Screenshot_20230122_120848.png]]
 
@@ -2488,6 +2498,8 @@ chain_test = sample(model_test_conditioned, NUTS(0.8), 1000);
 
 Did we recover the parameters?
 
+#+HTML: <div class="small-text">
+
 #+begin_src julia
 ps = []
 for sym in [:β, :γ, :ϕ⁻¹]
@@ -2500,6 +2512,10 @@ plot(ps..., layout=(3, 1), size=(600, 400))
 
 #+RESULTS:
 [[file:./.ob-jupyter/10338b56fec7065ed90c521a09de72a16e4dcee1.svg]]
+
+#+HTML: </div>
+
+Yay!
 
 ** Samplers in Turing.jl
 - Metropolis-Hastings, emcee, SGLD ([[https://github.com/TuringLang/AdvancedMH.jl][AdvancedMH.jl]])
@@ -2558,12 +2574,107 @@ Could potentially lead to improvements
 
 *NOTE:* Can be difficult to choose sampler parameters
 
+#+REVEAL: split
 
-** TODO Choosing AD backend in Turing.jl
-   :PROPERTIES:
-   :CUSTOM_ID: todo-choosing-ad-backend-in-turingjl
-   :END:
+Means one can also mix discrete and continuous
 
+#+HTML: <div class="small-text">
+
+#+begin_src julia 
+@model function mixture(n)
+    cluster ~ filldist(Categorical([0.25, 0.75]), n)
+    μ ~ MvNormal([-10.0, 10.0], I)
+    x ~ arraydist(Normal.(μ[cluster], 1))
+end
+
+model_mixture = mixture(10)
+fake_values_mixture = rand(model_mixture)
+model_mixture_conditioned = model_mixture | (x = fake_values_mixture.x, )
+chain_discrete = sample(
+    model_mixture_conditioned, Gibbs(PG(10, :cluster), HMC(1e-3, 16, :μ)), MCMCThreads(), 1_000, 4
+)
+#+end_src
+
+#+RESULTS:
+#+begin_example
+Chains MCMC chain (1000×13×4 Array{Float64, 3}):
+
+Iterations        = 1:1:1000
+Number of chains  = 4
+Samples per chain = 1000
+Wall duration     = 9.51 seconds
+Compute duration  = 37.18 seconds
+parameters        = cluster[1], cluster[2], cluster[3], cluster[4], cluster[5], cluster[6], cluster[7], cluster[8], cluster[9], cluster[10], μ[1], μ[2]
+internals         = lp
+
+Summary Statistics
+ [1m  parameters [0m [1m    mean [0m [1m     std [0m [1m naive_se [0m [1m    mcse [0m [1m       ess [0m [1m    rhat [0m [1m[0m ⋯
+ [90m      Symbol [0m [90m Float64 [0m [90m Float64 [0m [90m  Float64 [0m [90m Float64 [0m [90m   Float64 [0m [90m Float64 [0m [90m[0m ⋯
+
+   cluster[1]    1.9995    0.0224     0.0004    0.0004   4002.3197    0.9999   ⋯
+   cluster[2]    1.9932    0.0819     0.0013    0.0059     90.5050    1.0271   ⋯
+   cluster[3]    1.9500    0.2180     0.0034    0.0242     34.1145    1.1011   ⋯
+   cluster[4]    1.9985    0.0387     0.0006    0.0011   1050.2290    1.0016   ⋯
+   cluster[5]    1.9997    0.0158     0.0002    0.0003   4000.0320    1.0000   ⋯
+   cluster[6]    1.9932    0.0819     0.0013    0.0058    195.9873    1.0247   ⋯
+   cluster[7]    2.0000    0.0000     0.0000    0.0000         NaN       NaN   ⋯
+   cluster[8]    1.9538    0.2101     0.0033    0.0207     48.7578    1.0585   ⋯
+   cluster[9]    1.9935    0.0804     0.0013    0.0058     92.8326    1.0260   ⋯
+  cluster[10]    2.0000    0.0000     0.0000    0.0000         NaN       NaN   ⋯
+         μ[1]   -9.4983    0.8043     0.0127    0.1007      8.1921    5.8395   ⋯
+         μ[2]    9.8580    0.6147     0.0097    0.0764      9.0570    2.5009   ⋯
+[36m                                                                1 column omitted[0m
+
+Quantiles
+ [1m  parameters [0m [1m     2.5% [0m [1m    25.0% [0m [1m   50.0% [0m [1m   75.0% [0m [1m   97.5% [0m
+ [90m      Symbol [0m [90m  Float64 [0m [90m  Float64 [0m [90m Float64 [0m [90m Float64 [0m [90m Float64 [0m
+
+   cluster[1]     2.0000     2.0000    2.0000    2.0000    2.0000
+   cluster[2]     2.0000     2.0000    2.0000    2.0000    2.0000
+   cluster[3]     1.0000     2.0000    2.0000    2.0000    2.0000
+   cluster[4]     2.0000     2.0000    2.0000    2.0000    2.0000
+   cluster[5]     2.0000     2.0000    2.0000    2.0000    2.0000
+   cluster[6]     2.0000     2.0000    2.0000    2.0000    2.0000
+   cluster[7]     2.0000     2.0000    2.0000    2.0000    2.0000
+   cluster[8]     1.0000     2.0000    2.0000    2.0000    2.0000
+   cluster[9]     2.0000     2.0000    2.0000    2.0000    2.0000
+  cluster[10]     2.0000     2.0000    2.0000    2.0000    2.0000
+         μ[1]   -10.7711   -10.2323   -9.4803   -8.7268   -8.3766
+         μ[2]     8.2130     9.5039    9.9207   10.3388   10.8447
+#+end_example
+
+#+HTML: </div>
+
+#+REVEAL: split
+
+#+HTML: <div class="x-small-text">
+
+#+begin_src julia 
+ps = []
+for (i, realizations) in enumerate(eachcol(Array(group(chain_discrete, :cluster))))
+    p = density(realizations, legend=false, ticks=false); vline!(p, [fake_values_mixture.cluster[i]])
+    push!(ps, p)
+end
+plot(ps..., layout=(length(ps) ÷ 2, 2), size=(600, 40 * length(ps)))
+#+end_src
+
+#+RESULTS:
+[[file:./.ob-jupyter/31135321493e9fc62bf49272fbf58174bb2dccaf.svg]]
+
+#+HTML: </div>
+
+Again, this is difficult to get to work properly on non-trivial examples
+
+_But_ the options are there
+
+** Down-sides of using Turing.jl
+
+#+ATTR_REVEAL: :frag (appear)
+- Don't do any depedency-extraction of the model ⟹ can't do things like automatic marginalization
+  - /But/ it's not impossible; just a matter of development effort
+  - Also ongoing work in =TuringLang= to make a BUGS-compatible models (in colab with Andrew Thomas)
+- NUTS performance is at the mercy of AD in Julia
+- You _can_ put anything in your model, but whether you _should_ is a different thing
 
 * Benchmarking                                                     :noexport:
 #+begin_src julia
