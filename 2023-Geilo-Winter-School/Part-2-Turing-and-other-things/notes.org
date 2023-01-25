@@ -2061,12 +2061,6 @@ chain_mh = sample(model_conditioned, MH(), MCMCThreads(), 10_000, 4; discard_ini
 #+end_src
 
 #+RESULTS:
-
-#+begin_src julia
-chain_mh
-#+end_src
-
-#+RESULTS:
 #+begin_example
 Chains MCMC chain (10000×4×4 Array{Float64, 3}):
 
@@ -2098,6 +2092,8 @@ Quantiles
 
 Rhat is /okay-ish/ but not great, and ESS is pretty low innit?
 
+#+REVEAL: split
+
 #+begin_src julia
 plot(chain_mh; size=(800, 500))
 #+end_src
@@ -2107,8 +2103,9 @@ plot(chain_mh; size=(800, 500))
 
 Eeehh doesn't look the greatest
 
-Difficult to trust these results, but let's check if it at least did
-/something/ useful
+#+REVEAL: split
+
+Difficult to trust these results, but let's check if it at least did /something/ useful
 
 #+begin_src julia
 # We're using the unconditioned model!
@@ -2164,49 +2161,24 @@ Quantiles
   in_bed[14]    4.0000    11.0000    15.0000    20.0000    34.0000
 #+end_example
 
-#+begin_src julia
-plot_trajectories!(plot(legend=false), predictions_mh; data=data)
-#+end_src
+#+REVEAL: split
 
-#+RESULTS:
-:RESULTS:
-# [goto error]
-: UndefVarError: data not defined
-: 
-: Stacktrace:
-:  [1] plot_trajectories!(p::Plots.Plot{Plots.GRBackend}, chain::Chains{Float64, AxisArrays.AxisArray{Float64, 3, Array{Float64, 3}, Tuple{AxisArrays.Axis{:iter, StepRange{Int64, Int64}}, AxisArrays.Axis{:var, Vector{Symbol}}, AxisArrays.Axis{:chain, UnitRange{Int64}}}}, Missing, NamedTuple{(:parameters, :internals), Tuple{Vector{Symbol}, Vector{Symbol}}}, NamedTuple{(:start_time, :stop_time), Tuple{Vector{Nothing}, Vector{Nothing}}}}; n::Int64, include_data::Bool, tspan::Tuple{Int64, Int64}, trajectory_color::String, alpha::Float64)
-:    @ GeiloWinterSchool2023Part2 ~/Projects/public/Turing-Workshop/2023-Geilo-Winter-School/Part-2-Turing-and-other-things/src/GeiloWinterSchool2023Part2.jl:131
-:  [2] top-level scope
-:    @ In[239]:1
-:END:
+#+begin_src julia
+plot_trajectories!(plot(legend=false, size=(600, 300)), predictions_mh; data=data)
+#+end_src
 
 #+begin_src julia
 plot_trajectory_quantiles!(plot(legend=false, size=(600, 300)), predictions_mh; data=data)
 #+end_src
 
-#+RESULTS:
-:RESULTS:
-# [goto error]
-: UndefVarError: data not defined
-: 
-: Stacktrace:
-:  [1] plot_trajectory_quantiles!(p::Plots.Plot{Plots.GRBackend}, chain::Chains{Float64, AxisArrays.AxisArray{Float64, 3, Array{Float64, 3}, Tuple{AxisArrays.Axis{:iter, StepRange{Int64, Int64}}, AxisArrays.Axis{:var, Vector{Symbol}}, AxisArrays.Axis{:chain, UnitRange{Int64}}}}, Missing, NamedTuple{(:parameters, :internals), Tuple{Vector{Symbol}, Vector{Symbol}}}, NamedTuple{(:start_time, :stop_time), Tuple{Vector{Nothing}, Vector{Nothing}}}}; q::Vector{Float64}, include_data::Bool, tspan::Tuple{Int64, Int64})
-:    @ GeiloWinterSchool2023Part2 ~/Projects/public/Turing-Workshop/2023-Geilo-Winter-School/Part-2-Turing-and-other-things/src/GeiloWinterSchool2023Part2.jl:171
-:  [2] top-level scope
-:    @ In[240]:1
-:END:
-
-Okay, it's not /completely/ useless, but my trust-issues are still
-present.
+Okay, it's not /completely/ useless, but my trust-issues are still present.
 
 Metropolis-Hastings have disappointed me one too many times before.
-
-Before we proceed, let's just make some functions for the visualizations
 
 ** So instead, let's go =NUTS=
 That's right, we're reaching to the *No U-Turn sampler (NUTS)*
 
-*** TODO
+*** 
 :PROPERTIES:
 :reveal_background_iframe: file:///home/tor/Projects/public/mcmc-demo/app.html?closeControls=true&algorithm=HamiltonianMH&target=standard&seed=1&autoplay=true&histBins=100
 :END:
@@ -2241,6 +2213,8 @@ Up-and-coming
 Of importance
 - [[https://github.com/JuliaDiff/ChainRulesCore.jl][ChainRulesCore.jl]]: light-weight package for defining rules, compatible with many of the above
 
+#+REVEAL: split
+
 *Important*
 
 #+begin_quote
@@ -2259,6 +2233,8 @@ With that being said, differentiating through numerical =solve= is not necessari
 
 There are numerous ways of approaching this problem
 
+#+ATTR_HTML: :width 400px
+#+ATTR_ORG: :width 400
 [[file:.notes/attachments/Bayesian_inference/2023-01-22_12-30-07_Screenshot_20230122_122936.png]]
 
 [[https://arxiv.org/abs/1812.01892][https://arxiv.org/abs/1812.01892]] is /great/ resource
@@ -2270,6 +2246,8 @@ But this is why we have [[https://github.com/SciML/SciMLSensitivity.jl][=SciMLSe
 [[https://docs.sciml.ai/SciMLSensitivity/stable/manual/differential_equation_sensitivities/#Choosing-a-Sensitivity-Algorithm][SciMLSensitivity.jl docs]] also provides a great overview of different approaches
 
 #+HTML: </div>
+
+#+REVEAL: split
 
 #+begin_src julia
 using SciMLSensitivity
@@ -2430,19 +2408,20 @@ plot_trajectory_quantiles!(plot(legend=false, size=(600, 300)), predictions; dat
 #+RESULTS:
 [[file:./.ob-jupyter/ac3b5ff03cc2ba6a783ce621d4692ecdee9d0d0f.svg]]
 
-** Simulation-based calibration (SBC)
-[[https://arxiv.org/abs/1804.06788][Talts et. al. (2018)]]
+** Simulation-based calibration (SBC) [[https://arxiv.org/abs/1804.06788][Talts et. al. (2018)]]
 1. Sample from prior $\theta_1, \dots, \theta_n \sim p(\theta)$.
 2. Sample datasets $\mathcal{D}_i \sim p(\cdot \mid \theta_i)$ for $i = 1, \dots, n$.
 3. Obtain (approximate) $p(\theta \mid \mathcal{D}_i)$ for $i = 1, \dots, n$.
 
-For large enough (n), the "combination" of the posteriors should recover
-the prior!
+For large enough (n), the "combination" of the posteriors should recover the prior!
 
-"Combination" here usually means computing some statistic and comparing
-against what it should be
+"Combination" here usually means computing some statistic and comparing against what it should be
 
+#+ATTR_HTML: :width 400px
+#+ATTR_ORG: :width 400
 [[file:.notes/attachments/Bayesian_inference/2023-01-22_12-09-24_Screenshot_20230122_120848.png]]
+
+#+REVEAL: split
 
 That's very expensive → in practice we just do this once or twice
 
@@ -2475,6 +2454,8 @@ in_best_test = rand(rng, model_test).in_bed;
 
 #+RESULTS:
 
+#+REVEAL: split
+
 Next, inference!
 
 #+begin_src julia
@@ -2503,6 +2484,8 @@ chain_test = sample(model_test_conditioned, NUTS(0.8), 1000);
 : [33m[1m└ [22m[39m[90m@ AdvancedHMC ~/.julia/packages/AdvancedHMC/4fByY/src/hamiltonian.jl:49[39m
 : [32mSampling: 100%|█████████████████████████████████████████| Time: 0:00:01[39m
 
+#+REVEAL: split
+
 Did we recover the parameters?
 
 #+begin_src julia
@@ -2517,6 +2500,64 @@ plot(ps..., layout=(3, 1), size=(600, 400))
 
 #+RESULTS:
 [[file:./.ob-jupyter/10338b56fec7065ed90c521a09de72a16e4dcee1.svg]]
+
+** Samplers in Turing.jl
+- Metropolis-Hastings, emcee, SGLD ([[https://github.com/TuringLang/AdvancedMH.jl][AdvancedMH.jl]])
+- Hamiltonian Monte Carlo, NUTS ([[https://github.com/TuringLang/AdvancedMH.jl][AdvancedHMC.jl]])
+- SMC ([[https://github.com/TuringLang/AdvancedPS.jl][AdvancedPS.jl]])
+- Elliptical Slice Sampling ([[https://github.com/TuringLang/EllipticalSliceSampling.jl][EllipticalSliceSampling.jl]])
+- Nested sampling ([[https://github.com/TuringLang/NestedSamplers.jl][NestedSamplers.jl]])
+
+#+REVEAL: split
+
+You can also combine some of these in Turing.jl
+
+#+HTML: <div class="small-text">
+
+#+begin_src julia
+using LinearAlgebra: I
+
+@model function linear_regression(X)
+    num_params = size(X, 1)
+    β ~ MvNormal(ones(num_params))
+    σ² ~ InverseGamma(2, 3)
+    y ~ MvNormal(vec(β' * X), σ² * I)
+end
+
+# Generate some dummy data.
+X = randn(2, 1_000); lin_reg = linear_regression(X); true_vals = rand(lin_reg)
+
+# Condition.
+lin_reg_conditioned = lin_reg | (y = true_vals.y,);
+#+end_src
+
+#+RESULTS:
+
+#+HTML: </div>
+
+We can then do =Gibbs= but sampling $β$ using =ESS= and $\sigma^2$ using =HMC=
+
+#+begin_src julia
+chain_ess_hmc = sample(lin_reg_conditioned, Gibbs(ESS(:β), HMC(1e-3, 16, :σ²)), 1_000)
+#+end_src
+
+#+RESULTS:
+:RESULTS:
+: Sampling: 100%|█████████████████████████████████████████| Time: 0:00:00
+: ESS
+:   parameters        ess      rhat   ess_per_sec 
+:       Symbol    Float64   Float64       Float64 
+: 
+:         β[1]   473.5638    0.9998       43.5942
+:         β[2]   994.0356    0.9999       91.5065
+:           σ²    15.6623    1.0491        1.4418
+: 
+:END:
+
+Could potentially lead to improvements
+
+*NOTE:* Can be difficult to choose sampler parameters
+
 
 ** TODO Choosing AD backend in Turing.jl
    :PROPERTIES:
@@ -2769,26 +2810,78 @@ run(suite)
 
 Here it doesn't make much of a difference because we're working with so few observations, but indeed =model_v2= is somewhat faster than =model= for both evaluation and gradient computation (using =ForwardDiff=).
 
-* TODO Use-case: COVID modeling
+* Case: spatio-temporal COVID modeling in UK                       :noexport:
+Main model looked like this
+
+#+DOWNLOADED: file:///tmp/Spectacle.wcviMK/Screenshot_20230125_022312.png @ 2023-01-25 02:23:23
+#+ATTR_HTML: :width 600px
+#+ATTR_ORG: :width 600
+[[file:.notes/attachments/Use-case:_COVID_modeling/2023-01-25_02-23-23_Screenshot_20230125_022312.png]]
+
+Roughly 50 000 parameters
+
+#+REVEAL: split
+
+Output, for different approaches, looked like this
+
+#+begin_export html
+<video controls width="1000">
+    <source src="file:///home/tor/Dropbox/tmp/epimap-vs-epimap-debiased-vs-debiased-different-coloring.mp4" type="video/mp4">
+    Sorry, your browser doesn't support embedded videos.
+</video>
+#+end_export
+
+#+REVEAL: split
 
 #+begin_src julia :eval no
     # GP-model for R-value.
     @submodel R = SpatioTemporalGP(K_spatial, K_local, K_time, T; σ_spatial, σ_local, ρ_spatial, ρ_time)
 
     # Latent infections.
-    @submodel X = RegionalFluxWithoutCond(
-        F_id, F_in, F_out,
-        W, R,
-        X_cond_means,
-        populations,
-        T;
-        days_per_step, σ_ξ
-    )
+    @submodel X = RegionalFlux(F_id, F_in, F_out, W, R, X_cond, T; days_per_step, σ_ξ)
 
     # Likelihood.
-    @submodel logitπ = DebiasedLikelihood(logitπ, σ_debias, populations, X, D, num_cond, observation_projection, T; skip_weeks_observe)
+    @submodel C = NegBinomialWeeklyAdjustedTesting(C, X, D, num_cond, T)
 #+end_src
 
+with
+
+#+HTML: <div class="small-text">
+
+#+begin_src julia :eval no
+@model function SpatioTemporalGP(
+    K_spatial, K_local, K_time,
+    ::Type{T} = Float64;
+) where {T}
+    num_steps = size(K_time, 1)
+    num_regions = size(K_spatial, 1)
+
+    # Length scales
+    ρ_spatial ~ 𝒩₊(T(0), T(5))
+    ρ_time ~ 𝒩₊(T(0), T(5))
+
+    # Scales
+    σ_spatial ~ 𝒩₊(T(0), T(0.5))
+    σ_local ~ 𝒩₊(T(0), T(0.5))
+
+    # GP
+    E_vec ~ MvNormal(num_regions * num_steps, one(T))
+    E = reshape(E_vec, (num_regions, num_steps))
+
+    # Get cholesky decomps using precomputed kernel matrices
+    L_space = spatial_L(K_spatial, K_local, σ_spatial, σ_local, ρ_spatial)
+    U_time = time_U(K_time, ρ_time)
+
+    # Obtain realization of log-R.
+    f = L_space * E * U_time
+
+    # Compute R.
+    R = exp.(f)
+    return R
+end
+#+end_src
+
+#+HTML: </div>
 
 * TODO Showing off
 ** =Gibbs=
