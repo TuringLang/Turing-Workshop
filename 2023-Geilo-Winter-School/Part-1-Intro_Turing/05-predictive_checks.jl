@@ -9,7 +9,6 @@ my_data = rand(dice, 1_000)
 
 @model function dice_throw(N)
     p ~ Dirichlet(6, 1) # a uniform prior
-    y = Vector{Int}(undef, N)
     y ~ filldist(Categorical(p), N)
 end
 # instantating a a model
@@ -20,6 +19,7 @@ my_chains_nuts = sample(my_model_cond, NUTS(), MCMCThreads(), 1_000, 2)
 
 # Prior Check
 # just use the Prior() sampler:
+# (computational advantages)
 prior_chain = sample(my_model_cond, Prior(), 2_000)
 
 # This is a regular MCMCChains object,

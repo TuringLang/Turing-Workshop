@@ -64,7 +64,7 @@ quantile(my_chains_nuts)
 # You can also get the whole Markov chain with DataFrames.jl
 using DataFrames
 
-DataFrame(my_chain_nuts)
+DataFrame(my_chains_nuts)
 
 # Visualizations
 # We can use MCMCChains.jl to plot chains
@@ -73,7 +73,7 @@ using StatsPlots
 
 # there are several visualizations
 # check https://turinglang.github.io/MCMCChains.jl/stable/statsplots/
-plot(my_chain_nuts)
+plot(my_chains_nuts)
 
 # There are also alternative to plotting
 # ArViZ, Makie, etc.

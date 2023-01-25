@@ -9,7 +9,6 @@ my_data = rand(dice, 1_000)
 # Different more efficient syntax
 @model function dice_throw(N)
     p ~ Dirichlet(6, 1) # a uniform prior
-    y = Vector{Int}(undef, N)
     y ~ filldist(Categorical(p), N)
 end
 # instantating a a model
