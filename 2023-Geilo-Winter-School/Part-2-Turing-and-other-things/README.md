@@ -7,3 +7,5 @@ Here you find the presentation in several different formats:
 - `notes.org`: A Org-mode file, which is the source of all the files above and probably the easiest to read on Github, _but_ not supported by most editors (unless you're using Emacs).
 
 Pick your poison, and follow along!
+
+The presentation itself can be viewed online here: https://torfjelde.github.io/presentations/2023-01-25-Geilo-Winter-School/
