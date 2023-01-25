@@ -1,7 +1,7 @@
 #+SETUPFILE: ~/org-blog/setup.org
 #+OPTIONS: tex:t toc:nil date:nil
 #+PROPERTY: header-args:R :session :exports both :eval no
-#+PROPERTY: header-args:julia :session geilo-winter-school :tangle main.jl :exports both :kernel julia-4-threads-1.8 :async no
+#+PROPERTY: header-args:julia :session geilo-winter-school :tangle notes.jl :exports both :kernel julia-4-threads-1.8 :async no
 #+EXCLUDE_TAGS: noexport
 #+TODO: TODO(t) TASK(q) WARNING(w) | DONE(d) SOLUTION(s)
 
