@@ -642,14 +642,14 @@ end
 mycompare_c = @cfunction(mycompare, Cint, (Ref{Cdouble}, Ref{Cdouble}))
 
 # Array to sort.
-A = [1.3, -2.7, 4.4, 3.1];
+arr = [1.3, -2.7, 4.4, 3.1];
 
 # Call in-place quicksort.
 ccall(:qsort, Cvoid, (Ptr{Cdouble}, Csize_t, Csize_t, Ptr{Cvoid}),
-      A, length(A), sizeof(eltype(A)), mycompare_c)
+      arr, length(arr), sizeof(eltype(arr)), mycompare_c)
 
 # All sorted!
-A
+arr
 
 # NOTE: this is NOT `const`, and so it could become some other type
 # at any given point without `my_func` knowing about it!
