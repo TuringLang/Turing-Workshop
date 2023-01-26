@@ -108,6 +108,28 @@ function SEIR!(
     du[4] = nothing
 end
 
+# Some space so you don't cheat.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# Are you sure?
+
 function SEIR!(
     du,  # buffer for the updated differential equation
     u,   # current state
@@ -191,6 +213,28 @@ susceptible
 exposed
 infected
 recovered
+
+# Some space so you don't cheat.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# Are you sure?
 
 struct SEIRProblem{P} <: AbstractEpidemicProblem
     problem::P
@@ -480,6 +524,28 @@ DataFrame(quantile(chain_quantities_original[:, [:R0, :recovery_time], :]))
     # TODO: Implement
 end
 
+# Some space so you don't cheat.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# Are you sure?
+
 @model function prior_original(problem_wrapper::SEIRProblem)
     β ~ truncated(Normal(2, 1); lower=0)
     γ ~ truncated(Normal(0.4, 0.5); lower=0)
@@ -608,6 +674,55 @@ suite = TuringBenchmarking.make_turing_suite(
     model_fake_conditioned;
     adbackends=[
         TuringBenchmarking.ForwardDiffAD{40,true}(),
+        TuringBenchmarking.ReverseDiffAD{false}(),
+        TuringBenchmarking.ZygoteAD()
+    ]
+);
+run(suite)
+
+@model function epidemic_model(
+    problem_wrapper::AbstractEpidemicProblem,
+    prior;
+    sensealg=ForwardDiffSensitivity()  # NOTE: This will be passed to `solve`.
+)
+    # And use `@submodel` to embed the `prior` in our model.
+    @submodel p = prior(problem_wrapper)
+
+    ϕ⁻¹ ~ Exponential(1/5)
+    ϕ = inv(ϕ⁻¹)
+
+    problem_new = remake(problem_wrapper.problem, p=p)    # Replace parameters `p`.
+    # NOTE: Allowed to use a different `sensealg`
+    sol = solve(problem_new; saveat=1, sensealg=sensealg) # Solve!
+
+    # Return early if integration failed.
+    if !issuccess(sol)
+        Turing.@addlogprob! -Inf  # Causes automatic rejection.
+        return nothing
+    end
+
+    # Extract the `infected`.
+    sol_for_observed = infected(problem_wrapper, sol)[2:end]
+
+    # `arraydist` is faster for larger dimensional problems,
+    # and it does not require explicit allocation of the vector.
+    in_bed ~ arraydist(NegativeBinomial2.(sol_for_observed .+ 1e-5, ϕ))
+
+    β, γ = p[1:2]
+    return (R0 = β / γ, recovery_time = 1 / γ, infected = sol_for_observed)
+end
+
+model_fake = epidemic_model(
+    SIRProblem(N; tspan=(0, 10_000)),
+    prior_improved;
+    sensealg=ForwardSensitivity()  # NOTE: `ForwardSensitivity` is differnt from `ForwardDiffSensitivity`
+);
+model_fake_conditioned = model_fake | (in_bed = res.in_bed,);
+
+# NOTE: AFAIK `ForwardSensitivity` has no effect when used with `ForwardDiff.jl`.
+suite = TuringBenchmarking.make_turing_suite(
+    model_fake_conditioned;
+    adbackends=[
         TuringBenchmarking.ReverseDiffAD{false}(),
         TuringBenchmarking.ZygoteAD()
     ]
