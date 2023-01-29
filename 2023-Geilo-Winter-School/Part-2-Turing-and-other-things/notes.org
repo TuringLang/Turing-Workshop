@@ -106,7 +106,7 @@ There once was a little Norwegian boy
 #+DOWNLOADED: file:///home/tor/Downloads/471337_3317365246956_1262712540_o.jpg @ 2023-01-18 14:49:24
 #+ATTR_HTML: :height 400px
 #+ATTR_ORG: :width 600
-[[file:.notes/attachments/2023-01-18_14-49-24_471337_3317365246956_1262712540_o.jpg]]
+[[file:assets/attachments/2023-01-18_14-49-24_471337_3317365246956_1262712540_o.jpg]]
 
 
 #+REVEAL: split
@@ -117,7 +117,7 @@ When this little boy was 20 years old, he was working as a parking guard near Pr
 #+DOWNLOADED: file:///home/tor/Downloads/Preikestolen-plateau-Go-Fjords-Bob-Engelsen-P1026771_kljg5o.jpeg @ 2023-01-18 14:57:08
 #+ATTR_HTML: :height 400px
 #+ATTR_ORG: :width 600
-[[file:.notes/attachments/2023-01-18_14-57-08_Preikestolen-plateau-Go-Fjords-Bob-Engelsen-P1026771_kljg5o.jpeg]]
+[[file:assets/attachments/2023-01-18_14-57-08_Preikestolen-plateau-Go-Fjords-Bob-Engelsen-P1026771_kljg5o.jpeg]]
 
 
 #+REVEAL: split
@@ -142,7 +142,7 @@ The little boy got very excited and started looking for stuff on the big interwe
 The little boy came across this
 
 #+DOWNLOADED: file:///tmp/Spectacle.jWiYMk/Screenshot_20230118_144454.png @ 2023-01-18 14:46:02
-[[file:.notes/attachments/2023-01-18_14-46-02_Screenshot_20230118_144454.png]]
+[[file:assets/attachments/2023-01-18_14-46-02_Screenshot_20230118_144454.png]]
 
 And got _very_ excited
 
@@ -217,7 +217,7 @@ And 3.5 years later, he's still writing for-loops. Well, sort of.
 #+CAPTION: https://julialang.org/benchmarks/ (2023-01-18)
 #+ATTR_HTML: :height 400px
 #+ATTR_ORG: :width 600
-[[file:.notes/attachments/2023-01-18_15-31-28_Screenshot_20230118_153122.png]]
+[[file:assets/attachments/2023-01-18_15-31-28_Screenshot_20230118_153122.png]]
 
 #+REVEAL: split
 
@@ -382,10 +382,10 @@ And I really do mean [[https://docs.sciml.ai/DiffEqDocs/stable/][/everything/]]
 #+HTML: <div class="side-by-side">
 
 #+DOWNLOADED: file:///tmp/Spectacle.jWiYMk/Screenshot_20230119_194737.png @ 2023-01-19 19:48:23
-[[file:.notes/attachments/2023-01-19_19-48-23_Screenshot_20230119_194737.png]]
+[[file:assets/attachments/2023-01-19_19-48-23_Screenshot_20230119_194737.png]]
 
 #+DOWNLOADED: file:///tmp/Spectacle.jWiYMk/Screenshot_20230119_194838.png @ 2023-01-19 19:48:41
-[[file:.notes/attachments/2023-01-19_19-48-41_Screenshot_20230119_194838.png]]
+[[file:assets/attachments/2023-01-19_19-48-41_Screenshot_20230119_194838.png]]
 
 #+HTML: </div>
 
@@ -395,7 +395,7 @@ One particular example of an (ordinary) differential equation that you might hav
 #+DOWNLOADED: file:///home/tor/Downloads/sir_illu.png @ 2023-01-19 19:56:00
 #+ATTR_ORG: :width 600
 #+CAPTION: https://covid19.uclaml.org/model.html (2023-01-19)
-[[file:.notes/attachments/2023-01-19_19-56-00_sir_illu.png]]
+[[file:assets/attachments/2023-01-19_19-56-00_sir_illu.png]]
 
 #+REVEAL: split
 
@@ -2059,7 +2059,7 @@ This guy should _not_ be the one setting your priors!
 
 #+ATTR_HTML: :height 400px
 #+ATTR_ORG: :width 600
-[[file:.notes/attachments/2023-01-18_14-49-24_471337_3317365246956_1262712540_o.jpg]]
+[[file:assets/attachments/2023-01-18_14-49-24_471337_3317365246956_1262712540_o.jpg]]
 
 Get an actual scientist to do that...
 
@@ -2259,7 +2259,7 @@ There are numerous ways of approaching this problem
 
 #+ATTR_HTML: :width 400px
 #+ATTR_ORG: :width 400
-[[file:.notes/attachments/2023-01-22_12-30-07_Screenshot_20230122_122936.png]]
+[[file:assets/attachments/2023-01-22_12-30-07_Screenshot_20230122_122936.png]]
 
 [[https://arxiv.org/abs/1812.01892][https://arxiv.org/abs/1812.01892]] is /great/ resource
 
@@ -2447,7 +2447,7 @@ For large enough (n), the "combination" of the posteriors should recover the pri
 
 #+ATTR_HTML: :width 800px
 #+ATTR_ORG: :width 400
-[[file:.notes/attachments/2023-01-22_12-09-24_Screenshot_20230122_120848.png]]
+[[file:assets/attachments/2023-01-22_12-09-24_Screenshot_20230122_120848.png]]
 
 #+REVEAL: split
 
@@ -2722,7 +2722,7 @@ _But_ it is possible
 #+DOWNLOADED: file:///home/tor/Downloads/tensorboard_demo_histograms_screen.png @ 2023-01-25 20:50:11
 #+ATTR_HTML: :width 600px
 #+ATTR_ORG: :width 600
-[[file:.notes/attachments/2023-01-25_20-50-11_tensorboard_demo_histograms_screen.png]]
+[[file:assets/attachments/2023-01-25_20-50-11_tensorboard_demo_histograms_screen.png]]
 
 
 ** Downsides of using Turing.jl
@@ -2970,7 +2970,7 @@ Okay, so it's faster but ForwardDiff.jl still wins
 #+DOWNLOADED: file:///tmp/Spectacle.wcviMK/Screenshot_20230126_154747.png @ 2023-01-26 15:47:56
 #+ATTR_HTML: :width 600px
 #+ATTR_ORG: :width 600
-[[file:.notes/attachments/2023-01-26_15-47-56_Screenshot_20230126_154747.png]]
+[[file:assets/attachments/2023-01-26_15-47-56_Screenshot_20230126_154747.png]]
 
 #+REVEAL: split
 
@@ -2979,7 +2979,7 @@ Main model looked like this
 #+DOWNLOADED: file:///tmp/Spectacle.wcviMK/Screenshot_20230125_022312.png @ 2023-01-25 02:23:23
 #+ATTR_HTML: :width 600px
 #+ATTR_ORG: :width 600
-[[file:.notes/attachments/2023-01-25_02-23-23_Screenshot_20230125_022312.png]]
+[[file:assets/attachments/2023-01-25_02-23-23_Screenshot_20230125_022312.png]]
 
 Roughly 50 000 parameters
 
@@ -3476,7 +3476,7 @@ using ProfileView
 #+DOWNLOADED: file:///tmp/Spectacle.wcviMK/Screenshot_20230125_011603.png @ 2023-01-25 01:16:13
 #+ATTR_HTML: :height 350px
 #+ATTR_ORG: :width 600
-[[file:.notes/attachments/2023-01-25_01-16-13_Screenshot_20230125_011603.png]]
+[[file:assets/attachments/2023-01-25_01-16-13_Screenshot_20230125_011603.png]]
 
 Note that there's no sign of multiplication here
 
@@ -3532,7 +3532,7 @@ In Julia, for better or worse, we can generate code
 But things are always improving
 
 #+DOWNLOADED: file:///tmp/Spectacle.wcviMK/Screenshot_20230125_012853.png @ 2023-01-25 01:29:05
-[[file:.notes/attachments/2023-01-25_01-29-05_Screenshot_20230125_012853.png]]
+[[file:assets/attachments/2023-01-25_01-29-05_Screenshot_20230125_012853.png]]
 
 #+HTML: </div>
 
@@ -3803,7 +3803,7 @@ And sharp edges cut; they cut /deep/
 Like _"16X slower when the function is implemented more efficiently"-deep_
 
 #+DOWNLOADED: file:///tmp/Spectacle.wcviMK/Screenshot_20230125_010111.png @ 2023-01-25 01:01:31
-[[file:.notes/attachments/2023-01-25_01-01-31_Screenshot_20230125_010111.png]]
+[[file:assets/attachments/2023-01-25_01-01-31_Screenshot_20230125_010111.png]]
 
 #+HTML: </div>
 
@@ -3833,4 +3833,10 @@ Godspeed to you
 
 #+REVEAL: split
 Fin.
+
+* Local variables                                                  :noexport:
+# local variables:
+# org-download-image-dir: assets/attachments
+# end:
+
 
