@@ -71,11 +71,11 @@ to get some functionality I've implemented for the occasion
 
 There once was a little Norwegian boy
 
-![img](.notes/attachments/2023-01-18_14-49-24_471337_3317365246956_1262712540_o.jpg)
+![img](assets/attachments/2023-01-18_14-49-24_471337_3317365246956_1262712540_o.jpg)
 
 When this little boy was 20 years old, he was working as a parking guard near Preikestolen/Pulpit rock
 
-![img](.notes/attachments/2023-01-18_14-57-08_Preikestolen-plateau-Go-Fjords-Bob-Engelsen-P1026771_kljg5o.jpeg)
+![img](assets/attachments/2023-01-18_14-57-08_Preikestolen-plateau-Go-Fjords-Bob-Engelsen-P1026771_kljg5o.jpeg)
 
 One day it was raining and there was nobody hiking, and so there was no cars in sight for the little boy to point
 
@@ -91,7 +91,7 @@ The little boy got very excited and started looking for stuff on the big interwe
 
 The little boy came across this
 
-![img](.notes/attachments/2023-01-18_14-46-02_Screenshot_20230118_144454.png)
+![img](assets/attachments/2023-01-18_14-46-02_Screenshot_20230118_144454.png)
 
 And got <span class="underline">very</span> excited
 
@@ -260,9 +260,9 @@ And I really do mean [*everything*](https://docs.sciml.ai/DiffEqDocs/stable/)
 
 <div class="side-by-side">
 
-![img](.notes/attachments/2023-01-19_19-48-23_Screenshot_20230119_194737.png)
+![img](assets/attachments/2023-01-19_19-48-23_Screenshot_20230119_194737.png)
 
-![img](.notes/attachments/2023-01-19_19-48-41_Screenshot_20230119_194838.png)
+![img](assets/attachments/2023-01-19_19-48-41_Screenshot_20230119_194838.png)
 
 </div>
 
@@ -271,7 +271,7 @@ And I really do mean [*everything*](https://docs.sciml.ai/DiffEqDocs/stable/)
 
 One particular example of an (ordinary) differential equation that you might have seen recently is the **SIR model** used in epidemiology
 
-![img](.notes/attachments/2023-01-19_19-56-00_sir_illu.png "<https://covid19.uclaml.org/model.html> (2023-01-19)")
+![img](assets/attachments/2023-01-19_19-56-00_sir_illu.png "<https://covid19.uclaml.org/model.html> (2023-01-19)")
 
 The temporal dynamics of the sizes of each of the compartments are governed by the following system of ODEs:
 
@@ -1767,7 +1767,7 @@ print(model_seir())
 
 This guy should <span class="underline">not</span> be the one setting your priors!
 
-![img](.notes/attachments/2023-01-18_14-49-24_471337_3317365246956_1262712540_o.jpg)
+![img](assets/attachments/2023-01-18_14-49-24_471337_3317365246956_1262712540_o.jpg)
 
 Get an actual scientist to do that&#x2026;
 
@@ -1949,7 +1949,7 @@ With that being said, differentiating through numerical `solve` is not necessari
 
 There are numerous ways of approaching this problem
 
-![img](.notes/attachments/2023-01-22_12-30-07_Screenshot_20230122_122936.png)
+![img](assets/attachments/2023-01-22_12-30-07_Screenshot_20230122_122936.png)
 
 [https://arxiv.org/abs/1812.01892](https://arxiv.org/abs/1812.01892) is *great* resource
 
@@ -2105,7 +2105,7 @@ For large enough (n), the "combination" of the posteriors should recover the pri
 
 "Combination" here usually means computing some statistic and comparing against what it should be
 
-![img](.notes/attachments/2023-01-22_12-09-24_Screenshot_20230122_120848.png)
+![img](assets/attachments/2023-01-22_12-09-24_Screenshot_20230122_120848.png)
 
 That's very expensive → in practice we just do this once or twice
 
@@ -2350,7 +2350,7 @@ Again, this is difficult to get to work properly on non-trivial examples
 -   [TuringBenchmarking.jl](https://github.com/TuringLang/TuringBenchmarking.jl): useful for benchmarking Turing.jl models
 -   [TuringCallbacks.jl](https://github.com/TuringLang/TuringCallbacks.jl): on-the-fly visualizations using `tensorboard`
 
-![img](.notes/attachments/2023-01-25_20-50-11_tensorboard_demo_histograms_screen.png)
+![img](assets/attachments/2023-01-25_20-50-11_tensorboard_demo_histograms_screen.png)
 
 
 ## Downsides of using Turing.jl
@@ -2560,11 +2560,11 @@ Okay, so it's faster but ForwardDiff.jl still wins
 
 # Case: spatio-temporal COVID modeling in UK
 
-![img](.notes/attachments/2023-01-26_15-47-56_Screenshot_20230126_154747.png)
+![img](assets/attachments/2023-01-26_15-47-56_Screenshot_20230126_154747.png)
 
 Main model looked like this
 
-![img](.notes/attachments/2023-01-25_02-23-23_Screenshot_20230125_022312.png)
+![img](assets/attachments/2023-01-25_02-23-23_Screenshot_20230125_022312.png)
 
 Roughly 50 000 parameters
 
@@ -3013,7 +3013,7 @@ using ProfileView
 @profview foreach(_ -> my_func_unstable(2.0), 1_000_000)
 ```
 
-![img](.notes/attachments/2023-01-25_01-16-13_Screenshot_20230125_011603.png)
+![img](assets/attachments/2023-01-25_01-16-13_Screenshot_20230125_011603.png)
 
 Note that there's no sign of multiplication here
 
@@ -3067,7 +3067,7 @@ In Julia, for better or worse, we can generate code
 
 But things are always improving
 
-![img](.notes/attachments/2023-01-25_01-29-05_Screenshot_20230125_012853.png)
+![img](assets/attachments/2023-01-25_01-29-05_Screenshot_20230125_012853.png)
 
 </div>
 
@@ -3313,7 +3313,7 @@ And sharp edges cut; they cut *deep*
 
 Like <span class="underline">"16X slower when the function is implemented more efficiently"-deep</span>
 
-![img](.notes/attachments/2023-01-25_01-01-31_Screenshot_20230125_010111.png)
+![img](assets/attachments/2023-01-25_01-01-31_Screenshot_20230125_010111.png)
 
 </div>
 
