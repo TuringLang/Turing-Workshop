@@ -82,7 +82,7 @@ opt = optimize(
 β, λ
 
 # Solve for the obtained parameters.
-problem = remake(problem_sir, p=(β, λ))
+problem_sir = remake(problem_sir, p=(β, λ))
 sol = solve(problem_sir)
 
 # Plot the solution.
@@ -370,6 +370,17 @@ plot(
 
 plot(truncated(Normal(0.4, 0.5); lower=0), label=nothing, title="γ", size=(500, 300))
 
+model_gamma = model | (γ = 1.5, )
+chain_gamma = sample(model_gamma, Prior(), 10_000, progress=false)
+
+p1 = plot_trajectories!(plot(legend=false), group(chain_gamma, :in_bed))
+hline!(p1, [N], color="red")
+
+p2 = plot_trajectory_quantiles!(plot(legend=false), group(chain_gamma, :in_bed))
+hline!(p2, [N], color="red")
+
+plot(p1, p2, layout=(2,1), size=(600, 400))
+
 plot(Beta(2, 5), label="new", size=(500, 300))
 plot!(truncated(Normal(0.4, 0.5); lower=0), label="old", color="red")
 
@@ -623,6 +634,8 @@ X = randn(2, 1_000); lin_reg = linear_regression(X); true_vals = rand(lin_reg)
 
 # Condition.
 lin_reg_conditioned = lin_reg | (y = true_vals.y,);
+
+chain_ess_hmc = sample(lin_reg_conditioned, Gibbs(ESS(:β), HMC(1e-3, 16, :σ²)), 1_000)
 
 chain_ess_hmc = sample(lin_reg_conditioned, Gibbs(ESS(:β), HMC(1e-3, 16, :σ²)), 1_000)
 

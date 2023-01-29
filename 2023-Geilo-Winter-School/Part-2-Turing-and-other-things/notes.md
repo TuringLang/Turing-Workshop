@@ -71,11 +71,11 @@ to get some functionality I've implemented for the occasion
 
 There once was a little Norwegian boy
 
-![img](.notes/attachments/A_litle_Norwegian_boy/2023-01-18_14-49-24_471337_3317365246956_1262712540_o.jpg)
+![img](.notes/attachments/2023-01-18_14-49-24_471337_3317365246956_1262712540_o.jpg)
 
 When this little boy was 20 years old, he was working as a parking guard near Preikestolen/Pulpit rock
 
-![img](.notes/attachments/A_litle_Norwegian_boy/2023-01-18_14-57-08_Preikestolen-plateau-Go-Fjords-Bob-Engelsen-P1026771_kljg5o.jpeg)
+![img](.notes/attachments/2023-01-18_14-57-08_Preikestolen-plateau-Go-Fjords-Bob-Engelsen-P1026771_kljg5o.jpeg)
 
 One day it was raining and there was nobody hiking, and so there was no cars in sight for the little boy to point
 
@@ -91,7 +91,7 @@ The little boy got very excited and started looking for stuff on the big interwe
 
 The little boy came across this
 
-![img](.notes/attachments/A_litle_Norwegian_boy/2023-01-18_14-46-02_Screenshot_20230118_144454.png)
+![img](.notes/attachments/2023-01-18_14-46-02_Screenshot_20230118_144454.png)
 
 And got <span class="underline">very</span> excited
 
@@ -232,7 +232,7 @@ using StatsPlots
 @df data scatter(:date, :in_bed, label=nothing, ylabel="Number of students in bed")
 ```
 
-![img](./.ob-jupyter/7b8c0142df463911a1ca6a00fa19f08272911ee7.svg)
+![img](assets/outputs/1265078e6dd1a955c2c437e28a8d0d0904467ad2.png)
 
 
 # Differential equations
@@ -260,9 +260,9 @@ And I really do mean [*everything*](https://docs.sciml.ai/DiffEqDocs/stable/)
 
 <div class="side-by-side">
 
-![img](.notes/attachments/Differential_equations/2023-01-19_19-48-23_Screenshot_20230119_194737.png)
+![img](.notes/attachments/2023-01-19_19-48-23_Screenshot_20230119_194737.png)
 
-![img](.notes/attachments/Differential_equations/2023-01-19_19-48-41_Screenshot_20230119_194838.png)
+![img](.notes/attachments/2023-01-19_19-48-41_Screenshot_20230119_194838.png)
 
 </div>
 
@@ -271,7 +271,7 @@ And I really do mean [*everything*](https://docs.sciml.ai/DiffEqDocs/stable/)
 
 One particular example of an (ordinary) differential equation that you might have seen recently is the **SIR model** used in epidemiology
 
-![img](.notes/attachments/Differential_equations/2023-01-19_19-56-00_sir_illu.png "<https://covid19.uclaml.org/model.html> (2023-01-19)")
+![img](.notes/attachments/2023-01-19_19-56-00_sir_illu.png "<https://covid19.uclaml.org/model.html> (2023-01-19)")
 
 The temporal dynamics of the sizes of each of the compartments are governed by the following system of ODEs:
 
@@ -444,7 +444,7 @@ plot(
 scatter!(1:14, data.in_bed, label="Data", color="black")
 ```
 
-![img](./.ob-jupyter/c3929710db6be2d5a5a199cfc08a9d055bfdc101.svg)
+![img](assets/outputs/780e8cc1c00812abcfba1fe711f0a8b7b168b7e7.png)
 
 This doesn't really match the data though; let's do better
 
@@ -511,7 +511,7 @@ opt = optimize(
        |g(x)|                 = 7.86e+04 ≰ 1.0e-08
     
     * Work counters
-       Seconds run:   3  (vs limit Inf)
+       Seconds run:   2  (vs limit Inf)
        Iterations:    4
        f(x) calls:    565
        ∇f(x) calls:   1
@@ -529,7 +529,7 @@ We can extract the minimizers of the loss
 
 ```julia
 # Solve for the obtained parameters.
-problem = remake(problem_sir, p=(β, λ))
+problem_sir = remake(problem_sir, p=(β, λ))
 sol = solve(problem_sir)
 
 # Plot the solution.
@@ -538,7 +538,7 @@ plot(sol, linewidth=2, xaxis="Time in days", label=["Suspectible" "Infected" "Re
 scatter!(1:14, data.in_bed, label="Data", color="black")
 ```
 
-![img](./.ob-jupyter/67d9b1dbd64fb83ee55a4b232f34f27ce04e34bf.svg)
+![img](assets/outputs/6326dbbbf15b88051f47afcbeb63f6b3c64accd5.png)
 
 That's better than our *totally* "random" guess from earlier!
 
@@ -693,7 +693,7 @@ plot(sol_seir, linewidth=2, xaxis="Time in days", label=["Suspectible" "Exposed"
 scatter!(1:14, data.in_bed, label="Data")
 ```
 
-![img](./.ob-jupyter/e2be852103261d66920cdbe3781e73a516735c4e.svg)
+![img](assets/outputs/34a52974b7bc0320bef1eb49f39ea8875566a0b3.png)
 
 Don't look so good. Let's try Optim.jl again.
 
@@ -729,7 +729,7 @@ opt = optimize(Base.Fix1(loss_seir, problem_seir), [0, 0, 0], [Inf, Inf, Inf], [
        |g(x)|                 = 1.77e+05 ≰ 1.0e-08
     
     * Work counters
-       Seconds run:   2  (vs limit Inf)
+       Seconds run:   1  (vs limit Inf)
        Iterations:    3
        f(x) calls:    13259
        ∇f(x) calls:   1
@@ -749,7 +749,7 @@ plot(sol_seir, linewidth=2, xaxis="Time in days", label=["Suspectible" "Exposed"
 scatter!(1:14, data.in_bed, label="Data", color="black")
 ```
 
-![img](./.ob-jupyter/70b7633782585732101e44ccc83d0427bb08ff05.svg)
+![img](assets/outputs/62ee261fb15aead33e6f49e82e01a7482b56017f.png)
 
 > But&#x2026;but these are <span class="underline">point estimates</span>! What about distributions? WHAT ABOUT UNCERTAINTY?!
 
@@ -804,7 +804,7 @@ infected(::SIRProblem, u::AbstractMatrix) = u[2, :]
 recovered(::SIRProblem, u::AbstractMatrix) = u[3, :]
 ```
 
-    recovered (generic function with 1 method)
+    recovered (generic function with 2 methods)
 
 So that once we've solved the problem, we can easily extract the compartment we want, e.g.
 
@@ -991,7 +991,7 @@ plot(
 )
 ```
 
-![img](./.ob-jupyter/071cd4589867cd1af8c9470a23efc59b565ba815.svg)
+![img](assets/outputs/80c76ad5d3151ec0f3e044a075b2a5b88956d14b.png)
 
 A `NegativeBinomial(r, p)` represents the number of trials to achieve \(r\) successes, where each trial has a probability \(p\) of success
 
@@ -1132,20 +1132,20 @@ model().infected
 ```
 
     14-element Vector{Float64}:
-      10.427648448819108
-      97.10813695260816
-     454.99087400118657
-     690.0009078599865
-     708.7289766583056
-     691.6588207832573
-     671.2526661684998
-     651.0395166515004
-     631.3873987555327
-     612.3225902121936
-     593.8326665548516
-     575.9009624696392
-     558.5107179846267
-     541.6455970009116
+       4.629880098761509
+      20.51149899075346
+      76.01682025343723
+     170.19683994223317
+     188.1484617193551
+     130.8534765547809
+      74.41578155120635
+      38.968883878630315
+      19.70373448216648
+       9.79913321292256
+       4.837363010506036
+       2.3788515858966703
+       1.167609404493511
+       0.5726457769454385
 
 Hey, it does!
 
@@ -1178,7 +1178,7 @@ There are two ways to sample form the prior
 print(model())
 ```
 
-    (R0 = 9.065011154475682, recovery_time = 2.179095197935758, infected = [38.02586169939532, 425.32905795506736, 431.53376260892026, 284.35957588887607, 181.13829264361138, 114.795003295906, 72.65320250986298, 45.95939193140283, 29.0669996951163, 18.380993524210922, 11.622679700328606, 7.349599588960893, 4.647230522239202, 2.9385348945024745])
+    (R0 = 1.5744220262579935, recovery_time = 1.0914322040400142, infected = [1.686706278885068, 2.8316832197830895, 4.716863573067216, 7.756274929408289, 12.489841589345032, 19.460362335608362, 28.856011572547263, 39.90424926578871, 50.43351515502132, 57.45932083686618, 58.82922439267481, 54.59403067743465, 46.666918039077295, 37.41622088550463])
 
 </div>
 
@@ -1191,7 +1191,7 @@ Or by just calling `sample` using `Prior`
 chain_prior = sample(model, Prior(), 10_000);
 ```
 
-    Sampling:   5%|██                                       |  ETA: 0:00:02Sampling:  63%|█████████████████████████▉               |  ETA: 0:00:00Sampling:  82%|█████████████████████████████████▍       |  ETA: 0:00:00Sampling: 100%|████████████████████████████████████████▊|  ETA: 0:00:00Sampling: 100%|█████████████████████████████████████████| Time: 0:00:01
+    Sampling:  17%|███████                                  |  ETA: 0:00:01Sampling:  38%|███████████████▋                         |  ETA: 0:00:01Sampling:  58%|███████████████████████▋                 |  ETA: 0:00:00Sampling:  72%|█████████████████████████████▊           |  ETA: 0:00:00Sampling:  87%|███████████████████████████████████▋     |  ETA: 0:00:00Sampling: 100%|█████████████████████████████████████████| Time: 0:00:00
 
 </div>
 
@@ -1203,7 +1203,7 @@ plot_trajectories!(p, group(chain_prior, :in_bed); n = 1000)
 hline!([N], color="red")
 ```
 
-![img](./.ob-jupyter/4a7c2cc3814647a11bdbe6aeaedc07deafa6a0b1.svg)
+![img](assets/outputs/f110b08ba2b09629fd9d3c498a45a8ab21e0915a.png)
 
 For certain values we get number of infected *larger* than the actual population
 
@@ -1230,7 +1230,7 @@ quantities_prior = generated_quantities(
 print(quantities_prior[1])
 ```
 
-    (R0 = 10.754532320977516, recovery_time = 9.74875068001913, infected = [2.7128643519250613, 7.32530917187962, 19.53438697727972, 50.43088276604629, 120.42670255882379, 245.23197469659988, 392.3360074743332, 492.28512705685193, 523.4579049186942, 510.4432543442544, 478.0228537102543, 439.46921730165093, 400.5150090967016, 363.4455642958969])
+    (R0 = 4.605690136988736, recovery_time = 2.233647692485423, infected = [4.984997209753707, 24.029092981830093, 99.82240918848625, 261.07361336182714, 344.54043982014423, 295.98314301752475, 215.79118631762378, 148.29201252405755, 99.44804435344652, 65.92385902526553, 43.43722911865047, 28.520552363047532, 18.69045660211042, 12.232600393221547])
 
 We can convert it into a `Chains` using a utility function of mine
 
@@ -1244,7 +1244,7 @@ plot_trajectories!(p, group(chain_quantities_prior, :infected); n = 1000)
 hline!([N], color="red")
 ```
 
-![img](./.ob-jupyter/b903c2c4308be13ab49f4396e4e338add507c416.svg)
+![img](assets/outputs/a1b75cd5d378febc7029c1ed63db2831e09ab9ee.png)
 
 <div class="x-small-text">
 
@@ -1260,7 +1260,7 @@ plot_trajectory_quantiles!(p, group(chain_quantities_prior, :infected))
 hline!(p, [N], color="red")
 ```
 
-![img](./.ob-jupyter/b11b704c884516d39691467f45f5f7eb7bdde3b8.svg)
+![img](assets/outputs/3f7598c6f0df5f376d9f89161504465787bacf25.png)
 
 ```julia
 DataFrame(quantile(chain_quantities_prior[:, [:R0, :recovery_time], :]))
@@ -1270,8 +1270,8 @@ DataFrame(quantile(chain_quantities_prior[:, [:R0, :recovery_time], :]))
      Row │ parameters     2.5%      25.0%    50.0%    75.0%    97.5%   
          │ Symbol         Float64   Float64  Float64  Float64  Float64 
     ─────┼─────────────────────────────────────────────────────────────
-       1 │ R0             0.478301  2.09535  3.70262  7.2299   59.7787
-       2 │ recovery_time  0.690688  1.20107  1.86706  3.47994  28.7969
+       1 │ R0             0.487053  2.09801  3.70619  7.31515  62.3576
+       2 │ recovery_time  0.706025  1.21271  1.88363  3.46962  29.1143
 
 Compare to our prior knowledge of \(R_0 \in [1, 2]\) and \((1/\gamma) \approx 1\) for influenza
 
@@ -1311,7 +1311,7 @@ plot(
 )
 ```
 
-![img](./.ob-jupyter/d84ea0db7d3e222dfd108810677407533649f71a.svg)
+![img](assets/outputs/80c76ad5d3151ec0f3e044a075b2a5b88956d14b.png)
 
 </div>
 
@@ -1330,7 +1330,7 @@ We're clearly putting high probability on regions near 0, i.e. *long* recovery t
 plot(truncated(Normal(0.4, 0.5); lower=0), label=nothing, title="γ", size=(500, 300))
 ```
 
-![img](./.ob-jupyter/555eb5b6cc55ac777f31b0e919966e8df399af42.svg)
+![img](assets/outputs/ed3058dc552f72dbe5151feb938d103b75251f63.png)
 
 <span class="underline">Should probably be putting less probability mass near 0</span>
 
@@ -1349,7 +1349,36 @@ If \({\color{red} \gamma} > 1\) ⟹ (R)ecovered increase by *more* than the (I)n
 
 ⟹ <span class="underline">healthy people are recovering</span>
 
-Now, I'm no epidemiologist, but that doesn't seem right
+<div class="small-text" style="color: red;">
+
+<span class="timestamp-wrapper"><span class="timestamp">[2023-01-27 Fri] </span></span> This was, <span class="underline">rightly so</span>, contested when I presented this, as the conservation is preserved by the system independent of the value of \(\gamma\) (as long as it's positive). There is an argument to be made about having a recovery time of <1 day, i.e. \(\gamma > 1\), being unreasonable, but **the reasoning above is incorrect!**
+
+</div>
+
+<div style="color: red;">
+
+Just to convince ourselves that it is indeed not a problem with \(\gamma > 1\), we can just run the model with a large \(\gamma\) and look at the `in_bed` under this prior.
+
+</div>
+
+<div class="small-text">
+
+```julia
+model_gamma = model | (γ = 1.5, )
+chain_gamma = sample(model_gamma, Prior(), 10_000, progress=false)
+
+p1 = plot_trajectories!(plot(legend=false), group(chain_gamma, :in_bed))
+hline!(p1, [N], color="red")
+
+p2 = plot_trajectory_quantiles!(plot(legend=false), group(chain_gamma, :in_bed))
+hline!(p2, [N], color="red")
+
+plot(p1, p2, layout=(2,1), size=(600, 400))
+```
+
+![img](assets/outputs/856d2889f03822cd9dffef93e27f71c0c4c4c645.png)
+
+</div>
 
 Maybe something like
 
@@ -1358,9 +1387,9 @@ plot(Beta(2, 5), label="new", size=(500, 300))
 plot!(truncated(Normal(0.4, 0.5); lower=0), label="old", color="red")
 ```
 
-![img](./.ob-jupyter/892a3410faaf3665f30404cb7c9b3cb9fef954cf.svg)
+![img](assets/outputs/bc9d6892a46d578ee1b80fb8d98ab74a44e0e9ce.png)
 
--   [X] Bounded at 1
+-   [X] Bounded at 1 to exlcude recovery time of less than 1 day
 -   [X] Allows smaller values (i.e. longer recovery time) but rapidly decreases near zero
 
 
@@ -1429,7 +1458,7 @@ end
 println(B()())
 ```
 
-    (x = 98.39959621612593, y = 99.8236993621388)
+    (x = 101.54969461293537, y = 102.48444715535948)
 
 </div>
 
@@ -1440,7 +1469,7 @@ println(B()())
 println(rand(B()))
 ```
 
-    (x_hidden_from_B = 0.6457325875293848, y = 99.88238010588455)
+    (x_hidden_from_B = 0.18899969500711336, y = 99.3704062023967)
 
 </div>
 
@@ -1464,7 +1493,7 @@ end
 print(rand(B()))
 ```
 
-    (var"inner.x" = -0.41750897665468395, x = 98.4266088831162)
+    (var"inner.x" = 0.45580772395367214, x = 100.5643900955249)
 
 `@submodel` is useful as it allows you to:
 
@@ -1539,7 +1568,7 @@ end
 end
 ```
 
-    epidemic_model (generic function with 2 methods)
+    epidemic_model (generic function with 3 methods)
 
 <div class="x-small-text">
 
@@ -1579,7 +1608,7 @@ Another neat trick is to return early if integration fail
 end
 ```
 
-    epidemic_model (generic function with 2 methods)
+    epidemic_model (generic function with 3 methods)
 
 Equipped with this we can now easily construct *two* models using different priors
 
@@ -1625,7 +1654,7 @@ plot_trajectories!(p, group(chain_quantities_improved, :infected); n = 100, traj
 hline!([N], color="red", linestyle=:dash)
 ```
 
-![img](./.ob-jupyter/4cdae6a97b449dfb3be7d6d8ddacc71c5d0688a8.svg)
+![img](assets/outputs/2e1579a71c4072534cabe41a233cd283543874e6.png)
 
 </div>
 
@@ -1643,7 +1672,7 @@ hline!(plt2, [N], color="red", linestyle=:dash)
 plot(plt1, plt2, layout=(2, 1))
 ```
 
-![img](./.ob-jupyter/c953f3b2bb1441737ee62be471dcd3f2d6ee7115.svg)
+![img](assets/outputs/cffea7a80541e6f61fd182de85cb18bc8520b0b4.png)
 
 </div>
 
@@ -1656,11 +1685,11 @@ DataFrame(quantile(chain_quantities_improved[:, [:R0, :recovery_time], :]))
 ```
 
     2×6 DataFrame
-     Row │ parameters     2.5%     25.0%    50.0%    75.0%    97.5%   
-         │ Symbol         Float64  Float64  Float64  Float64  Float64 
-    ─────┼────────────────────────────────────────────────────────────
-       1 │ R0             0.2916   2.24072  4.48898  8.28308  33.6037
-       2 │ recovery_time  1.52981  2.55584  3.74715  6.23608  23.2365
+     Row │ parameters     2.5%      25.0%    50.0%    75.0%    97.5%   
+         │ Symbol         Float64   Float64  Float64  Float64  Float64 
+    ─────┼─────────────────────────────────────────────────────────────
+       1 │ R0             0.295478  2.30191  4.52993  8.41333  35.9603
+       2 │ recovery_time  1.55995   2.55853  3.81049  6.31316  23.6136
 
 Compare to `model_original`
 
@@ -1672,8 +1701,8 @@ DataFrame(quantile(chain_quantities_original[:, [:R0, :recovery_time], :]))
      Row │ parameters     2.5%      25.0%    50.0%    75.0%    97.5%   
          │ Symbol         Float64   Float64  Float64  Float64  Float64 
     ─────┼─────────────────────────────────────────────────────────────
-       1 │ R0             0.518819  2.10945  3.66706  7.31976  60.0878
-       2 │ recovery_time  0.69075   1.19555  1.84386  3.50136  30.0796
+       1 │ R0             0.495283  2.10977  3.7219   7.30474  59.9345
+       2 │ recovery_time  0.693234  1.20832  1.88465  3.48181  29.4579
 
 
 ## TASK Make `epidemic_model` work for `SEIRProblem`
@@ -1731,14 +1760,14 @@ model_seir = epidemic_model(SEIRProblem(N), prior_original)
 print(model_seir())
 ```
 
-    (R0 = 4.6383332279151155, recovery_time = 2.598778747371764, infected = [1.4652690748449446, 3.1424748658011303, 6.812022094028347, 14.62086504314218, 30.70136044955902, 61.664537008466276, 113.88687479757094, 183.14938135788782, 244.46751669496157, 268.2087066707596, 249.9972170550296, 208.0054813306197, 161.1964358038002, 119.70675098794152])
+    (R0 = 1.249905922185047, recovery_time = 1.1275375476185503, infected = [0.41458760197101757, 0.175982147386383, 0.07874256170480576, 0.03911764946193381, 0.02298161307777028, 0.01641950959805482, 0.013759122196211936, 0.012689081710378131, 0.012267493170560804, 0.012110652999146742, 0.012061533724674748, 0.012055660061838289, 0.01206858103422115, 0.012088341860835633])
 
 
 ## WARNING Consult with domain experts
 
 This guy should <span class="underline">not</span> be the one setting your priors!
 
-![img](.notes/attachments/A_litle_Norwegian_boy/2023-01-18_14-49-24_471337_3317365246956_1262712540_o.jpg)
+![img](.notes/attachments/2023-01-18_14-49-24_471337_3317365246956_1262712540_o.jpg)
 
 Get an actual scientist to do that&#x2026;
 
@@ -1784,7 +1813,7 @@ Rhat is *okay-ish* but not great, and ESS is pretty low innit?
 plot(chain_mh; size=(800, 500))
 ```
 
-![img](./.ob-jupyter/63b119772fa8322b113ff803011000ce95d7fe52.svg)
+![img](assets/outputs/7763ba1e7b6bb223fde4d453cab14cbcf723b75a.png)
 
 Eeehh doesn't look the greatest
 
@@ -1807,51 +1836,51 @@ predictions_mh = predict(model, chain_mh)
       parameters       mean       std   naive_se      mcse          ess      rhat 
           Symbol    Float64   Float64    Float64   Float64      Float64   Float64 
     
-       in_bed[1]     3.2973    2.1894     0.0109    0.0161   26174.6235    1.0004
-       in_bed[2]    10.8189    5.2730     0.0264    0.0731    3394.3482    1.0031
-       in_bed[3]    33.6627   14.6955     0.0735    0.3235    1172.3949    1.0072
-       in_bed[4]    92.1516   39.4684     0.1973    1.0342     802.1011    1.0087
-       in_bed[5]   185.7867   75.3719     0.3769    1.7506    1020.6019    1.0089
-       in_bed[6]   247.8788   94.1331     0.4707    1.5275    2319.7113    1.0050
-       in_bed[7]   234.3223   87.1694     0.4358    1.0656    5291.6223    1.0024
-       in_bed[8]   183.2494   68.9190     0.3446    0.9252    3569.6130    1.0020
-       in_bed[9]   129.7555   49.6735     0.2484    0.8236    2056.3541    1.0024
-      in_bed[10]    87.8265   34.8928     0.1745    0.6572    1538.6693    1.0033
-      in_bed[11]    57.7686   23.9315     0.1197    0.5236    1101.7006    1.0047
-      in_bed[12]    37.5906   16.2907     0.0815    0.3690    1040.4802    1.0051
-      in_bed[13]    24.1657   11.1522     0.0558    0.2741     872.2048    1.0064
-      in_bed[14]    15.5123    7.6329     0.0382    0.1999     757.2135    1.0068
+       in_bed[1]     3.3239    2.1843     0.0109    0.0157   30552.3306    1.0007
+       in_bed[2]    10.9294    5.2800     0.0264    0.0765    3416.2516    1.0035
+       in_bed[3]    34.2420   15.1777     0.0759    0.3451    1224.2460    1.0094
+       in_bed[4]    93.9719   40.8019     0.2040    1.0230     986.9341    1.0117
+       in_bed[5]   189.9567   76.0954     0.3805    1.6855    1228.9914    1.0092
+       in_bed[6]   251.4305   93.8553     0.4693    1.3148    3319.4564    1.0035
+       in_bed[7]   238.4202   87.8089     0.4390    1.0119    5807.9491    1.0019
+       in_bed[8]   187.8321   70.0577     0.3503    1.0287    3162.2209    1.0030
+       in_bed[9]   133.3270   50.5663     0.2528    0.8771    2085.0535    1.0031
+      in_bed[10]    90.4691   35.6730     0.1784    0.6878    1522.7552    1.0053
+      in_bed[11]    60.0969   24.7118     0.1236    0.5338    1282.4864    1.0065
+      in_bed[12]    39.1181   16.8669     0.0843    0.3941    1036.7038    1.0085
+      in_bed[13]    25.4850   11.6236     0.0581    0.2900     899.2603    1.0112
+      in_bed[14]    16.4625    8.0545     0.0403    0.2026     874.3031    1.0101
     
     Quantiles
-      parameters      2.5%      25.0%      50.0%      75.0%      97.5% 
-          Symbol   Float64    Float64    Float64    Float64    Float64 
+      parameters       2.5%      25.0%      50.0%      75.0%      97.5% 
+          Symbol    Float64    Float64    Float64    Float64    Float64 
     
-       in_bed[1]    0.0000     2.0000     3.0000     5.0000     8.0000
-       in_bed[2]    3.0000     7.0000    10.0000    14.0000    23.0000
-       in_bed[3]   11.0000    24.0000    32.0000    41.0000    69.0000
-       in_bed[4]   33.0000    66.0000    86.0000   112.0000   186.0000
-       in_bed[5]   70.0000   135.0000   176.0000   225.0000   362.0000
-       in_bed[6]   97.0000   183.7500   237.0000   299.0000   466.0000
-       in_bed[7]   93.0000   175.0000   225.0000   282.0000   434.0000
-       in_bed[8]   73.0000   136.0000   175.0000   221.0000   343.0000
-       in_bed[9]   49.0000    96.0000   124.0000   157.0000   243.0000
-      in_bed[10]   33.0000    64.0000    84.0000   106.0000   169.0000
-      in_bed[11]   20.0000    41.0000    55.0000    70.0000   113.0000
-      in_bed[12]   13.0000    26.0000    35.0000    46.0000    76.0000
-      in_bed[13]    7.0000    16.0000    23.0000    30.0000    50.0000
-      in_bed[14]    4.0000    10.0000    14.0000    20.0000    33.0000
+       in_bed[1]     0.0000     2.0000     3.0000     5.0000     8.0000
+       in_bed[2]     3.0000     7.0000    10.0000    14.0000    23.0000
+       in_bed[3]    12.0000    24.0000    32.0000    42.0000    70.0000
+       in_bed[4]    35.0000    67.0000    87.0000   113.0000   192.0000
+       in_bed[5]    76.0000   138.0000   179.0000   228.0000   373.0000
+       in_bed[6]   102.0000   188.0000   240.0000   301.0000   469.0000
+       in_bed[7]    97.0000   178.0000   228.0000   287.0000   439.0000
+       in_bed[8]    75.0000   140.0000   180.0000   226.0000   350.0000
+       in_bed[9]    52.0000    98.0000   128.0000   161.0000   250.0000
+      in_bed[10]    34.0000    66.0000    86.0000   110.0000   172.0000
+      in_bed[11]    21.0000    43.0000    57.0000    73.0000   117.0000
+      in_bed[12]    13.0000    28.0000    37.0000    48.0000    78.0000
+      in_bed[13]     8.0000    17.0000    24.0000    32.0000    53.0000
+      in_bed[14]     4.0000    11.0000    15.0000    21.0000    35.0000
 
 ```julia
 plot_trajectories!(plot(legend=false, size=(600, 300)), predictions_mh; data=data)
 ```
 
-![img](./.ob-jupyter/97aa0450fe6cf2e8209cfcaed80016dae195c77c.svg)
+![img](assets/outputs/53d5bcefafe0e9c29e4ee0f560bc2648d8b43118.png)
 
 ```julia
 plot_trajectory_quantiles!(plot(legend=false, size=(600, 300)), predictions_mh; data=data)
 ```
 
-![img](./.ob-jupyter/80496c5608372febe3f75c78ff0bb8b775a01f4c.svg)
+![img](assets/outputs/0d84524cc352ba3471bf66156dda0a8cfd1e66b9.png)
 
 Okay, it's not *completely* useless, but my trust-issues are still present.
 
@@ -1920,7 +1949,7 @@ With that being said, differentiating through numerical `solve` is not necessari
 
 There are numerous ways of approaching this problem
 
-![img](.notes/attachments/Bayesian_inference/2023-01-22_12-30-07_Screenshot_20230122_122936.png)
+![img](.notes/attachments/2023-01-22_12-30-07_Screenshot_20230122_122936.png)
 
 [https://arxiv.org/abs/1812.01892](https://arxiv.org/abs/1812.01892) is *great* resource
 
@@ -1952,20 +1981,16 @@ chain = sample(model_conditioned, NUTS(0.8), MCMCThreads(), 1000, 4);
 ```
 
     ┌ Info: Found initial step size
-    └   ϵ = 0.2
+    └   ϵ = 0.8
     ┌ Info: Found initial step size
     └   ϵ = 0.4
     ┌ Info: Found initial step size
-    └   ϵ = 0.05
+    └   ϵ = 0.025
     ┌ Info: Found initial step size
     └   ϵ = 0.05
     ┌ Warning: The current proposal will be rejected due to numerical error(s).
     │   isfinite.((θ, r, ℓπ, ℓκ)) = (true, false, false, false)
     └ @ AdvancedHMC ~/.julia/packages/AdvancedHMC/4fByY/src/hamiltonian.jl:49
-    ┌ Warning: The current proposal will be rejected due to numerical error(s).
-    │   isfinite.((θ, r, ℓπ, ℓκ)) = (true, false, false, false)
-    └ @ AdvancedHMC ~/.julia/packages/AdvancedHMC/4fByY/src/hamiltonian.jl:49
-    Sampling (4 threads):  75%|█████████████████████▊       |  ETA: 0:00:00Sampling (4 threads): 100%|█████████████████████████████| Time: 0:00:01
 
 ```julia
 chain
@@ -1976,8 +2001,8 @@ chain
     Iterations        = 501:1:1500
     Number of chains  = 4
     Samples per chain = 1000
-    Wall duration     = 31.42 seconds
-    Compute duration  = 120.69 seconds
+    Wall duration     = 8.48 seconds
+    Compute duration  = 33.22 seconds
     parameters        = β, γ, ϕ⁻¹
     internals         = lp, n_steps, is_accept, acceptance_rate, log_density, hamiltonian_energy, hamiltonian_energy_error, max_hamiltonian_energy_error, tree_depth, numerical_error, step_size, nom_step_size
     
@@ -1985,18 +2010,18 @@ chain
       parameters      mean       std   naive_se      mcse         ess      rhat    ⋯
           Symbol   Float64   Float64    Float64   Float64     Float64   Float64    ⋯
     
-               β    1.7298    0.0516     0.0008    0.0010   2426.3548    1.0008    ⋯
-               γ    0.5295    0.0428     0.0007    0.0009   2558.5668    0.9999    ⋯
-             ϕ⁻¹    0.1354    0.0725     0.0011    0.0012   2867.0303    0.9999    ⋯
+               β    1.7305    0.0532     0.0008    0.0012   2305.3519    1.0006    ⋯
+               γ    0.5305    0.0430     0.0007    0.0009   2432.0514    0.9998    ⋯
+             ϕ⁻¹    0.1349    0.0727     0.0011    0.0015   2211.5812    0.9994    ⋯
                                                                     1 column omitted
     
     Quantiles
       parameters      2.5%     25.0%     50.0%     75.0%     97.5% 
           Symbol   Float64   Float64   Float64   Float64   Float64 
     
-               β    1.6338    1.6947    1.7278    1.7616    1.8385
-               γ    0.4485    0.5025    0.5283    0.5560    0.6210
-             ϕ⁻¹    0.0426    0.0836    0.1200    0.1691    0.3198
+               β    1.6279    1.6970    1.7281    1.7618    1.8401
+               γ    0.4464    0.5024    0.5294    0.5580    0.6172
+             ϕ⁻¹    0.0394    0.0843    0.1180    0.1699    0.3165
 
 Muuuch better! Both ESS and Rhat is looking good
 
@@ -2004,7 +2029,7 @@ Muuuch better! Both ESS and Rhat is looking good
 plot(chain; size=(800, 500))
 ```
 
-![img](./.ob-jupyter/b5f6a17120c129c0e049add44bd8d68eac49c3af.svg)
+![img](assets/outputs/ba6a57881c744560992e6aeb0ff47cfb9aaf9238.png)
 
 ```julia
 # Predict using the results from NUTS.
@@ -2023,51 +2048,51 @@ predictions = predict(model, chain)
       parameters       mean       std   naive_se      mcse         ess      rhat 
           Symbol    Float64   Float64    Float64   Float64     Float64   Float64 
     
-       in_bed[1]     3.2345    2.1291     0.0337    0.0361   4082.0334    1.0005
-       in_bed[2]    10.8420    5.3514     0.0846    0.0836   3818.8171    1.0001
-       in_bed[3]    33.9072   15.0125     0.2374    0.2372   3813.1058    0.9997
-       in_bed[4]    92.9860   41.1961     0.6514    0.6870   3135.9688    0.9995
-       in_bed[5]   186.2188   76.9148     1.2161    1.2861   3933.3304    0.9997
-       in_bed[6]   248.8780   98.6737     1.5602    1.6616   4202.4889    0.9996
-       in_bed[7]   234.0277   89.0830     1.4085    1.6467   3083.7790    1.0017
-       in_bed[8]   185.3893   70.7139     1.1181    0.9955   3858.6321    1.0006
-       in_bed[9]   132.9863   52.2871     0.8267    0.7849   3609.2763    0.9994
-      in_bed[10]    89.0078   36.3992     0.5755    0.5277   3820.1524    1.0002
-      in_bed[11]    59.2105   25.3240     0.4004    0.4831   3612.8336    1.0001
-      in_bed[12]    38.4300   16.6111     0.2626    0.3183   3906.0791    1.0012
-      in_bed[13]    25.3730   12.2017     0.1929    0.2152   3462.3642    0.9998
-      in_bed[14]    16.1513    8.1381     0.1287    0.1522   3418.3194    0.9999
+       in_bed[1]     3.2840    2.1793     0.0345    0.0327   4055.3023    0.9998
+       in_bed[2]    10.7950    5.4560     0.0863    0.0749   3714.2037    1.0005
+       in_bed[3]    34.0883   15.7327     0.2488    0.2596   3642.2139    1.0001
+       in_bed[4]    93.0002   41.3318     0.6535    0.7048   3577.5458    1.0012
+       in_bed[5]   187.5652   79.0050     1.2492    1.2543   3478.9204    1.0010
+       in_bed[6]   248.9330   97.2779     1.5381    1.6339   4056.1039    1.0008
+       in_bed[7]   234.6240   89.1151     1.4090    1.2074   4022.8396    0.9996
+       in_bed[8]   185.4033   71.8807     1.1365    1.0479   3860.3337    0.9997
+       in_bed[9]   130.9750   50.4204     0.7972    0.8315   3694.8750    0.9999
+      in_bed[10]    88.2115   35.8989     0.5676    0.6532   3401.2244    0.9999
+      in_bed[11]    59.4943   25.4118     0.4018    0.4155   3460.7875    0.9997
+      in_bed[12]    38.6793   16.7184     0.2643    0.2929   3697.7714    1.0005
+      in_bed[13]    24.8678   11.4870     0.1816    0.2081   3578.3080    1.0001
+      in_bed[14]    15.9450    8.2237     0.1300    0.1376   3389.6307    0.9996
     
     Quantiles
       parameters      2.5%      25.0%      50.0%      75.0%      97.5% 
           Symbol   Float64    Float64    Float64    Float64    Float64 
     
-       in_bed[1]    0.0000     2.0000     3.0000     4.0000     8.0000
-       in_bed[2]    3.0000     7.0000    10.0000    14.0000    24.0000
-       in_bed[3]   12.0000    23.0000    32.0000    41.0000    70.0000
-       in_bed[4]   33.0000    65.0000    86.0000   113.0000   194.0000
-       in_bed[5]   69.0000   133.0000   175.0000   226.0000   369.0250
-       in_bed[6]   94.0000   184.0000   235.0000   299.0000   480.0750
-       in_bed[7]   91.0000   174.0000   223.0000   283.0000   439.0250
-       in_bed[8]   71.0000   138.0000   176.0000   224.0000   347.0000
-       in_bed[9]   47.9750    97.0000   128.0000   160.0000   256.0000
-      in_bed[10]   31.0000    64.0000    84.0000   109.0000   169.0000
-      in_bed[11]   20.0000    42.0000    56.0000    72.0000   119.0250
-      in_bed[12]   12.0000    27.0000    36.0000    47.0000    76.0250
-      in_bed[13]    7.0000    17.0000    24.0000    32.0000    52.0250
-      in_bed[14]    4.0000    10.7500    15.0000    20.0000    35.0000
+       in_bed[1]    0.0000     2.0000     3.0000     5.0000     8.0000
+       in_bed[2]    2.9750     7.0000    10.0000    14.0000    24.0000
+       in_bed[3]   11.0000    24.0000    32.0000    42.0000    73.0000
+       in_bed[4]   33.0000    65.0000    87.0000   113.0000   190.0000
+       in_bed[5]   69.0000   134.0000   177.0000   226.0000   376.0000
+       in_bed[6]   95.0000   184.0000   237.0000   299.0000   473.0250
+       in_bed[7]   88.0000   175.0000   224.0000   283.0000   440.0250
+       in_bed[8]   70.0000   137.0000   176.0000   225.0000   351.0000
+       in_bed[9]   49.0000    96.0000   126.0000   159.0000   245.0000
+      in_bed[10]   31.9750    64.0000    84.0000   107.0000   170.0000
+      in_bed[11]   19.0000    42.0000    57.0000    73.0000   118.0250
+      in_bed[12]   13.0000    27.0000    36.0000    48.0000    77.0000
+      in_bed[13]    7.0000    17.0000    23.0000    31.0000    51.0000
+      in_bed[14]    4.0000    10.0000    15.0000    20.0000    36.0000
 
 ```julia
 plot_trajectories!(plot(legend=false, size=(600, 300)), predictions; n = 1000, data=data)
 ```
 
-![img](./.ob-jupyter/22b20870bf15701db79a6844fce6c471d841dbae.svg)
+![img](assets/outputs/870b8fafd890396444043fd96c7d303fb7722627.png)
 
 ```julia
 plot_trajectory_quantiles!(plot(legend=false, size=(600, 300)), predictions; data=data)
 ```
 
-![img](./.ob-jupyter/1a23e78a612a1570c844b81b4f0f5ad3c0071930.svg)
+![img](assets/outputs/145ba1245ad3196f9bb3001254df5b3cf451e778.png)
 
 
 ## Simulation-based calibration (SBC) [Talts et. al. (2018)](https://arxiv.org/abs/1804.06788)
@@ -2080,7 +2105,7 @@ For large enough (n), the "combination" of the posteriors should recover the pri
 
 "Combination" here usually means computing some statistic and comparing against what it should be
 
-![img](.notes/attachments/Bayesian_inference/2023-01-22_12-09-24_Screenshot_20230122_120848.png)
+![img](.notes/attachments/2023-01-22_12-09-24_Screenshot_20230122_120848.png)
 
 That's very expensive → in practice we just do this once or twice
 
@@ -2129,8 +2154,8 @@ chain_test = sample(model_test_conditioned, NUTS(0.8), 1000);
 ```
 
     ┌ Info: Found initial step size
-    └   ϵ = 0.05
-    Sampling:   4%|█▊                                       |  ETA: 0:00:05Sampling:   8%|███▌                                     |  ETA: 0:00:03Sampling:  15%|██████▏                                  |  ETA: 0:00:02Sampling:  24%|█████████▊                               |  ETA: 0:00:02Sampling:  32%|█████████████▎                           |  ETA: 0:00:01Sampling:  40%|████████████████▌                        |  ETA: 0:00:01Sampling:  48%|███████████████████▌                     |  ETA: 0:00:01Sampling:  56%|██████████████████████▊                  |  ETA: 0:00:01Sampling:  64%|██████████████████████████▎              |  ETA: 0:00:01Sampling:  73%|█████████████████████████████▉           |  ETA: 0:00:00Sampling:  82%|█████████████████████████████████▌       |  ETA: 0:00:00Sampling:  90%|████████████████████████████████████▉    |  ETA: 0:00:00Sampling:  99%|████████████████████████████████████████▌|  ETA: 0:00:00Sampling: 100%|█████████████████████████████████████████| Time: 0:00:01
+    └   ϵ = 0.0125
+    Sampling:   4%|█▊                                       |  ETA: 0:00:05Sampling:  12%|████▊                                    |  ETA: 0:00:02Sampling:  25%|██████████▏                              |  ETA: 0:00:01Sampling:  39%|███████████████▉                         |  ETA: 0:00:01Sampling:  52%|█████████████████████▍                   |  ETA: 0:00:01Sampling:  66%|███████████████████████████              |  ETA: 0:00:00Sampling:  80%|████████████████████████████████▊        |  ETA: 0:00:00Sampling:  93%|██████████████████████████████████████   |  ETA: 0:00:00Sampling: 100%|█████████████████████████████████████████| Time: 0:00:01
 
 Did we recover the parameters?
 
@@ -2146,7 +2171,7 @@ end
 plot(ps..., layout=(3, 1), size=(600, 400))
 ```
 
-![img](./.ob-jupyter/3a27f30438d973d1696b2925633ca5822a4edcc0.svg)
+![img](assets/outputs/be1c12fbb76e6f039cc149b75842d8ee461b8f89.png)
 
 </div>
 
@@ -2182,23 +2207,29 @@ X = randn(2, 1_000); lin_reg = linear_regression(X); true_vals = rand(lin_reg)
 lin_reg_conditioned = lin_reg | (y = true_vals.y,);
 ```
 
-</div>
-
 We can then do `Gibbs` but sampling \(β\) using `ESS` and \(\sigma^2\) using `HMC`
 
 ```julia
 chain_ess_hmc = sample(lin_reg_conditioned, Gibbs(ESS(:β), HMC(1e-3, 16, :σ²)), 1_000)
 ```
 
-    Sampling:  58%|███████████████████████▊                 |  ETA: 0:00:00Sampling:  90%|█████████████████████████████████████▏   |  ETA: 0:00:00Sampling: 100%|█████████████████████████████████████████| Time: 0:00:00
+</div>
+
+<div class="small-text">
+
+```julia
+chain_ess_hmc = sample(lin_reg_conditioned, Gibbs(ESS(:β), HMC(1e-3, 16, :σ²)), 1_000)
+```
+
+    Sampling:  10%|████▎                                    |  ETA: 0:00:01Sampling:  58%|███████████████████████▊                 |  ETA: 0:00:00Sampling: 100%|█████████████████████████████████████████| Time: 0:00:00
 
     Chains MCMC chain (1000×4×1 Array{Float64, 3}):
     
     Iterations        = 1:1:1000
     Number of chains  = 1
     Samples per chain = 1000
-    Wall duration     = 8.15 seconds
-    Compute duration  = 8.15 seconds
+    Wall duration     = 3.39 seconds
+    Compute duration  = 3.39 seconds
     parameters        = β[1], β[2], σ²
     internals         = lp
     
@@ -2206,22 +2237,24 @@ chain_ess_hmc = sample(lin_reg_conditioned, Gibbs(ESS(:β), HMC(1e-3, 16, :σ²)
       parameters      mean       std   naive_se      mcse        ess      rhat   e ⋯
           Symbol   Float64   Float64    Float64   Float64    Float64   Float64     ⋯
     
-            β[1]   -0.3272    0.0671     0.0021    0.0031   413.4034    0.9991     ⋯
-            β[2]   -0.4280    0.0533     0.0017    0.0026   322.6543    0.9991     ⋯
-              σ²    2.1604    0.1001     0.0032    0.0139    31.2734    1.0038     ⋯
+            β[1]   -1.6886    0.1124     0.0036    0.0075   211.1299    1.0006     ⋯
+            β[2]   -0.7129    0.0581     0.0018    0.0024   433.8817    1.0015     ⋯
+              σ²    1.9929    0.0893     0.0028    0.0113    48.7541    1.0021     ⋯
                                                                     1 column omitted
     
     Quantiles
       parameters      2.5%     25.0%     50.0%     75.0%     97.5% 
           Symbol   Float64   Float64   Float64   Float64   Float64 
     
-            β[1]   -0.4215   -0.3631   -0.3272   -0.2951   -0.2342
-            β[2]   -0.5213   -0.4599   -0.4282   -0.3976   -0.3344
-              σ²    1.9757    2.0899    2.1548    2.2229    2.3708
+            β[1]   -1.7810   -1.7259   -1.6992   -1.6630   -1.6026
+            β[2]   -0.7994   -0.7469   -0.7146   -0.6805   -0.6266
+              σ²    1.8287    1.9345    1.9893    2.0446    2.1821
 
 Could potentially lead to improvements
 
 **NOTE:** Usually *very* difficult to choose sampler parameters in this case
+
+</div>
 
 Means one can also mix discrete and continuous
 
@@ -2242,13 +2275,15 @@ chain_discrete = sample(
 )
 ```
 
+    Sampling (4 threads):  75%|█████████████████████▊       |  ETA: 0:00:00Sampling (4 threads): 100%|█████████████████████████████| Time: 0:00:00
+
     Chains MCMC chain (1000×13×4 Array{Float64, 3}):
     
     Iterations        = 1:1:1000
     Number of chains  = 4
     Samples per chain = 1000
-    Wall duration     = 24.54 seconds
-    Compute duration  = 97.18 seconds
+    Wall duration     = 9.1 seconds
+    Compute duration  = 35.2 seconds
     parameters        = cluster[1], cluster[2], cluster[3], cluster[4], cluster[5], cluster[6], cluster[7], cluster[8], cluster[9], cluster[10], μ[1], μ[2]
     internals         = lp
     
@@ -2256,36 +2291,36 @@ chain_discrete = sample(
        parameters       mean       std   naive_se      mcse         ess      rhat  ⋯
            Symbol    Float64   Float64    Float64   Float64     Float64   Float64  ⋯
     
-       cluster[1]     1.9995    0.0224     0.0004    0.0005   2004.0160    1.0010  ⋯
-       cluster[2]     1.9988    0.0353     0.0006    0.0013   1135.4089    1.0040  ⋯
-       cluster[3]     2.0000    0.0000     0.0000    0.0000         NaN       NaN  ⋯
-       cluster[4]     1.9828    0.1302     0.0021    0.0114     44.8340    1.0587  ⋯
-       cluster[5]     1.0032    0.0569     0.0009    0.0019    737.9824    1.0022  ⋯
-       cluster[6]     2.0000    0.0000     0.0000    0.0000         NaN       NaN  ⋯
-       cluster[7]     2.0000    0.0000     0.0000    0.0000         NaN       NaN  ⋯
-       cluster[8]     2.0000    0.0000     0.0000    0.0000         NaN       NaN  ⋯
-       cluster[9]     1.0085    0.0918     0.0015    0.0044    196.5919    1.0105  ⋯
+       cluster[1]     1.0245    0.1546     0.0024    0.0135     49.1752    1.0586  ⋯
+       cluster[2]     1.0517    0.2215     0.0035    0.0244     24.8047    1.1288  ⋯
+       cluster[3]     1.1227    0.3282     0.0052    0.0375     18.5621    1.2743  ⋯
+       cluster[4]     1.9995    0.0224     0.0004    0.0004   4002.3197    0.9999  ⋯
+       cluster[5]     1.9725    0.1636     0.0026    0.0195     25.6370    1.1311  ⋯
+       cluster[6]     1.9835    0.1274     0.0020    0.0139     61.8799    1.0723  ⋯
+       cluster[7]     1.2712    0.4447     0.0070    0.0532     10.2500    1.9732  ⋯
+       cluster[8]     1.0083    0.0905     0.0014    0.0065    128.4567    1.0179  ⋯
+       cluster[9]     1.3710    0.4831     0.0076    0.0588     10.7308    1.8081  ⋯
       cluster[10]     2.0000    0.0000     0.0000    0.0000         NaN       NaN  ⋯
-             μ[1]   -10.0025    0.9176     0.0145    0.1160      8.1003    8.2600  ⋯
-             μ[2]     9.9452    0.5404     0.0085    0.0680      8.6625    3.1899  ⋯
+             μ[1]   -10.2644    1.1909     0.0188    0.1496      8.0814    8.8935  ⋯
+             μ[2]     9.6664    0.8387     0.0133    0.1037      8.4436    3.7077  ⋯
                                                                     1 column omitted
     
     Quantiles
-       parameters       2.5%      25.0%     50.0%     75.0%     97.5% 
-           Symbol    Float64    Float64   Float64   Float64   Float64 
+       parameters       2.5%      25.0%      50.0%     75.0%     97.5% 
+           Symbol    Float64    Float64    Float64   Float64   Float64 
     
-       cluster[1]     2.0000     2.0000    2.0000    2.0000    2.0000
-       cluster[2]     2.0000     2.0000    2.0000    2.0000    2.0000
-       cluster[3]     2.0000     2.0000    2.0000    2.0000    2.0000
-       cluster[4]     2.0000     2.0000    2.0000    2.0000    2.0000
-       cluster[5]     1.0000     1.0000    1.0000    1.0000    1.0000
-       cluster[6]     2.0000     2.0000    2.0000    2.0000    2.0000
-       cluster[7]     2.0000     2.0000    2.0000    2.0000    2.0000
-       cluster[8]     2.0000     2.0000    2.0000    2.0000    2.0000
-       cluster[9]     1.0000     1.0000    1.0000    1.0000    1.0000
-      cluster[10]     2.0000     2.0000    2.0000    2.0000    2.0000
-             μ[1]   -11.7541   -10.5129   -9.8393   -9.3045   -8.7430
-             μ[2]     8.6504     9.5822    9.9918   10.3444   10.8388
+       cluster[1]     1.0000     1.0000     1.0000    1.0000    1.0000
+       cluster[2]     1.0000     1.0000     1.0000    1.0000    2.0000
+       cluster[3]     1.0000     1.0000     1.0000    1.0000    2.0000
+       cluster[4]     2.0000     2.0000     2.0000    2.0000    2.0000
+       cluster[5]     1.0000     2.0000     2.0000    2.0000    2.0000
+       cluster[6]     2.0000     2.0000     2.0000    2.0000    2.0000
+       cluster[7]     1.0000     1.0000     1.0000    2.0000    2.0000
+       cluster[8]     1.0000     1.0000     1.0000    1.0000    1.0000
+       cluster[9]     1.0000     1.0000     1.0000    2.0000    2.0000
+      cluster[10]     2.0000     2.0000     2.0000    2.0000    2.0000
+             μ[1]   -11.8037   -11.3141   -10.4745   -9.3795   -8.2947
+             μ[2]     8.4038     8.9560     9.6131   10.4825   11.0633
 
 </div>
 
@@ -2300,7 +2335,7 @@ end
 plot(ps..., layout=(length(ps) ÷ 2, 2), size=(600, 40 * length(ps)))
 ```
 
-![img](./.ob-jupyter/cb8611d36f5ea8f71adee416439ed78af7ec4bca.svg)
+![img](assets/outputs/f64dea8a5533f00397817ee6703ff49dcb105c25.png)
 
 </div>
 
@@ -2315,7 +2350,7 @@ Again, this is difficult to get to work properly on non-trivial examples
 -   [TuringBenchmarking.jl](https://github.com/TuringLang/TuringBenchmarking.jl): useful for benchmarking Turing.jl models
 -   [TuringCallbacks.jl](https://github.com/TuringLang/TuringCallbacks.jl): on-the-fly visualizations using `tensorboard`
 
-![img](.notes/attachments/Bayesian_inference/2023-01-25_20-50-11_tensorboard_demo_histograms_screen.png)
+![img](.notes/attachments/2023-01-25_20-50-11_tensorboard_demo_histograms_screen.png)
 
 
 ## Downsides of using Turing.jl
@@ -2355,16 +2390,16 @@ run(suite)
       tags: []
       "linked" => 4-element BenchmarkTools.BenchmarkGroup:
     	  tags: []
-    	  "Turing.Essential.ReverseDiffAD{false}()" => Trial(323.167 μs)
-    	  "evaluation" => Trial(22.249 μs)
-    	  "Turing.Essential.ForwardDiffAD{40, true}()" => Trial(95.650 μs)
-    	  "Turing.Essential.ZygoteAD()" => Trial(1.949 ms)
+    	  "Turing.Essential.ReverseDiffAD{false}()" => Trial(368.161 μs)
+    	  "evaluation" => Trial(28.270 μs)
+    	  "Turing.Essential.ForwardDiffAD{40, true}()" => Trial(122.734 μs)
+    	  "Turing.Essential.ZygoteAD()" => Trial(3.121 ms)
       "not_linked" => 4-element BenchmarkTools.BenchmarkGroup:
     	  tags: []
-    	  "Turing.Essential.ReverseDiffAD{false}()" => Trial(341.171 μs)
-    	  "evaluation" => Trial(21.663 μs)
-    	  "Turing.Essential.ForwardDiffAD{40, true}()" => Trial(108.925 μs)
-    	  "Turing.Essential.ZygoteAD()" => Trial(1.970 ms)
+    	  "Turing.Essential.ReverseDiffAD{false}()" => Trial(454.382 μs)
+    	  "evaluation" => Trial(27.078 μs)
+    	  "Turing.Essential.ForwardDiffAD{40, true}()" => Trial(151.882 μs)
+    	  "Turing.Essential.ZygoteAD()" => Trial(2.885 ms)
 
 
 ## More data
@@ -2390,32 +2425,32 @@ model_fake_conditioned().infected
 ```
 
     10000-element Vector{Float64}:
-     1.0940413043949035
-     1.196612961473842
-     1.3084266135739326
-     1.430240933738731
-     1.5628620427928082
-     1.7071438039665967
-     1.8639868924046723
-     2.034336167188898
-     2.2191776065019804
-     2.4195399370305464
-     2.636479131790529
-     2.871072588162098
-     3.124411797861822
-     ⋮
-     1.379335957928034e-13
-     1.321504591443023e-13
-     1.263651273413298e-13
-     1.2057760038388088e-13
-     1.1478787827195928e-13
-     1.0899596100556506e-13
-     1.0320184858469691e-13
-     9.740554100935233e-14
-     9.160703827954016e-14
-     8.580634039525028e-14
-     8.000344735648649e-14
-     7.419835916324877e-14
+       2.7975983440413223
+       7.748418187214023
+      20.88236766334096
+      52.45691560357974
+     112.4569199051879
+     183.12340579979855
+     215.7666283305088
+     196.72101213557013
+     153.56623546042505
+     110.06252620822383
+      75.3051039014327
+      50.188689698069695
+      32.953929054350986
+       ⋮
+      -4.200904016575503e-16
+      -3.884354912599255e-16
+      -3.5677074858373597e-16
+      -3.2509617362904785e-16
+      -2.934117663958071e-16
+      -2.6171752688401963e-16
+      -2.300134550937096e-16
+      -1.9829955102488296e-16
+      -1.6657581467747957e-16
+      -1.3484224605157163e-16
+      -1.0309884514710501e-16
+      -7.134561196412778e-17
 
 And run some benchmarks!
 
@@ -2435,16 +2470,16 @@ run(suite)
       tags: []
       "linked" => 4-element BenchmarkTools.BenchmarkGroup:
     	  tags: []
-    	  "Turing.Essential.ReverseDiffAD{false}()" => Trial(31.269 ms)
-    	  "evaluation" => Trial(1.708 ms)
-    	  "Turing.Essential.ForwardDiffAD{40, true}()" => Trial(3.163 ms)
-    	  "Turing.Essential.ZygoteAD()" => Trial(23.199 ms)
+    	  "Turing.Essential.ReverseDiffAD{false}()" => Trial(42.524 ms)
+    	  "evaluation" => Trial(2.020 ms)
+    	  "Turing.Essential.ForwardDiffAD{40, true}()" => Trial(3.687 ms)
+    	  "Turing.Essential.ZygoteAD()" => Trial(29.392 ms)
       "not_linked" => 4-element BenchmarkTools.BenchmarkGroup:
     	  tags: []
-    	  "Turing.Essential.ReverseDiffAD{false}()" => Trial(30.741 ms)
-    	  "evaluation" => Trial(1.676 ms)
-    	  "Turing.Essential.ForwardDiffAD{40, true}()" => Trial(3.022 ms)
-    	  "Turing.Essential.ZygoteAD()" => Trial(22.835 ms)
+    	  "Turing.Essential.ReverseDiffAD{false}()" => Trial(40.269 ms)
+    	  "evaluation" => Trial(2.035 ms)
+    	  "Turing.Essential.ForwardDiffAD{40, true}()" => Trial(3.826 ms)
+    	  "Turing.Essential.ZygoteAD()" => Trial(32.606 ms)
 
 What if we use a different `sensealg` in `solve`?
 
@@ -2482,7 +2517,7 @@ What if we use a different `sensealg` in `solve`?
 end
 ```
 
-    epidemic_model (generic function with 4 methods)
+    epidemic_model (generic function with 3 methods)
 
 ```julia
 model_fake = epidemic_model(
@@ -2509,18 +2544,86 @@ run(suite)
       tags: []
       "linked" => 3-element BenchmarkTools.BenchmarkGroup:
     	  tags: []
-    	  "Turing.Essential.ReverseDiffAD{false}()" => Trial(15.022 ms)
-    	  "evaluation" => Trial(1.674 ms)
-    	  "Turing.Essential.ZygoteAD()" => Trial(7.388 ms)
+    	  "Turing.Essential.ReverseDiffAD{false}()" => Trial(21.775 ms)
+    	  "evaluation" => Trial(2.104 ms)
+    	  "Turing.Essential.ZygoteAD()" => Trial(10.506 ms)
       "not_linked" => 3-element BenchmarkTools.BenchmarkGroup:
     	  tags: []
-    	  "Turing.Essential.ReverseDiffAD{false}()" => Trial(15.085 ms)
-    	  "evaluation" => Trial(1.671 ms)
-    	  "Turing.Essential.ZygoteAD()" => Trial(7.411 ms)
+    	  "Turing.Essential.ReverseDiffAD{false}()" => Trial(23.455 ms)
+    	  "evaluation" => Trial(1.889 ms)
+    	  "Turing.Essential.ZygoteAD()" => Trial(11.741 ms)
 
 Okay, so it's faster but ForwardDiff.jl still wins
 
 (which is not surprising on such a low-dimensional problem)
+
+
+# Case: spatio-temporal COVID modeling in UK
+
+![img](.notes/attachments/2023-01-26_15-47-56_Screenshot_20230126_154747.png)
+
+Main model looked like this
+
+![img](.notes/attachments/2023-01-25_02-23-23_Screenshot_20230125_022312.png)
+
+Roughly 50 000 parameters
+
+Output, for different approaches, looked like this
+
+<video controls width="1000">
+    <source src="file:///home/tor/Dropbox/tmp/epimap-vs-epimap-debiased-vs-debiased-different-coloring.mp4" type="video/mp4">
+    Sorry, your browser doesn't support embedded videos.
+</video>
+
+```julia
+# GP-model for R-value.
+@submodel R = SpatioTemporalGP(K_spatial, K_local, K_time, T; σ_spatial, σ_local, ρ_spatial, ρ_time)
+
+# Latent infections.
+@submodel X = RegionalFlux(F_id, F_in, F_out, W, R, X_cond, T; days_per_step, σ_ξ)
+
+# Likelihood.
+@submodel C = NegBinomialWeeklyAdjustedTesting(C, X, D, num_cond, T)
+```
+
+with
+
+<div class="small-text">
+
+```julia
+@model function SpatioTemporalGP(
+    K_spatial, K_local, K_time,
+    ::Type{T} = Float64;
+) where {T}
+    num_steps = size(K_time, 1)
+    num_regions = size(K_spatial, 1)
+
+    # Length scales
+    ρ_spatial ~ 𝒩₊(T(0), T(5))
+    ρ_time ~ 𝒩₊(T(0), T(5))
+
+    # Scales
+    σ_spatial ~ 𝒩₊(T(0), T(0.5))
+    σ_local ~ 𝒩₊(T(0), T(0.5))
+
+    # GP
+    E_vec ~ MvNormal(num_regions * num_steps, one(T))
+    E = reshape(E_vec, (num_regions, num_steps))
+
+    # Get cholesky decomps using precomputed kernel matrices
+    L_space = spatial_L(K_spatial, K_local, σ_spatial, σ_local, ρ_spatial)
+    U_time = time_U(K_time, ρ_time)
+
+    # Obtain realization of log-R.
+    f = L_space * E * U_time
+
+    # Compute R.
+    R = exp.(f)
+    return R
+end
+```
+
+</div>
 
 
 # Julia: The Good, the Bad, and the Ugly
@@ -2582,13 +2685,13 @@ And yeah, you can even look into the macros
 
     quote
         function f(__model__::DynamicPPL.Model, __varinfo__::DynamicPPL.AbstractVarInfo, __context__::AbstractPPL.AbstractContext; )
-            #= In[112]:1 =#
+            #= In[113]:1 =#
             begin
-                var"##dist#1257" = Normal()
-                var"##vn#1254" = (DynamicPPL.resolve_varnames)((AbstractPPL.VarName){:x}(), var"##dist#1257")
-                var"##isassumption#1255" = begin
-                        if (DynamicPPL.contextual_isassumption)(__context__, var"##vn#1254")
-                            if !((DynamicPPL.inargnames)(var"##vn#1254", __model__)) || (DynamicPPL.inmissings)(var"##vn#1254", __model__)
+                var"##dist#1413" = Normal()
+                var"##vn#1410" = (DynamicPPL.resolve_varnames)((AbstractPPL.VarName){:x}(), var"##dist#1413")
+                var"##isassumption#1411" = begin
+                        if (DynamicPPL.contextual_isassumption)(__context__, var"##vn#1410")
+                            if !((DynamicPPL.inargnames)(var"##vn#1410", __model__)) || (DynamicPPL.inmissings)(var"##vn#1410", __model__)
                                 true
                             else
                                 x === missing
@@ -2599,28 +2702,28 @@ And yeah, you can even look into the macros
                     end
                 begin
                     #= /home/tor/.julia/packages/DynamicPPL/WBmMU/src/compiler.jl:539 =#
-                    var"##retval#1259" = if var"##isassumption#1255"
+                    var"##retval#1415" = if var"##isassumption#1411"
                             begin
-                                (var"##value#1258", __varinfo__) = (DynamicPPL.tilde_assume!!)(__context__, (DynamicPPL.unwrap_right_vn)((DynamicPPL.check_tilde_rhs)(var"##dist#1257"), var"##vn#1254")..., __varinfo__)
-                                x = var"##value#1258"
-                                var"##value#1258"
+                                (var"##value#1414", __varinfo__) = (DynamicPPL.tilde_assume!!)(__context__, (DynamicPPL.unwrap_right_vn)((DynamicPPL.check_tilde_rhs)(var"##dist#1413"), var"##vn#1410")..., __varinfo__)
+                                x = var"##value#1414"
+                                var"##value#1414"
                             end
                         else
-                            if !((DynamicPPL.inargnames)(var"##vn#1254", __model__))
-                                x = (DynamicPPL.getvalue_nested)(__context__, var"##vn#1254")
+                            if !((DynamicPPL.inargnames)(var"##vn#1410", __model__))
+                                x = (DynamicPPL.getvalue_nested)(__context__, var"##vn#1410")
                             end
-                            (var"##value#1256", __varinfo__) = (DynamicPPL.tilde_observe!!)(__context__, (DynamicPPL.check_tilde_rhs)(var"##dist#1257"), x, var"##vn#1254", __varinfo__)
-                            var"##value#1256"
+                            (var"##value#1412", __varinfo__) = (DynamicPPL.tilde_observe!!)(__context__, (DynamicPPL.check_tilde_rhs)(var"##dist#1413"), x, var"##vn#1410", __varinfo__)
+                            var"##value#1412"
                         end
                     #= /home/tor/.julia/packages/DynamicPPL/WBmMU/src/compiler.jl:540 =#
-                    return (var"##retval#1259", __varinfo__)
+                    return (var"##retval#1415", __varinfo__)
                 end
             end
         end
         begin
             $(Expr(:meta, :doc))
             function f(; )
-                #= In[112]:1 =#
+                #= In[113]:1 =#
                 return (DynamicPPL.Model)(f, NamedTuple(), NamedTuple())
             end
         end
@@ -2641,11 +2744,11 @@ Can make it *a bit* cleaner by removing linenums:
     quote
         function f(__model__::DynamicPPL.Model, __varinfo__::DynamicPPL.AbstractVarInfo, __context__::AbstractPPL.AbstractContext; )
             begin
-                var"##dist#1263" = Normal()
-                var"##vn#1260" = (DynamicPPL.resolve_varnames)((AbstractPPL.VarName){:x}(), var"##dist#1263")
-                var"##isassumption#1261" = begin
-                        if (DynamicPPL.contextual_isassumption)(__context__, var"##vn#1260")
-                            if !((DynamicPPL.inargnames)(var"##vn#1260", __model__)) || (DynamicPPL.inmissings)(var"##vn#1260", __model__)
+                var"##dist#1419" = Normal()
+                var"##vn#1416" = (DynamicPPL.resolve_varnames)((AbstractPPL.VarName){:x}(), var"##dist#1419")
+                var"##isassumption#1417" = begin
+                        if (DynamicPPL.contextual_isassumption)(__context__, var"##vn#1416")
+                            if !((DynamicPPL.inargnames)(var"##vn#1416", __model__)) || (DynamicPPL.inmissings)(var"##vn#1416", __model__)
                                 true
                             else
                                 x === missing
@@ -2655,20 +2758,20 @@ Can make it *a bit* cleaner by removing linenums:
                         end
                     end
                 begin
-                    var"##retval#1265" = if var"##isassumption#1261"
+                    var"##retval#1421" = if var"##isassumption#1417"
                             begin
-                                (var"##value#1264", __varinfo__) = (DynamicPPL.tilde_assume!!)(__context__, (DynamicPPL.unwrap_right_vn)((DynamicPPL.check_tilde_rhs)(var"##dist#1263"), var"##vn#1260")..., __varinfo__)
-                                x = var"##value#1264"
-                                var"##value#1264"
+                                (var"##value#1420", __varinfo__) = (DynamicPPL.tilde_assume!!)(__context__, (DynamicPPL.unwrap_right_vn)((DynamicPPL.check_tilde_rhs)(var"##dist#1419"), var"##vn#1416")..., __varinfo__)
+                                x = var"##value#1420"
+                                var"##value#1420"
                             end
                         else
-                            if !((DynamicPPL.inargnames)(var"##vn#1260", __model__))
-                                x = (DynamicPPL.getvalue_nested)(__context__, var"##vn#1260")
+                            if !((DynamicPPL.inargnames)(var"##vn#1416", __model__))
+                                x = (DynamicPPL.getvalue_nested)(__context__, var"##vn#1416")
                             end
-                            (var"##value#1262", __varinfo__) = (DynamicPPL.tilde_observe!!)(__context__, (DynamicPPL.check_tilde_rhs)(var"##dist#1263"), x, var"##vn#1260", __varinfo__)
-                            var"##value#1262"
+                            (var"##value#1418", __varinfo__) = (DynamicPPL.tilde_observe!!)(__context__, (DynamicPPL.check_tilde_rhs)(var"##dist#1419"), x, var"##vn#1416", __varinfo__)
+                            var"##value#1418"
                         end
-                    return (var"##retval#1265", __varinfo__)
+                    return (var"##retval#1421", __varinfo__)
                 end
             end
         end
@@ -2705,8 +2808,8 @@ You can inspect the LLVM code
 @code_llvm f(1)
 ```
 
-    ;  @ In[114]:1 within `f`
-    define i64 @julia_f_47509(i64 signext %0) #0 {
+    ;  @ In[115]:1 within `f`
+    define i64 @julia_f_52767(i64 signext %0) #0 {
     top:
     ; ┌ @ int.jl:88 within `*`
        %1 = shl i64 %0, 1
@@ -2722,11 +2825,11 @@ And even the resulting machine code
 
     	.text
     	.file	"f"
-    	.globl	julia_f_47546                   # -- Begin function julia_f_47546
+    	.globl	julia_f_52804                   # -- Begin function julia_f_52804
     	.p2align	4, 0x90
-    	.type	julia_f_47546,@function
-    julia_f_47546:                          # @julia_f_47546
-    ; ┌ @ In[114]:1 within `f`
+    	.type	julia_f_52804,@function
+    julia_f_52804:                          # @julia_f_52804
+    ; ┌ @ In[115]:1 within `f`
     	.cfi_startproc
     # %bb.0:                                # %top
     ; │┌ @ int.jl:88 within `*`
@@ -2734,7 +2837,7 @@ And even the resulting machine code
     ; │└
     	retq
     .Lfunc_end0:
-    	.size	julia_f_47546, .Lfunc_end0-julia_f_47546
+    	.size	julia_f_52804, .Lfunc_end0-julia_f_52804
     	.cfi_endproc
     ; └
                                             # -- End function
@@ -2824,7 +2927,7 @@ my_func_unstable(x) = global_variable * x
 @btime my_func_unstable(2.0);
 ```
 
-    24.425 ns (2 allocations: 32 bytes)
+    30.668 ns (2 allocations: 32 bytes)
 
 </div>
 
@@ -2835,7 +2938,7 @@ Luckily there are tools for inspecting this
 ```
 
     MethodInstance for my_func_unstable(::Float64)
-      from my_func_unstable(x) in Main at In[120]:4
+      from my_func_unstable(x) in Main at In[121]:4
     Arguments
       #self#::Core.Const(my_func_unstable)
       x::Float64
@@ -2854,7 +2957,7 @@ my_func_fixed(x) = constant_global_variable * x
 ```
 
     MethodInstance for my_func_fixed(::Float64)
-      from my_func_fixed(x) in Main at In[123]:2
+      from my_func_fixed(x) in Main at In[124]:2
     Arguments
       #self#::Core.Const(my_func_fixed)
       x::Float64
@@ -2868,7 +2971,7 @@ So long Python performance!
 @btime my_func_fixed(2.0);
 ```
 
-    1.338 ns (0 allocations: 0 bytes)
+    1.696 ns (0 allocations: 0 bytes)
 
 *But* this is not always so easy to discover (though this is generally rare)
 
@@ -2881,7 +2984,7 @@ my_func_forced(x) = my_func_unstable(x)::typeof(x)
 ```
 
     MethodInstance for my_func_forced(::Float64)
-      from my_func_forced(x) in Main at In[125]:4
+      from my_func_forced(x) in Main at In[126]:4
     Arguments
       #self#::Core.Const(my_func_forced)
       x::Float64
@@ -2910,7 +3013,7 @@ using ProfileView
 @profview foreach(_ -> my_func_unstable(2.0), 1_000_000)
 ```
 
-![img](.notes/attachments/Julia:_The_Good,_the_Bad,_and_the_Ugly/2023-01-25_01-16-13_Screenshot_20230125_011603.png)
+![img](.notes/attachments/2023-01-25_01-16-13_Screenshot_20230125_011603.png)
 
 Note that there's no sign of multiplication here
 
@@ -2931,14 +3034,14 @@ ambiguous_function(1, 2)
 ```
 
     MethodError: ambiguous_function(::Int64, ::Int64) is ambiguous. Candidates:
-      ambiguous_function(x, y::Int64) in Main at In[127]:1
-      ambiguous_function(x::Int64, y) in Main at In[127]:2
+      ambiguous_function(x, y::Int64) in Main at In[128]:1
+      ambiguous_function(x::Int64, y) in Main at In[128]:2
     Possible fix, define
       ambiguous_function(::Int64, ::Int64)
     
     Stacktrace:
      [1] top-level scope
-       @ In[127]:6
+       @ In[128]:6
 
 But here Julia warns us, and so we can fix this by just doing as it says: define `ambiguous_function(::Int64, ::Int64)`
 
@@ -2964,7 +3067,7 @@ In Julia, for better or worse, we can generate code
 
 But things are always improving
 
-![img](.notes/attachments/Julia:_The_Good,_the_Bad,_and_the_Ugly/2023-01-25_01-29-05_Screenshot_20230125_012853.png)
+![img](.notes/attachments/2023-01-25_01-29-05_Screenshot_20230125_012853.png)
 
 </div>
 
@@ -3006,7 +3109,7 @@ So Julia has to compile `unrolled_addition` from scratch
 @time @eval unrolled_addition(Val(11));
 ```
 
-    0.005264 seconds (11.61 k allocations: 654.885 KiB, 11.60% compilation time)
+    0.010027 seconds (11.61 k allocations: 654.885 KiB, 8.32% compilation time)
 
 Or a bit crazier
 
@@ -3014,7 +3117,7 @@ Or a bit crazier
 @time @eval unrolled_addition(Val(10_001));
 ```
 
-    0.327022 seconds (1.19 M allocations: 48.946 MiB, 23.87% gc time, 99.94% compilation time)
+    0.429549 seconds (1.19 M allocations: 48.946 MiB, 99.94% compilation time)
 
 Here it took ~0.4s, of which 99.95% was compilation time
 
@@ -3026,7 +3129,7 @@ But boy is it fast to run!
 @btime unrolled_addition(Val(10_001));
 ```
 
-    1.373 ns (0 allocations: 0 bytes)
+    1.637 ns (0 allocations: 0 bytes)
 
 ```julia
 function not_unrolled_addition(N)
@@ -3045,7 +3148,7 @@ end
 @btime not_unrolled_addition(10_001);
 ```
 
-    10.837 μs (0 allocations: 0 bytes)
+    11.138 μs (0 allocations: 0 bytes)
 
 **Funny side-note:** at first I did the following
 
@@ -3074,8 +3177,8 @@ end
 @btime not_unrolled_addition_old(10_001);
 ```
 
-    1.372 ns (0 allocations: 0 bytes)
-    2.328 ns (0 allocations: 0 bytes)
+    1.538 ns (0 allocations: 0 bytes)
+    3.495 ns (0 allocations: 0 bytes)
 
 LLVM probably recognized the pattern of `not_unrolled_addition_old` and unrolls it for us
 
@@ -3086,10 +3189,10 @@ Let's check!
 @code_llvm not_unrolled_addition(10_001)
 ```
 
-    ;  @ In[134]:1 within `not_unrolled_addition`
-    define { {}*, i8 } @julia_not_unrolled_addition_48736([8 x i8]* noalias nocapture align 8 dereferenceable(8) %0, i64 signext %1) #0 {
+    ;  @ In[135]:1 within `not_unrolled_addition`
+    define { {}*, i8 } @julia_not_unrolled_addition_53856([8 x i8]* noalias nocapture align 8 dereferenceable(8) %0, i64 signext %1) #0 {
     top:
-    ;  @ In[134]:3 within `not_unrolled_addition`
+    ;  @ In[135]:3 within `not_unrolled_addition`
     ; ┌ @ range.jl:5 within `Colon`
     ; │┌ @ range.jl:393 within `UnitRange`
     ; ││┌ @ range.jl:400 within `unitrange_last`
@@ -3099,7 +3202,7 @@ Let's check!
       br i1 %.inv, label %L18.preheader, label %union_move16
     
     L18.preheader:                                    ; preds = %top
-    ;  @ In[134]:5 within `not_unrolled_addition`
+    ;  @ In[135]:5 within `not_unrolled_addition`
     ; ┌ @ range.jl:883 within `iterate`
     ; │┌ @ promotion.jl:477 within `==`
         %.not30 = icmp eq i64 %., 1
@@ -3112,7 +3215,7 @@ Let's check!
     ; ┌ @ range.jl:883 within `iterate`
        %2 = add i64 %value_phi431, 1
     ; └
-    ;  @ In[134]:4 within `not_unrolled_addition`
+    ;  @ In[135]:4 within `not_unrolled_addition`
     ; ┌ @ promotion.jl:389 within `*`
     ; │┌ @ promotion.jl:359 within `promote`
     ; ││┌ @ promotion.jl:336 within `_promote`
@@ -3123,9 +3226,9 @@ Let's check!
     ; │ @ promotion.jl:389 within `*` @ float.jl:385
        %4 = fmul double %3, 3.140000e+00
     ; └
-    ;  @ In[134] within `not_unrolled_addition`
+    ;  @ In[135] within `not_unrolled_addition`
       %value_phi10 = fadd double %value_phi1032, %4
-    ;  @ In[134]:5 within `not_unrolled_addition`
+    ;  @ In[135]:5 within `not_unrolled_addition`
     ; ┌ @ range.jl:883 within `iterate`
     ; │┌ @ promotion.jl:477 within `==`
         %.not = icmp eq i64 %2, %.
@@ -3134,18 +3237,18 @@ Let's check!
     
     post_union_move:                                  ; preds = %union_move16, %union_move
       %tindex_phi1429 = phi i8 [ 2, %union_move16 ], [ 1, %union_move ]
-    ;  @ In[134]:7 within `not_unrolled_addition`
+    ;  @ In[135]:7 within `not_unrolled_addition`
       %5 = insertvalue { {}*, i8 } { {}* null, i8 undef }, i8 %tindex_phi1429, 1
       ret { {}*, i8 } %5
     
     L18.union_move_crit_edge:                         ; preds = %L51
-    ;  @ In[134]:5 within `not_unrolled_addition`
+    ;  @ In[135]:5 within `not_unrolled_addition`
       %phi.cast = bitcast double %value_phi10 to i64
       br label %union_move
     
     union_move:                                       ; preds = %L18.union_move_crit_edge, %L18.preheader
       %value_phi10.lcssa = phi i64 [ %phi.cast, %L18.union_move_crit_edge ], [ 4614253070214989087, %L18.preheader ]
-    ;  @ In[134]:7 within `not_unrolled_addition`
+    ;  @ In[135]:7 within `not_unrolled_addition`
       %6 = bitcast [8 x i8]* %0 to i64*
       store i64 %value_phi10.lcssa, i64* %6, align 8
       br label %post_union_move
@@ -3161,10 +3264,10 @@ Let's check!
 @code_llvm not_unrolled_addition_old(10_001)
 ```
 
-    ;  @ In[136]:9 within `not_unrolled_addition_old`
-    define i64 @julia_not_unrolled_addition_old_48738(i64 signext %0) #0 {
+    ;  @ In[137]:9 within `not_unrolled_addition_old`
+    define i64 @julia_not_unrolled_addition_old_53858(i64 signext %0) #0 {
     top:
-    ;  @ In[136]:11 within `not_unrolled_addition_old`
+    ;  @ In[137]:11 within `not_unrolled_addition_old`
     ; ┌ @ range.jl:5 within `Colon`
     ; │┌ @ range.jl:393 within `UnitRange`
     ; ││┌ @ range.jl:400 within `unitrange_last`
@@ -3174,7 +3277,7 @@ Let's check!
       br i1 %.inv, label %L18.preheader, label %L35
     
     L18.preheader:                                    ; preds = %top
-    ;  @ In[136]:13 within `not_unrolled_addition_old`
+    ;  @ In[137]:13 within `not_unrolled_addition_old`
       %1 = shl nuw i64 %., 1
       %2 = add nsw i64 %., -1
       %3 = zext i64 %2 to i65
@@ -3185,7 +3288,7 @@ Let's check!
       %8 = trunc i65 %7 to i64
       %9 = add i64 %1, %8
       %10 = add i64 %9, -1
-    ;  @ In[136]:14 within `not_unrolled_addition_old`
+    ;  @ In[137]:14 within `not_unrolled_addition_old`
       br label %L35
     
     L35:                                              ; preds = %L18.preheader, %top
@@ -3210,7 +3313,7 @@ And sharp edges cut; they cut *deep*
 
 Like <span class="underline">"16X slower when the function is implemented more efficiently"-deep</span>
 
-![img](.notes/attachments/Julia:_The_Good,_the_Bad,_and_the_Ugly/2023-01-25_01-01-31_Screenshot_20230125_010111.png)
+![img](.notes/attachments/2023-01-25_01-01-31_Screenshot_20230125_010111.png)
 
 </div>
 
