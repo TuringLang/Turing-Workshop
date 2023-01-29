@@ -7,7 +7,7 @@
 
 #+REVEAL_ROOT: file:///home/tor/Projects/public/Turing-Workshop/2023-Geilo-Winter-School/Part-2-Turing-and-other-things/assets/reveal.js-4.1.0/
 #+REVEAL_MATHJAX_URL: file:///home/tor/Projects/public/Turing-Workshop/2023-Geilo-Winter-School/Part-2-Turing-and-other-things/assets/MathJax-2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML
-#+REVEAL_TITLE_SLIDE: <div><div style="margin: -200px auto; opacity: 0.2;"><p><object data="https://turing.ml/dev/assets/images/turing-logo-wide.svg"></object></p></div><h1>Bayesian inference and other things</h1><h2>with the TuringLang ecosystem</h2><p><a href="https://github.com/TuringLang">https://github.com/TuringLang</a></p></div>
+#+REVEAL_TITLE_SLIDE: <div><div style="margin: -200px auto; opacity: 0.2;"><p><object data="https://turing.ml/dev/assets/images/turing-logo-wide.svg"></object></p></div><h1>Bayesian inference and other things</h1><h2>with the TuringLang ecosystem</h2><p><a href="https://github.com/TuringLang">https://github.com/TuringLang</a></p><p><a href="https://github.com/TuringLang/Turing-Workshop/tree/main/2023-Geilo-Winter-School/Part-2-Turing-and-other-things">The workshop is found here</a></p></div>
 #+REVEAL_EXTRA_CSS: custom.css
 #+REVEAL_THEME: white
 #+REVEAL_PLUGINS: (markdown zoom)
@@ -17,6 +17,10 @@
 #+TITLE: =Turing.jl=
 
 * Before we begin
+:PROPERTIES:
+:ID:       2023-01-29-16-57-28-Before-we-begin
+:CUSTOM_ID: 2023-01-29-16-57-28-Before-we-begin
+:END:
 
 Make sure you're in the correct directory
 
@@ -98,6 +102,10 @@ using GeiloWinterSchool2023Part2
 to get some functionality I've implemented for the occasion
 
 * The story of a little Norwegian boy
+:PROPERTIES:
+:ID:       2023-01-29-16-57-28-The-story-of-a-little-Norwegian-boy
+:CUSTOM_ID: 2023-01-29-16-57-28-The-story-of-a-little-Norwegian-boy
+:END:
 
 #+REVEAL: split
 
@@ -211,6 +219,10 @@ And 3.5 years later, he's still writing for-loops. Well, sort of.
 #+HTML: </div>
 
 ** But it really is fast                                           :noexport:
+:PROPERTIES:
+:ID:       2023-01-29-16-57-28-But-it-really-is-fast
+:CUSTOM_ID: 2023-01-29-16-57-28-But-it-really-is-fast
+:END:
 
 
 #+DOWNLOADED: file:///tmp/Spectacle.jWiYMk/Screenshot_20230118_153122.png @ 2023-01-18 15:31:28
@@ -229,6 +241,10 @@ And the consequences are
 - ⟹ Same for /extending/ packages!
   - Moreover, thanks to multiple dispatch, you can change a function /on the fly/ to experiment with code you don't even own!
 * Why Turing.jl?
+:PROPERTIES:
+:ID:       2023-01-29-16-57-28-Why-Turing-dot-jl
+:CUSTOM_ID: 2023-01-29-16-57-28-Why-Turing-dot-jl
+:END:
 
 #+REVEAL: split
 
@@ -247,6 +263,10 @@ So it's a pretty good candidate
 
 #+HTML: </div>
 * Running example
+:PROPERTIES:
+:ID:       2023-01-29-16-57-28-Running-example
+:CUSTOM_ID: 2023-01-29-16-57-28-Running-example
+:END:
 
 We'll work with an outbreak of influenza A (H1N1) in 1978 at a British boarding school
 
@@ -265,6 +285,10 @@ Stan definitively beats Turing.jl when it comes to great write-ups like these
 #+HTML: </div>
 
 ** Getting the data                                                :noexport:
+:PROPERTIES:
+:ID:       2023-01-29-16-57-28-Getting-the-data
+:CUSTOM_ID: 2023-01-29-16-57-28-Getting-the-data
+:END:
 #+begin_src sh
 mkdir -p data
 #+end_src
@@ -304,6 +328,10 @@ write.csv(influenza_england_1978_school, file="data/influenza_england_1978_schoo
 #+end_src
 
 ** Loading into Julia
+:PROPERTIES:
+:ID:       2023-01-29-16-57-28-Loading-into-Julia
+:CUSTOM_ID: 2023-01-29-16-57-28-Loading-into-Julia
+:END:
 
 #+begin_src julia
 # Load the dataframe.
@@ -358,6 +386,10 @@ using StatsPlots
 [[file:assets/outputs/1265078e6dd1a955c2c437e28a8d0d0904467ad2.png]]
 
 * Differential equations
+:PROPERTIES:
+:ID:       2023-01-29-16-57-28-Differential-equations
+:CUSTOM_ID: 2023-01-29-16-57-28-Differential-equations
+:END:
 
 #+REVEAL: split
 
@@ -373,6 +405,10 @@ x(t) = \int_{0}^{t} \frac{\mathrm{d} x}{\mathrm{d} t} \mathrm{d} t = \int_{0}^{t
 In many interesting scenarios numerical methods are required to obtain $x(t)$
 
 ** In Julia
+:PROPERTIES:
+:ID:       2023-01-29-16-57-28-In-Julia
+:CUSTOM_ID: 2023-01-29-16-57-28-In-Julia
+:END:
 Everything related to differential equations is provided by [[https://docs.sciml.ai/DiffEqDocs/stable/][=DifferentialEquations.jl=]]
 
 #+REVEAL: split
@@ -390,6 +426,10 @@ And I really do mean [[https://docs.sciml.ai/DiffEqDocs/stable/][/everything/]]
 #+HTML: </div>
 
 ** Example: SIR model
+:PROPERTIES:
+:ID:       2023-01-29-16-57-28-Example-SIR-model
+:CUSTOM_ID: 2023-01-29-16-57-28-Example-SIR-model
+:END:
 One particular example of an (ordinary) differential equation that you might have seen recently is the *SIR model* used in epidemiology
 
 #+DOWNLOADED: file:///home/tor/Downloads/sir_illu.png @ 2023-01-19 19:56:00
@@ -698,6 +738,10 @@ scatter!(1:14, data.in_bed, label="Data", color="black")
 That's better than our /totally/ "random" guess from earlier!
 
 ** Example: SEIR model
+:PROPERTIES:
+:ID:       2023-01-29-16-57-28-Example-SEIR-model
+:CUSTOM_ID: 2023-01-29-16-57-28-Example-SEIR-model
+:END:
 
 Adding another compartment to our SIR model: the _(E)xposed_ state
 
@@ -713,6 +757,10 @@ Adding another compartment to our SIR model: the _(E)xposed_ state
 where we've added a new parameter ${\color{orange} \sigma}$ describing the fraction of people who develop observable symptoms in this time
 
 ** TASK Solve the SEIR model using Julia
+:PROPERTIES:
+:ID:       2023-01-29-16-57-28-Solve-the-SEIR-model-using-Julia
+:CUSTOM_ID: 2023-01-29-16-57-28-Solve-the-SEIR-model-using-Julia
+:END:
 
 #+begin_src julia :eval no
 function SEIR!(
@@ -763,6 +811,10 @@ end
 #+RESULTS:
 
 ** SOLUTION Solve the SEIR model using Julia
+:PROPERTIES:
+:ID:       2023-01-29-16-57-28-Solve-the-SEIR-model-using-Julia
+:CUSTOM_ID: 2023-01-29-16-57-28-Solve-the-SEIR-model-using-Julia
+:END:
 
 #+begin_src julia
 function SEIR!(
@@ -938,6 +990,10 @@ Let's do some Bayesian inference then.
 BUT FIRST!
 
 ** Making our future selves less annoyed
+:PROPERTIES:
+:ID:       2023-01-29-16-57-28-Making-our-future-selves-less-annoyed
+:CUSTOM_ID: 2023-01-29-16-57-28-Making-our-future-selves-less-annoyed
+:END:
 
 It's annoying to have all these different loss-functions for /both/ =SIR!= and =SEIR!=
 
@@ -1017,6 +1073,10 @@ infected(sir, sol)
 #+end_example
 
 ** TASK Implement =SEIRProblem=
+:PROPERTIES:
+:ID:       2023-01-29-16-57-28-Implement-SEIRProblem
+:CUSTOM_ID: 2023-01-29-16-57-28-Implement-SEIRProblem
+:END:
 
 #+begin_src julia :eval no
 struct SEIRProblem <: AbstractEpidemicProblem
@@ -1058,6 +1118,10 @@ recovered
 #+RESULTS:
 
 ** SOLUTION Implement =SEIRProblem=
+:PROPERTIES:
+:ID:       2023-01-29-16-57-28-Implement-SEIRProblem
+:CUSTOM_ID: 2023-01-29-16-57-28-Implement-SEIRProblem
+:END:
 
 #+begin_src julia
 struct SEIRProblem{P} <: AbstractEpidemicProblem
@@ -1109,6 +1173,10 @@ infected(seir, sol)
 #+end_example
 
 ** Same =loss= for both!
+:PROPERTIES:
+:ID:       2023-01-29-16-57-28-Same-loss-for-both
+:CUSTOM_ID: 2023-01-29-16-57-28-Same-loss-for-both
+:END:
 
 #+begin_src julia
 function loss(problem_wrapper::AbstractEpidemicProblem, p)
@@ -1141,6 +1209,10 @@ loss(SEIRProblem(N), [2.0, 0.6, 0.8])
 : 287325.105532706
 
 * Bayesian inference
+:PROPERTIES:
+:ID:       2023-01-29-16-57-28-Bayesian-inference
+:CUSTOM_ID: 2023-01-29-16-57-28-Bayesian-inference
+:END:
 
 #+REVEAL: split
 
@@ -1378,6 +1450,10 @@ Hey, it does!
 #+HTML: </div>
 
 ** Is the prior reasonable?
+:PROPERTIES:
+:ID:       2023-01-29-16-57-28-Is-the-prior-reasonable
+:CUSTOM_ID: 2023-01-29-16-57-28-Is-the-prior-reasonable
+:END:
 
 Before we do any inference, we should check if the prior is reasonable
 
@@ -1526,6 +1602,10 @@ Compare to our prior knowledge of $R_0 \in [1, 2]$ and $(1/\gamma) \approx 1$ fo
 Do we really need probability mass on $R_0 \ge 10$?
 
 ** TASK What's wrong with the current prior?
+:PROPERTIES:
+:ID:       2023-01-29-16-57-28-What-s-wrong-with-the-current-prior
+:CUSTOM_ID: 2023-01-29-16-57-28-What-s-wrong-with-the-current-prior
+:END:
 
 #+HTML: <div class="side-by-side">
 
@@ -1568,6 +1648,10 @@ plot(
 #+HTML: </div>
 
 ** SOLUTION Recovery time shouldn't be several years
+:PROPERTIES:
+:ID:       2023-01-29-16-57-28-Recovery-time-shouldn-t-be-several-years
+:CUSTOM_ID: 2023-01-29-16-57-28-Recovery-time-shouldn-t-be-several-years
+:END:
 
 We mentioned that =recovery_time=, which is expressed as $1 / \gamma$, is ~1 week
 
@@ -1583,6 +1667,10 @@ plot(truncated(Normal(0.4, 0.5); lower=0), label=nothing, title="γ", size=(500,
 _Should probably be putting less probability mass near 0_
 
 ** SOLUTION ${\color{red} \gamma}$ should not be larger than 1
+:PROPERTIES:
+:ID:       2023-01-29-16-57-28-color-red-gamma-should-not-be-larger-than-1
+:CUSTOM_ID: 2023-01-29-16-57-28-color-red-gamma-should-not-be-larger-than-1
+:END:
 \begin{equation*}
 \begin{split}
   \frac{\mathrm{d} S}{\mathrm{d} t} &= - \beta S \frac{I}{N} \\
@@ -1645,6 +1733,10 @@ plot!(truncated(Normal(0.4, 0.5); lower=0), label="old", color="red")
 - [X] Allows smaller values (i.e. longer recovery time) but rapidly decreases near zero
 
 ** SOLUTION What if ${\color{red} \beta} > N$?
+:PROPERTIES:
+:ID:       2023-01-29-16-57-28-What-if-color-red-beta-N
+:CUSTOM_ID: 2023-01-29-16-57-28-What-if-color-red-beta-N
+:END:
 Then for $t = 0$ we have
 \begin{equation*}
 \frac{\mathrm{d} S}{\mathrm{d} t} \bigg|_{t = 0} = - {\color{red} \beta} S \frac{I}{N} > - N (N - 1) \frac{1}{N} = - (N - 1)
@@ -1995,6 +2087,10 @@ DataFrame(quantile(chain_quantities_original[:, [:R0, :recovery_time], :]))
 :    2 │ recovery_time  0.693234  1.20832  1.88465  3.48181  29.4579
 
 ** TASK Make =epidemic_model= work for =SEIRProblem=
+:PROPERTIES:
+:ID:       2023-01-29-16-57-28-Make-epidemic-model-work-for-SEIRProblem
+:CUSTOM_ID: 2023-01-29-16-57-28-Make-epidemic-model-work-for-SEIRProblem
+:END:
 1. [ ] Implement a prior which also includes $\sigma$ and execute
    =epidemic_model= with it
 2. [ ] Can we make a better prior for $\sigma$? Do we even need one?
@@ -2033,6 +2129,10 @@ end
 
 
 ** SOLUTION
+:PROPERTIES:
+:ID:       2023-01-29-16-57-28-
+:CUSTOM_ID: 2023-01-29-16-57-28-
+:END:
 #+begin_src julia
 @model function prior_original(problem_wrapper::SEIRProblem)
     β ~ truncated(Normal(2, 1); lower=0)
@@ -2055,6 +2155,10 @@ print(model_seir())
 : (R0 = 1.249905922185047, recovery_time = 1.1275375476185503, infected = [0.41458760197101757, 0.175982147386383, 0.07874256170480576, 0.03911764946193381, 0.02298161307777028, 0.01641950959805482, 0.013759122196211936, 0.012689081710378131, 0.012267493170560804, 0.012110652999146742, 0.012061533724674748, 0.012055660061838289, 0.01206858103422115, 0.012088341860835633])
 
 ** WARNING Consult with domain experts
+:PROPERTIES:
+:ID:       2023-01-29-16-57-28-Consult-with-domain-experts
+:CUSTOM_ID: 2023-01-29-16-57-28-Consult-with-domain-experts
+:END:
 This guy should _not_ be the one setting your priors!
 
 #+ATTR_HTML: :height 400px
@@ -2064,6 +2168,10 @@ This guy should _not_ be the one setting your priors!
 Get an actual scientist to do that...
 
 ** Condition
+:PROPERTIES:
+:ID:       2023-01-29-16-57-28-Condition
+:CUSTOM_ID: 2023-01-29-16-57-28-Condition
+:END:
 Now let's actually involve the data
 
 #+HTML: <div class="fragment (appear)">
@@ -2093,6 +2201,10 @@ You know what time it is: /inference time/!
 
 
 ** Metropolis-Hastings (MH)
+:PROPERTIES:
+:ID:       2023-01-29-16-57-28-Metropolis-Hastings--MH
+:CUSTOM_ID: 2023-01-29-16-57-28-Metropolis-Hastings--MH
+:END:
 
 #+begin_src julia
 chain_mh = sample(model_conditioned, MH(), MCMCThreads(), 10_000, 4; discard_initial=5_000);
@@ -2192,17 +2304,27 @@ Okay, it's not /completely/ useless, but my trust-issues are still present.
 Metropolis-Hastings have disappointed me one too many times before.
 
 ** So instead, let's go =NUTS=
+:PROPERTIES:
+:ID:       2023-01-29-16-57-28-So-instead-let-s-go-NUTS
+:CUSTOM_ID: 2023-01-29-16-57-28-So-instead-let-s-go-NUTS
+:END:
 That's right, we're reaching to the *No U-Turn sampler (NUTS)*
 
 *** 
 :PROPERTIES:
 :reveal_background_iframe: file:///home/tor/Projects/public/mcmc-demo/app.html?closeControls=true&algorithm=HamiltonianMH&target=standard&seed=1&autoplay=true&histBins=100
+:ID:       2023-01-29-16-57-28-
+:CUSTOM_ID: 2023-01-29-16-57-28-
 :END:
 
 #+ATTR_REVEAL: :frag (appear)
 [[https://chi-feng.github.io/mcmc-demo/app.html][https://chi-feng.github.io/mcmc-demo/app.html]]
 
 ** 
+:PROPERTIES:
+:ID:       2023-01-29-16-57-28-
+:CUSTOM_ID: 2023-01-29-16-57-28-
+:END:
 
 #+begin_quote
 Wooaah there! =NUTS= requires gradient information!
@@ -2216,6 +2338,10 @@ Good question, voice in my head
 I'm obviously not going to it myself
 
 ** Automatic differentiation (AD) in Julia
+:PROPERTIES:
+:ID:       2023-01-29-16-57-28-Automatic-differentiation--AD--in-Julia
+:CUSTOM_ID: 2023-01-29-16-57-28-Automatic-differentiation--AD--in-Julia
+:END:
 - [[https://github.com/JuliaDiff/ForwardDiff.jl][ForwardDiff.jl]]: forward-mode AD /(default in Turing.jl)/
 - [[https://github.com/JuliaDiff/ReverseDiff.jl][ReverseDiff.jl]]: tape-based reverse-mode AD
 - [[https://github.com/FluxML/Zygote.jl][Zygote.jl]]: source-to-source reverse-mode AD
@@ -2253,6 +2379,10 @@ All the (stable) ones, will (mostly) work
 Takes a bit of know-how + a bit of digging to go properly "vroom!"
 
 ** Differentiating through =solve=
+:PROPERTIES:
+:ID:       2023-01-29-16-57-28-Differentiating-through-solve
+:CUSTOM_ID: 2023-01-29-16-57-28-Differentiating-through-solve
+:END:
 With that being said, differentiating through numerical =solve= is not necessarily trivial to do efficiently
 
 There are numerous ways of approaching this problem
@@ -2294,6 +2424,7 @@ Just do =solve(problem, solver, sensealg = ...)=
 ** Back to being =NUTS=
    :PROPERTIES:
    :CUSTOM_ID: back-to-being-nuts
+   :ID:       2023-01-29-16-57-28-Back-to-being-NUTS
    :END:
 
 #+begin_src julia
@@ -2437,6 +2568,10 @@ plot_trajectory_quantiles!(plot(legend=false, size=(600, 300)), predictions; dat
 [[file:assets/outputs/145ba1245ad3196f9bb3001254df5b3cf451e778.png]]
 
 ** Simulation-based calibration (SBC) [[https://arxiv.org/abs/1804.06788][Talts et. al. (2018)]]
+:PROPERTIES:
+:ID:       2023-01-29-16-57-28-Simulation-based-calibration--SBC--https-arxiv-dot-org-abs-1804-dot-06788-Talts-et-dot-al-dot--2018
+:CUSTOM_ID: 2023-01-29-16-57-28-Simulation-based-calibration--SBC--https-arxiv-dot-org-abs-1804-dot-06788-Talts-et-dot-al-dot--2018
+:END:
 1. Sample from prior $\theta_1, \dots, \theta_n \sim p(\theta)$.
 2. Sample datasets $\mathcal{D}_i \sim p(\cdot \mid \theta_i)$ for $i = 1, \dots, n$.
 3. Obtain (approximate) $p(\theta \mid \mathcal{D}_i)$ for $i = 1, \dots, n$.
@@ -2531,6 +2666,10 @@ plot(ps..., layout=(3, 1), size=(600, 400))
 Yay!
 
 ** Samplers in Turing.jl
+:PROPERTIES:
+:ID:       2023-01-29-16-57-28-Samplers-in-Turing-dot-jl
+:CUSTOM_ID: 2023-01-29-16-57-28-Samplers-in-Turing-dot-jl
+:END:
 - Metropolis-Hastings, emcee, SGLD ([[https://github.com/TuringLang/AdvancedMH.jl][AdvancedMH.jl]])
 - Hamiltonian Monte Carlo, NUTS ([[https://github.com/TuringLang/AdvancedMH.jl][AdvancedHMC.jl]])
 - SMC ([[https://github.com/TuringLang/AdvancedPS.jl][AdvancedPS.jl]])
@@ -2714,6 +2853,10 @@ Again, this is difficult to get to work properly on non-trivial examples
 _But_ it is possible
 
 ** Other utilities for Turing.jl
+:PROPERTIES:
+:ID:       2023-01-29-16-57-28-Other-utilities-for-Turing-dot-jl
+:CUSTOM_ID: 2023-01-29-16-57-28-Other-utilities-for-Turing-dot-jl
+:END:
 - [[https://github.com/TuringLang/TuringGLM.jl][TuringGLM.jl]]: GLMs using the formula-syntax from R but using Turing.jl under the hood
 - [[https://github.com/TuringLang/TuringBenchmarking.jl][TuringBenchmarking.jl]]: useful for benchmarking Turing.jl models
 - [[https://github.com/TuringLang/TuringCallbacks.jl][TuringCallbacks.jl]]: on-the-fly visualizations using =tensorboard=
@@ -2726,6 +2869,10 @@ _But_ it is possible
 
 
 ** Downsides of using Turing.jl
+:PROPERTIES:
+:ID:       2023-01-29-16-57-28-Downsides-of-using-Turing-dot-jl
+:CUSTOM_ID: 2023-01-29-16-57-28-Downsides-of-using-Turing-dot-jl
+:END:
 
 #+ATTR_REVEAL: :frag (appear)
 - Don't do any depedency-extraction of the model ⟹ can't do things like automatic marginalization
@@ -2735,6 +2882,10 @@ _But_ it is possible
 - You _can_ put anything in your model, but whether you _should_ is a another matter
 
 * Benchmarking
+:PROPERTIES:
+:ID:       2023-01-29-16-57-28-Benchmarking
+:CUSTOM_ID: 2023-01-29-16-57-28-Benchmarking
+:END:
 
 #+REVEAL: split
 
@@ -2783,6 +2934,10 @@ run(suite)
 #+end_example
 
 ** More data
+:PROPERTIES:
+:ID:       2023-01-29-16-57-28-More-data
+:CUSTOM_ID: 2023-01-29-16-57-28-More-data
+:END:
 
 Let's add some more timesteps to make it a more interesting
 
@@ -2965,6 +3120,10 @@ Okay, so it's faster but ForwardDiff.jl still wins
 
 
 * Case: spatio-temporal COVID modeling in UK
+:PROPERTIES:
+:ID:       2023-01-29-16-57-28-Case-spatio-temporal-COVID-modeling-in-UK
+:CUSTOM_ID: 2023-01-29-16-57-28-Case-spatio-temporal-COVID-modeling-in-UK
+:END:
 
 
 #+DOWNLOADED: file:///tmp/Spectacle.wcviMK/Screenshot_20230126_154747.png @ 2023-01-26 15:47:56
@@ -3048,10 +3207,18 @@ end
 
 
 * Julia: The Good, the Bad, and the Ugly
+:PROPERTIES:
+:ID:       2023-01-29-16-57-28-Julia-The-Good-the-Bad-and-the-Ugly
+:CUSTOM_ID: 2023-01-29-16-57-28-Julia-The-Good-the-Bad-and-the-Ugly
+:END:
 
 An honest take from a little 27-year old Norwegian boy
 
 *** The Good
+:PROPERTIES:
+:ID:       2023-01-29-16-57-28-The-Good
+:CUSTOM_ID: 2023-01-29-16-57-28-The-Good
+:END:
 - Speed
 - Composability (thank you multiple dispatch)
 - No need to tie yourself to an underlying computational framework
@@ -3060,16 +3227,28 @@ An honest take from a little 27-year old Norwegian boy
 - Very easy to call into other languages
 
 *** Speed
+:PROPERTIES:
+:ID:       2023-01-29-16-57-28-Speed
+:CUSTOM_ID: 2023-01-29-16-57-28-Speed
+:END:
 
 I think you got this already...
 
 *** Composability
+:PROPERTIES:
+:ID:       2023-01-29-16-57-28-Composability
+:CUSTOM_ID: 2023-01-29-16-57-28-Composability
+:END:
 
 We've seen some of that
 
 Defining =infected(problem_wrapper, u)= allowed us to abstract away how to extract the compartment of interest
 
 *** Transparency
+:PROPERTIES:
+:ID:       2023-01-29-16-57-28-Transparency
+:CUSTOM_ID: 2023-01-29-16-57-28-Transparency
+:END:
 
 For starters, almost all the code you'll end up using is pure Julia
 
@@ -3286,6 +3465,10 @@ julia_f_52804:                          # @julia_f_52804
 It really just depends on which level of "I hate my life" you're currently at
 
 *** Calling into other languages
+:PROPERTIES:
+:ID:       2023-01-29-16-57-28-Calling-into-other-languages
+:CUSTOM_ID: 2023-01-29-16-57-28-Calling-into-other-languages
+:END:
 - [[https://docs.julialang.org/en/v1/manual/calling-c-and-fortran-code/][C and Fortran comes built-in stdlib]]
 - [[https://juliainterop.github.io/RCall.jl/stable/][RCall.jl]]: call into =R=
 - [[https://github.com/JuliaPy/PyCall.jl][PyCall.jl]]: call into =python=
@@ -3294,6 +3477,10 @@ It really just depends on which level of "I hate my life" you're currently at
 When working with =Array=, etc. memory is usually shared ⟹ fairly low overhead
 
 *** C and Fortran
+:PROPERTIES:
+:ID:       2023-01-29-16-57-28-C-and-Fortran
+:CUSTOM_ID: 2023-01-29-16-57-28-C-and-Fortran
+:END:
 #+begin_src julia 
 # Define the Julia function
 function mycompare(a, b)::Cint
@@ -3333,16 +3520,32 @@ arr
 [[https://docs.julialang.org/en/v1/manual/calling-c-and-fortran-code/#Creating-C-Compatible-Julia-Function-Pointers][Example is from Julia docs]]
 
 *** RCall.jl                                                       :noexport:
+:PROPERTIES:
+:ID:       2023-01-29-16-57-28-RCall-dot-jl
+:CUSTOM_ID: 2023-01-29-16-57-28-RCall-dot-jl
+:END:
 
 *** PyCall.jl                                                      :noexport:
+:PROPERTIES:
+:ID:       2023-01-29-16-57-28-PyCall-dot-jl
+:CUSTOM_ID: 2023-01-29-16-57-28-PyCall-dot-jl
+:END:
 
 *** The Bad
+:PROPERTIES:
+:ID:       2023-01-29-16-57-28-The-Bad
+:CUSTOM_ID: 2023-01-29-16-57-28-The-Bad
+:END:
 Sometimes
 - your code might just slow down without a seemingly good reason,
 - someone did bad, and Julia can't tell which method to call, or
 - someone forces the Julia compiler to compile insane amounts of code
 
 *** "Why is my code suddenly slow?"
+:PROPERTIES:
+:ID:       2023-01-29-16-57-28-Why-is-my-code-suddenly-slow
+:CUSTOM_ID: 2023-01-29-16-57-28-Why-is-my-code-suddenly-slow
+:END:
 
 One word: *type-instability*
 
@@ -3485,6 +3688,10 @@ But most of the runtime is the =./reflection.jl= at the top there
 That's Julia looking up the type at runtime
 
 *** Method ambiguity
+:PROPERTIES:
+:ID:       2023-01-29-16-57-28-Method-ambiguity
+:CUSTOM_ID: 2023-01-29-16-57-28-Method-ambiguity
+:END:
 #+begin_src julia 
 ambiguous_function(x, y::Int) = y
 ambiguous_function(x::Int, y) = x
@@ -3519,6 +3726,10 @@ ambiguous_function(1, 2)
 : "neato"
 
 *** Long compilation times
+:PROPERTIES:
+:ID:       2023-01-29-16-57-28-Long-compilation-times
+:CUSTOM_ID: 2023-01-29-16-57-28-Long-compilation-times
+:END:
 In Julia, for better or worse, we can generate code
 
 *Problem:* it can be /lots/ of code of we really want to
@@ -3537,6 +3748,10 @@ But things are always improving
 #+HTML: </div>
 
 *** Another example: mis-use of =@generated=
+:PROPERTIES:
+:ID:       2023-01-29-16-57-28-Another-example-mis-use-of-generated
+:CUSTOM_ID: 2023-01-29-16-57-28-Another-example-mis-use-of-generated
+:END:
 
 #+begin_src julia 
 # NOTE: `@generated` only has access to static information, e.g. types of arguments.
@@ -3786,6 +4001,10 @@ L35:                                              ; preds = %L18.preheader, %top
 #+end_example
 
 *** The Ugly
+:PROPERTIES:
+:ID:       2023-01-29-16-57-28-The-Ugly
+:CUSTOM_ID: 2023-01-29-16-57-28-The-Ugly
+:END:
 
 #+REVEAL: split
 
@@ -3816,6 +4035,10 @@ On the flip-side, once addressed (a type-instability), it's [[https://github.com
 #+HTML: </div>
 
 *** Overall
+:PROPERTIES:
+:ID:       2023-01-29-16-57-28-Overall
+:CUSTOM_ID: 2023-01-29-16-57-28-Overall
+:END:
 
 Julia is pretty darn awesome
 
@@ -3835,6 +4058,10 @@ Godspeed to you
 Fin.
 
 * Local variables                                                  :noexport:
+:PROPERTIES:
+:ID:       2023-01-29-16-57-28-Local-variables
+:CUSTOM_ID: 2023-01-29-16-57-28-Local-variables
+:END:
 # local variables:
 # org-download-image-dir: assets/attachments
 # end:
