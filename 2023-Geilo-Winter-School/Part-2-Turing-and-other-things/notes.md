@@ -83,7 +83,7 @@ One day it was raining and there was nobody hiking, and so there was no cars in 
 
 When his boss wasn't looking, the little 20 year-old boy had an amazing idea
 
-> Maybe I can use this method of Mr. Bayes I learned a bit about yesteday to model football / Premier League?
+> Maybe I can use this method of Mr. Bayes I learned a bit about yesterday to model football / Premier League?
 
 </div>
 
@@ -160,7 +160,7 @@ But even in Julia, other PPLS exist
 
 But Turing.jl is very similar to Julia in "philosophy":
 
--   Flexiblility
+-   Flexibility
 -   Ease-of-use
 -   Speed (potentially with a bit of effort)
 
@@ -1191,7 +1191,13 @@ Or by just calling `sample` using `Prior`
 chain_prior = sample(model, Prior(), 10_000);
 ```
 
-    Sampling:  17%|███████                                  |  ETA: 0:00:01Sampling:  38%|███████████████▋                         |  ETA: 0:00:01Sampling:  58%|███████████████████████▋                 |  ETA: 0:00:00Sampling:  72%|█████████████████████████████▊           |  ETA: 0:00:00Sampling:  87%|███████████████████████████████████▋     |  ETA: 0:00:00Sampling: 100%|█████████████████████████████████████████| Time: 0:00:00
+    
+Sampling:  17%|███████                                  |  ETA: 0:00:01
+Sampling:  38%|███████████████▋                         |  ETA: 0:00:01
+Sampling:  58%|███████████████████████▋                 |  ETA: 0:00:00
+Sampling:  72%|█████████████████████████████▊           |  ETA: 0:00:00
+Sampling:  87%|███████████████████████████████████▋     |  ETA: 0:00:00
+Sampling: 100%|█████████████████████████████████████████| Time: 0:00:00
 
 </div>
 
@@ -1389,7 +1395,7 @@ plot!(truncated(Normal(0.4, 0.5); lower=0), label="old", color="red")
 
 ![img](assets/outputs/bc9d6892a46d578ee1b80fb8d98ab74a44e0e9ce.png)
 
--   [X] Bounded at 1 to exlcude recovery time of less than 1 day
+-   [X] Bounded at 1 to exclude recovery time of less than 1 day
 -   [X] Allows smaller values (i.e. longer recovery time) but rapidly decreases near zero
 
 
@@ -2155,7 +2161,16 @@ chain_test = sample(model_test_conditioned, NUTS(0.8), 1000);
 
     ┌ Info: Found initial step size
     └   ϵ = 0.0125
-    Sampling:   4%|█▊                                       |  ETA: 0:00:05Sampling:  12%|████▊                                    |  ETA: 0:00:02Sampling:  25%|██████████▏                              |  ETA: 0:00:01Sampling:  39%|███████████████▉                         |  ETA: 0:00:01Sampling:  52%|█████████████████████▍                   |  ETA: 0:00:01Sampling:  66%|███████████████████████████              |  ETA: 0:00:00Sampling:  80%|████████████████████████████████▊        |  ETA: 0:00:00Sampling:  93%|██████████████████████████████████████   |  ETA: 0:00:00Sampling: 100%|█████████████████████████████████████████| Time: 0:00:01
+    
+Sampling:   4%|█▊                                       |  ETA: 0:00:05
+Sampling:  12%|████▊                                    |  ETA: 0:00:02
+Sampling:  25%|██████████▏                              |  ETA: 0:00:01
+Sampling:  39%|███████████████▉                         |  ETA: 0:00:01
+Sampling:  52%|█████████████████████▍                   |  ETA: 0:00:01
+Sampling:  66%|███████████████████████████              |  ETA: 0:00:00
+Sampling:  80%|████████████████████████████████▊        |  ETA: 0:00:00
+Sampling:  93%|██████████████████████████████████████   |  ETA: 0:00:00
+Sampling: 100%|█████████████████████████████████████████| Time: 0:00:01
 
 Did we recover the parameters?
 
@@ -2221,7 +2236,10 @@ chain_ess_hmc = sample(lin_reg_conditioned, Gibbs(ESS(:β), HMC(1e-3, 16, :σ²)
 chain_ess_hmc = sample(lin_reg_conditioned, Gibbs(ESS(:β), HMC(1e-3, 16, :σ²)), 1_000)
 ```
 
-    Sampling:  10%|████▎                                    |  ETA: 0:00:01Sampling:  58%|███████████████████████▊                 |  ETA: 0:00:00Sampling: 100%|█████████████████████████████████████████| Time: 0:00:00
+    
+Sampling:  10%|████▎                                    |  ETA: 0:00:01
+Sampling:  58%|███████████████████████▊                 |  ETA: 0:00:00
+Sampling: 100%|█████████████████████████████████████████| Time: 0:00:00
 
     Chains MCMC chain (1000×4×1 Array{Float64, 3}):
     
@@ -2275,7 +2293,9 @@ chain_discrete = sample(
 )
 ```
 
-    Sampling (4 threads):  75%|█████████████████████▊       |  ETA: 0:00:00Sampling (4 threads): 100%|█████████████████████████████| Time: 0:00:00
+    
+Sampling (4 threads):  75%|█████████████████████▊       |  ETA: 0:00:00
+Sampling (4 threads): 100%|█████████████████████████████| Time: 0:00:00
 
     Chains MCMC chain (1000×13×4 Array{Float64, 3}):
     

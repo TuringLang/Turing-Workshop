@@ -121,7 +121,7 @@ end
 
 Plot trajectories in `chain`.
 
-# Keyword arguents
+# Keyword arguments
 n = 1000, trajectory_color="#BBBBBB", alpha=1/√n
 - `n`: number of trajectories to sample. Default: 1000.
 - `trajectory_color`: color of the trajectories to use. Default: "#BBBBBB".

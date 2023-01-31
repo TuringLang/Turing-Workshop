@@ -32,7 +32,7 @@ Geilo Winter School, Geilo Norway, 2023-01-22 to 2023-01-27.
 
 1. Cutting-edge MCMC algorithms research with Turing (90 mins)
 
-   - How to use the exposed interfaces in the Turing ecossystem
+   - How to use the exposed interfaces in the Turing ecosystem
    - Case example of Parallel MCMC Tempering
 
 ## Getting set up with Julia
