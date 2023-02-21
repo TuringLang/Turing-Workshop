@@ -423,14 +423,6 @@ Jose Storopoli, PhD
 </div>
 
 </section>
-<section class="slide level2">
-
-<div class="cell" data-execution_count="2">
-<div class="cell-output cell-output-display" data-execution_count="2">
-<pre><code>Random.TaskLocalRNG()</code></pre>
-</div>
-</div>
-</section>
 <section id="agenda" class="slide level2 scrollable">
 <h2>Agenda</h2>
 <div>
@@ -509,44 +501,44 @@ Jose Storopoli, PhD
 </section>
 <section id="example-dice-throw" class="slide level2">
 <h2>Example — Dice Throw</h2>
-<div class="cell" data-execution_count="3">
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb2-1"><a href="#cb2-1"></a><span class="im">using</span> <span class="bu">Turing</span></span>
-<span id="cb2-2"><a href="#cb2-2"></a></span>
-<span id="cb2-3"><a href="#cb2-3"></a><span class="pp">@model</span> <span class="kw">function</span> <span class="fu">dice_throw</span>(y)</span>
-<span id="cb2-4"><a href="#cb2-4"></a>    p <span class="op">~</span> <span class="fu">Dirichlet</span>(<span class="fl">6</span>, <span class="fl">1</span>)</span>
-<span id="cb2-5"><a href="#cb2-5"></a></span>
-<span id="cb2-6"><a href="#cb2-6"></a>    <span class="cf">for</span> i <span class="kw">in</span> <span class="fu">eachindex</span>(y)</span>
-<span id="cb2-7"><a href="#cb2-7"></a>        y[i] <span class="op">~</span> <span class="fu">Categorical</span>(p)</span>
-<span id="cb2-8"><a href="#cb2-8"></a>    <span class="cf">end</span></span>
-<span id="cb2-9"><a href="#cb2-9"></a><span class="kw">end</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell" data-execution_count="2">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb1-1"><a href="#cb1-1"></a><span class="im">using</span> <span class="bu">Turing</span></span>
+<span id="cb1-2"><a href="#cb1-2"></a></span>
+<span id="cb1-3"><a href="#cb1-3"></a><span class="pp">@model</span> <span class="kw">function</span> <span class="fu">dice_throw</span>(y)</span>
+<span id="cb1-4"><a href="#cb1-4"></a>    p <span class="op">~</span> <span class="fu">Dirichlet</span>(<span class="fl">6</span>, <span class="fl">1</span>)</span>
+<span id="cb1-5"><a href="#cb1-5"></a></span>
+<span id="cb1-6"><a href="#cb1-6"></a>    <span class="cf">for</span> i <span class="kw">in</span> <span class="fu">eachindex</span>(y)</span>
+<span id="cb1-7"><a href="#cb1-7"></a>        y[i] <span class="op">~</span> <span class="fu">Categorical</span>(p)</span>
+<span id="cb1-8"><a href="#cb1-8"></a>    <span class="cf">end</span></span>
+<span id="cb1-9"><a href="#cb1-9"></a><span class="kw">end</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="fragment">
 <p><br></p>
-<div class="cell" data-execution_count="4">
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb3-1"><a href="#cb3-1"></a><span class="im">using</span> <span class="bu">Distributions</span></span>
-<span id="cb3-2"><a href="#cb3-2"></a></span>
-<span id="cb3-3"><a href="#cb3-3"></a>my_data <span class="op">=</span> <span class="fu">rand</span>(<span class="fu">DiscreteUniform</span>(<span class="fl">1</span>, <span class="fl">6</span>), <span class="fl">1_000</span>)</span>
-<span id="cb3-4"><a href="#cb3-4"></a>model <span class="op">=</span> <span class="fu">dice_throw</span>(my_data)</span>
-<span id="cb3-5"><a href="#cb3-5"></a></span>
-<span id="cb3-6"><a href="#cb3-6"></a><span class="co"># NUTS with 1k iter,</span></span>
-<span id="cb3-7"><a href="#cb3-7"></a><span class="co"># 1k warmup, and</span></span>
-<span id="cb3-8"><a href="#cb3-8"></a><span class="co"># acceptance rate of 80%</span></span>
-<span id="cb3-9"><a href="#cb3-9"></a>chain <span class="op">=</span> <span class="fu">sample</span>(model, <span class="fu">NUTS</span>(<span class="fl">1_000</span>, <span class="fl">0.8</span>), <span class="fl">1_000</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell" data-execution_count="3">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb2-1"><a href="#cb2-1"></a><span class="im">using</span> <span class="bu">Distributions</span></span>
+<span id="cb2-2"><a href="#cb2-2"></a></span>
+<span id="cb2-3"><a href="#cb2-3"></a>my_data <span class="op">=</span> <span class="fu">rand</span>(<span class="fu">DiscreteUniform</span>(<span class="fl">1</span>, <span class="fl">6</span>), <span class="fl">1_000</span>)</span>
+<span id="cb2-4"><a href="#cb2-4"></a>model <span class="op">=</span> <span class="fu">dice_throw</span>(my_data)</span>
+<span id="cb2-5"><a href="#cb2-5"></a></span>
+<span id="cb2-6"><a href="#cb2-6"></a><span class="co"># NUTS with 1k iter,</span></span>
+<span id="cb2-7"><a href="#cb2-7"></a><span class="co"># 1k warmup, and</span></span>
+<span id="cb2-8"><a href="#cb2-8"></a><span class="co"># acceptance rate of 80%</span></span>
+<span id="cb2-9"><a href="#cb2-9"></a>chain <span class="op">=</span> <span class="fu">sample</span>(model, <span class="fu">NUTS</span>(<span class="fl">1_000</span>, <span class="fl">0.8</span>), <span class="fl">1_000</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </div>
 </section>
 <section id="inspecting-chains" class="slide level2 scrollable">
 <h2>Inspecting Chains</h2>
-<div class="cell" data-execution_count="5">
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb4-1"><a href="#cb4-1"></a>chain</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell" data-execution_count="4">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb3-1"><a href="#cb3-1"></a>chain</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="5">
 <div class="ansi-escaped-output">
 <pre>Chains MCMC chain (1000×18×1 Array{Float64, 3}):
 Iterations        = 1001:1:2000
 Number of chains  = 1
 Samples per chain = 1000
-Wall duration     = 106.73 seconds
-Compute duration  = 106.73 seconds
+Wall duration     = 115.47 seconds
+Compute duration  = 115.47 seconds
 parameters        = p[1], p[2], p[3], p[4], p[5], p[6]
 internals         = lp, n_steps, is_accept, acceptance_rate, log_density, hamiltonian_energy, hamiltonian_energy_error, max_hamiltonian_energy_error, tree_depth, numerical_error, step_size, nom_step_size
 Summary Statistics
@@ -575,10 +567,10 @@ Quantiles
 </section>
 <section id="visualizing-chains" class="slide level2">
 <h2>Visualizing Chains</h2>
-<div class="cell" data-execution_count="6">
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb5-1"><a href="#cb5-1"></a><span class="im">using</span> <span class="bu">StatsPlots</span></span>
-<span id="cb5-2"><a href="#cb5-2"></a></span>
-<span id="cb5-3"><a href="#cb5-3"></a><span class="fu">plot</span>(chain)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell" data-execution_count="5">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb4-1"><a href="#cb4-1"></a><span class="im">using</span> <span class="bu">StatsPlots</span></span>
+<span id="cb4-2"><a href="#cb4-2"></a></span>
+<span id="cb4-3"><a href="#cb4-3"></a><span class="fu">plot</span>(chain)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 
 </div>
 <img data-src="intro-turing_files/figure-revealjs/cell-6-output-1.svg" class="r-stretch"></section>
@@ -601,17 +593,17 @@ Quantiles
 </div></aside></section>
 <section id="example-dice-throw-mh" class="slide level2 scrollable">
 <h2>Example — Dice Throw <code>MH()</code></h2>
-<div class="cell" data-execution_count="7">
-<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb6-1"><a href="#cb6-1"></a><span class="co"># Metropolis-Hastings with 2k iters</span></span>
-<span id="cb6-2"><a href="#cb6-2"></a>chain_mh <span class="op">=</span> <span class="fu">sample</span>(model, <span class="fu">MH</span>(), <span class="fl">2_000</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell" data-execution_count="6">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb5-1"><a href="#cb5-1"></a><span class="co"># Metropolis-Hastings with 2k iters</span></span>
+<span id="cb5-2"><a href="#cb5-2"></a>chain_mh <span class="op">=</span> <span class="fu">sample</span>(model, <span class="fu">MH</span>(), <span class="fl">2_000</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="7">
 <div class="ansi-escaped-output">
 <pre>Chains MCMC chain (2000×7×1 Array{Float64, 3}):
 Iterations        = 1:1:2000
 Number of chains  = 1
 Samples per chain = 2000
-Wall duration     = 0.91 seconds
-Compute duration  = 0.91 seconds
+Wall duration     = 0.84 seconds
+Compute duration  = 0.84 seconds
 parameters        = p[1], p[2], p[3], p[4], p[5], p[6]
 internals         = lp
 Summary Statistics
@@ -653,17 +645,17 @@ Quantiles
 </section>
 <section id="example-dice-throw-multi-threaded" class="slide level2 scrollable">
 <h2>Example — Dice Throw Multi-threaded</h2>
-<div class="cell" data-execution_count="8">
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb7-1"><a href="#cb7-1"></a><span class="co"># 4 chains</span></span>
-<span id="cb7-2"><a href="#cb7-2"></a>chain_multi <span class="op">=</span> <span class="fu">sample</span>(model, <span class="fu">NUTS</span>(<span class="fl">1_000</span>, <span class="fl">0.8</span>), <span class="fu">MCMCThreads</span>(), <span class="fl">1_000</span>, <span class="fl">4</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell" data-execution_count="7">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb6-1"><a href="#cb6-1"></a><span class="co"># 4 chains</span></span>
+<span id="cb6-2"><a href="#cb6-2"></a>chain_multi <span class="op">=</span> <span class="fu">sample</span>(model, <span class="fu">NUTS</span>(<span class="fl">1_000</span>, <span class="fl">0.8</span>), <span class="fu">MCMCThreads</span>(), <span class="fl">1_000</span>, <span class="fl">4</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="8">
 <div class="ansi-escaped-output">
 <pre>Chains MCMC chain (1000×18×4 Array{Float64, 3}):
 Iterations        = 1001:1:2000
 Number of chains  = 4
 Samples per chain = 1000
-Wall duration     = 265.43 seconds
-Compute duration  = 1036.73 seconds
+Wall duration     = 261.83 seconds
+Compute duration  = 1024.71 seconds
 parameters        = p[1], p[2], p[3], p[4], p[5], p[6]
 internals         = lp, n_steps, is_accept, acceptance_rate, log_density, hamiltonian_energy, hamiltonian_energy_error, max_hamiltonian_energy_error, tree_depth, numerical_error, step_size, nom_step_size
 Summary Statistics
@@ -699,7 +691,7 @@ Quantiles
 </ul>
 </div>
 </section>
-<section id="performance-tips-example" class="slide level2">
+<section id="performance-tips-example" class="slide level2 scrollable">
 <h2>Performance Tips – Example</h2>
 <p>Let’s use the <code>wells</code> dataset <span class="citation" data-cites="Gelman_Hill_2006">(<a href="#/references" role="doc-biblioref" onclick="">Gelman and Hill 2006</a>)</span>.</p>
 <div class="fragment">
@@ -713,12 +705,12 @@ Quantiles
 <li><code>association</code> – binary/dummy (0 or 1) if member(s) of household participate in community organizations.</li>
 <li><code>educ</code> – years of education (head of household).</li>
 </ul>
-<div class="cell" data-execution_count="9">
-<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb8-1"><a href="#cb8-1"></a><span class="im">using</span> <span class="bu">CSV</span></span>
-<span id="cb8-2"><a href="#cb8-2"></a><span class="im">using</span> <span class="bu">DataFrames</span></span>
-<span id="cb8-3"><a href="#cb8-3"></a></span>
-<span id="cb8-4"><a href="#cb8-4"></a>wells <span class="op">=</span> CSV.<span class="fu">read</span>(<span class="st">"data/wells.csv"</span>, DataFrame)</span>
-<span id="cb8-5"><a href="#cb8-5"></a><span class="fu">describe</span>(wells)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell" data-execution_count="8">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb7-1"><a href="#cb7-1"></a><span class="im">using</span> <span class="bu">CSV</span></span>
+<span id="cb7-2"><a href="#cb7-2"></a><span class="im">using</span> <span class="bu">DataFrames</span></span>
+<span id="cb7-3"><a href="#cb7-3"></a></span>
+<span id="cb7-4"><a href="#cb7-4"></a>wells <span class="op">=</span> CSV.<span class="fu">read</span>(<span class="st">"data/wells.csv"</span>, DataFrame)</span>
+<span id="cb7-5"><a href="#cb7-5"></a><span class="fu">describe</span>(wells)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="9">
 
 <div><div style="float: left;"><span>5×7 DataFrame</span></div><div style="clear: both;"></div></div><div class="data-frame" style="overflow-x: scroll;"><table class="data-frame" style="margin-bottom: 6px;"><thead><tr class="header"><th class="rowNumber" style="font-weight: bold; text-align: right;">Row</th><th style="text-align: left;">variable</th><th style="text-align: left;">mean</th><th style="text-align: left;">min</th><th style="text-align: left;">median</th><th style="text-align: left;">max</th><th style="text-align: left;">nmissing</th><th style="text-align: left;">eltype</th></tr><tr class="subheader headerLastRow"><th class="rowNumber" style="font-weight: bold; text-align: right;"></th><th title="Symbol" style="text-align: left;">Symbol</th><th title="Float64" style="text-align: left;">Float64</th><th title="Real" style="text-align: left;">Real</th><th title="Float64" style="text-align: left;">Float64</th><th title="Real" style="text-align: left;">Real</th><th title="Int64" style="text-align: left;">Int64</th><th title="DataType" style="text-align: left;">DataType</th></tr></thead><tbody><tr><td class="rowNumber" style="font-weight: bold; text-align: right;">1</td><td style="text-align: left;">switch</td><td style="text-align: right;">0.575166</td><td style="text-align: right;">0</td><td style="text-align: right;">1.0</td><td style="text-align: right;">1</td><td style="text-align: right;">0</td><td style="text-align: left;">Int64</td></tr><tr><td class="rowNumber" style="font-weight: bold; text-align: right;">2</td><td style="text-align: left;">arsenic</td><td style="text-align: right;">1.65693</td><td style="text-align: right;">0.51</td><td style="text-align: right;">1.3</td><td style="text-align: right;">9.65</td><td style="text-align: right;">0</td><td style="text-align: left;">Float64</td></tr><tr><td class="rowNumber" style="font-weight: bold; text-align: right;">3</td><td style="text-align: left;">dist</td><td style="text-align: right;">48.3319</td><td style="text-align: right;">0.387</td><td style="text-align: right;">36.7615</td><td style="text-align: right;">339.531</td><td style="text-align: right;">0</td><td style="text-align: left;">Float64</td></tr><tr><td class="rowNumber" style="font-weight: bold; text-align: right;">4</td><td style="text-align: left;">assoc</td><td style="text-align: right;">0.422848</td><td style="text-align: right;">0</td><td style="text-align: right;">0.0</td><td style="text-align: right;">1</td><td style="text-align: right;">0</td><td style="text-align: left;">Int64</td></tr><tr><td class="rowNumber" style="font-weight: bold; text-align: right;">5</td><td style="text-align: left;">educ</td><td style="text-align: right;">4.82848</td><td style="text-align: right;">0</td><td style="text-align: right;">5.0</td><td style="text-align: right;">17</td><td style="text-align: right;">0</td><td style="text-align: left;">Int64</td></tr></tbody></table></div>
@@ -728,62 +720,33 @@ Quantiles
 </section>
 <section id="logistic-regression-wells-data-prep" class="slide level2">
 <h2>Logistic Regression <code>wells</code> — Data Prep</h2>
-<div class="cell" data-execution_count="10">
-<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb9-1"><a href="#cb9-1"></a>X <span class="op">=</span> <span class="fu">Matrix</span>(<span class="fu">select</span>(wells, <span class="fu">Not</span>(<span class="op">:</span>switch)))</span>
-<span id="cb9-2"><a href="#cb9-2"></a>y <span class="op">=</span> wells[<span class="op">:</span>, <span class="op">:</span>switch]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="10">
-<pre><code>3020-element Vector{Int64}:
- 1
- 1
- 0
- 1
- 1
- 1
- 1
- 1
- 1
- 1
- 1
- 1
- 1
- ⋮
- 0
- 0
- 0
- 0
- 0
- 0
- 0
- 0
- 0
- 0
- 0
- 1</code></pre>
-</div>
+<div class="cell" data-execution_count="9">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb8-1"><a href="#cb8-1"></a>X <span class="op">=</span> <span class="fu">Matrix</span>(<span class="fu">select</span>(wells, <span class="fu">Not</span>(<span class="op">:</span>switch)))</span>
+<span id="cb8-2"><a href="#cb8-2"></a>y <span class="op">=</span> wells[<span class="op">:</span>, <span class="op">:</span>switch]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
-<section id="logistic-regression-wells-naïve-model" class="slide level2">
+<section id="logistic-regression-wells-naïve-model" class="slide level2 scrollable">
 <h2>Logistic Regression <code>wells</code> — Naïve Model</h2>
-<div class="cell" data-execution_count="11">
-<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb11-1"><a href="#cb11-1"></a><span class="im">using</span> <span class="bu">BenchmarkTools</span></span>
-<span id="cb11-2"><a href="#cb11-2"></a><span class="im">using</span> <span class="bu">LinearAlgebra</span>: ⋅</span>
-<span id="cb11-3"><a href="#cb11-3"></a></span>
-<span id="cb11-4"><a href="#cb11-4"></a><span class="pp">@model</span> <span class="kw">function</span> <span class="fu">logreg_naive</span>(X, y; predictors<span class="op">=</span><span class="fu">size</span>(X, <span class="fl">2</span>))</span>
-<span id="cb11-5"><a href="#cb11-5"></a>    <span class="co"># priors</span></span>
-<span id="cb11-6"><a href="#cb11-6"></a>    α <span class="op">~</span> <span class="fu">Normal</span>(<span class="fl">0</span>, <span class="fl">2.5</span>)</span>
-<span id="cb11-7"><a href="#cb11-7"></a>    β <span class="op">~</span> <span class="fu">filldist</span>(<span class="fu">TDist</span>(<span class="fl">3</span>), predictors)</span>
-<span id="cb11-8"><a href="#cb11-8"></a></span>
-<span id="cb11-9"><a href="#cb11-9"></a>    <span class="co"># likelihood</span></span>
-<span id="cb11-10"><a href="#cb11-10"></a>    <span class="cf">for</span> i <span class="kw">in</span> <span class="fu">eachindex</span>(y)</span>
-<span id="cb11-11"><a href="#cb11-11"></a>        y[i] <span class="op">~</span> <span class="fu">BernoulliLogit</span>(α <span class="op">+</span> X[i, <span class="op">:</span>] <span class="op">⋅</span> β)</span>
-<span id="cb11-12"><a href="#cb11-12"></a>    <span class="cf">end</span></span>
-<span id="cb11-13"><a href="#cb11-13"></a><span class="kw">end</span></span>
-<span id="cb11-14"><a href="#cb11-14"></a></span>
-<span id="cb11-15"><a href="#cb11-15"></a>model_naive <span class="op">=</span> <span class="fu">logreg_naive</span>(X, y)</span>
-<span id="cb11-16"><a href="#cb11-16"></a></span>
-<span id="cb11-17"><a href="#cb11-17"></a><span class="pp">@btime</span> <span class="fu">sample</span>(model_naive, <span class="fu">NUTS</span>(<span class="fl">1_000</span>, <span class="fl">0.8</span>), <span class="fl">1_000</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell" data-execution_count="10">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb9-1"><a href="#cb9-1"></a><span class="im">using</span> <span class="bu">BenchmarkTools</span></span>
+<span id="cb9-2"><a href="#cb9-2"></a><span class="im">using</span> <span class="bu">LinearAlgebra</span>: ⋅</span>
+<span id="cb9-3"><a href="#cb9-3"></a></span>
+<span id="cb9-4"><a href="#cb9-4"></a><span class="pp">@model</span> <span class="kw">function</span> <span class="fu">logreg_naive</span>(X, y; predictors<span class="op">=</span><span class="fu">size</span>(X, <span class="fl">2</span>))</span>
+<span id="cb9-5"><a href="#cb9-5"></a>    <span class="co"># priors</span></span>
+<span id="cb9-6"><a href="#cb9-6"></a>    α <span class="op">~</span> <span class="fu">Normal</span>(<span class="fl">0</span>, <span class="fl">2.5</span>)</span>
+<span id="cb9-7"><a href="#cb9-7"></a>    β <span class="op">~</span> <span class="fu">filldist</span>(<span class="fu">TDist</span>(<span class="fl">3</span>), predictors)</span>
+<span id="cb9-8"><a href="#cb9-8"></a></span>
+<span id="cb9-9"><a href="#cb9-9"></a>    <span class="co"># likelihood</span></span>
+<span id="cb9-10"><a href="#cb9-10"></a>    <span class="cf">for</span> i <span class="kw">in</span> <span class="fu">eachindex</span>(y)</span>
+<span id="cb9-11"><a href="#cb9-11"></a>        y[i] <span class="op">~</span> <span class="fu">BernoulliLogit</span>(α <span class="op">+</span> X[i, <span class="op">:</span>] <span class="op">⋅</span> β)</span>
+<span id="cb9-12"><a href="#cb9-12"></a>    <span class="cf">end</span></span>
+<span id="cb9-13"><a href="#cb9-13"></a><span class="kw">end</span></span>
+<span id="cb9-14"><a href="#cb9-14"></a></span>
+<span id="cb9-15"><a href="#cb9-15"></a>model_naive <span class="op">=</span> <span class="fu">logreg_naive</span>(X, y)</span>
+<span id="cb9-16"><a href="#cb9-16"></a></span>
+<span id="cb9-17"><a href="#cb9-17"></a><span class="pp">@btime</span> <span class="fu">sample</span>(model_naive, <span class="fu">NUTS</span>(<span class="fl">1_000</span>, <span class="fl">0.8</span>), <span class="fl">1_000</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>  14.995 s (201202828 allocations: 18.05 GiB)</code></pre>
+<pre><code>  16.158 s (201202828 allocations: 18.05 GiB)</code></pre>
 </div>
 <div class="cell-output cell-output-display" data-execution_count="11">
 <div class="ansi-escaped-output">
@@ -791,8 +754,8 @@ Quantiles
 Iterations        = 1001:1:2000
 Number of chains  = 1
 Samples per chain = 1000
-Wall duration     = 14.99 seconds
-Compute duration  = 14.99 seconds
+Wall duration     = 16.15 seconds
+Compute duration  = 16.15 seconds
 parameters        = α, β[1], β[2], β[3], β[4]
 internals         = lp, n_steps, is_accept, acceptance_rate, log_density, hamiltonian_energy, hamiltonian_energy_error, max_hamiltonian_energy_error, tree_depth, numerical_error, step_size, nom_step_size
 Summary Statistics
@@ -820,25 +783,25 @@ Quantiles
 <aside><div>
 <p><code>Turing</code>’s <code>BernoulliLogit()</code> is a logit-parameterised Bernoulli distribution that convert logodds to probability.</p>
 </div></aside></section>
-<section id="logistic-regression-wells-performance-model" class="slide level2">
+<section id="logistic-regression-wells-performance-model" class="slide level2 scrollable">
 <h2>Logistic Regression <code>wells</code> — Performance Model</h2>
-<div class="cell" data-execution_count="12">
-<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb13-1"><a href="#cb13-1"></a><span class="im">using</span> <span class="bu">LazyArrays</span></span>
-<span id="cb13-2"><a href="#cb13-2"></a></span>
-<span id="cb13-3"><a href="#cb13-3"></a><span class="pp">@model</span> <span class="kw">function</span> <span class="fu">logreg_perf</span>(X, y; predictors<span class="op">=</span><span class="fu">size</span>(X, <span class="fl">2</span>))</span>
-<span id="cb13-4"><a href="#cb13-4"></a>    <span class="co"># priors</span></span>
-<span id="cb13-5"><a href="#cb13-5"></a>    α <span class="op">~</span> <span class="fu">Normal</span>(<span class="fl">0</span>, <span class="fl">2.5</span>)</span>
-<span id="cb13-6"><a href="#cb13-6"></a>    β <span class="op">~</span> <span class="fu">filldist</span>(<span class="fu">TDist</span>(<span class="fl">3</span>), predictors)</span>
-<span id="cb13-7"><a href="#cb13-7"></a></span>
-<span id="cb13-8"><a href="#cb13-8"></a>    <span class="co"># likelihood</span></span>
-<span id="cb13-9"><a href="#cb13-9"></a>    y <span class="op">~</span> <span class="fu">arraydist</span>(<span class="fu">LazyArray</span>(@<span class="op">~</span> <span class="fu">BernoulliLogit</span>.(α <span class="op">.+</span> X <span class="op">*</span> β)))</span>
-<span id="cb13-10"><a href="#cb13-10"></a><span class="kw">end</span></span>
-<span id="cb13-11"><a href="#cb13-11"></a></span>
-<span id="cb13-12"><a href="#cb13-12"></a>model_perf <span class="op">=</span> <span class="fu">logreg_perf</span>(X, y)</span>
-<span id="cb13-13"><a href="#cb13-13"></a></span>
-<span id="cb13-14"><a href="#cb13-14"></a><span class="pp">@btime</span> <span class="fu">sample</span>(model_perf, <span class="fu">NUTS</span>(<span class="fl">1_000</span>, <span class="fl">0.8</span>), <span class="fl">1_000</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell" data-execution_count="11">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb11-1"><a href="#cb11-1"></a><span class="im">using</span> <span class="bu">LazyArrays</span></span>
+<span id="cb11-2"><a href="#cb11-2"></a></span>
+<span id="cb11-3"><a href="#cb11-3"></a><span class="pp">@model</span> <span class="kw">function</span> <span class="fu">logreg_perf</span>(X, y; predictors<span class="op">=</span><span class="fu">size</span>(X, <span class="fl">2</span>))</span>
+<span id="cb11-4"><a href="#cb11-4"></a>    <span class="co"># priors</span></span>
+<span id="cb11-5"><a href="#cb11-5"></a>    α <span class="op">~</span> <span class="fu">Normal</span>(<span class="fl">0</span>, <span class="fl">2.5</span>)</span>
+<span id="cb11-6"><a href="#cb11-6"></a>    β <span class="op">~</span> <span class="fu">filldist</span>(<span class="fu">TDist</span>(<span class="fl">3</span>), predictors)</span>
+<span id="cb11-7"><a href="#cb11-7"></a></span>
+<span id="cb11-8"><a href="#cb11-8"></a>    <span class="co"># likelihood</span></span>
+<span id="cb11-9"><a href="#cb11-9"></a>    y <span class="op">~</span> <span class="fu">arraydist</span>(<span class="fu">LazyArray</span>(@<span class="op">~</span> <span class="fu">BernoulliLogit</span>.(α <span class="op">.+</span> X <span class="op">*</span> β)))</span>
+<span id="cb11-10"><a href="#cb11-10"></a><span class="kw">end</span></span>
+<span id="cb11-11"><a href="#cb11-11"></a></span>
+<span id="cb11-12"><a href="#cb11-12"></a>model_perf <span class="op">=</span> <span class="fu">logreg_perf</span>(X, y)</span>
+<span id="cb11-13"><a href="#cb11-13"></a></span>
+<span id="cb11-14"><a href="#cb11-14"></a><span class="pp">@btime</span> <span class="fu">sample</span>(model_perf, <span class="fu">NUTS</span>(<span class="fl">1_000</span>, <span class="fl">0.8</span>), <span class="fl">1_000</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>  6.083 s (5930919 allocations: 616.03 MiB)</code></pre>
+<pre><code>  7.286 s (5930919 allocations: 616.03 MiB)</code></pre>
 </div>
 <div class="cell-output cell-output-display" data-execution_count="12">
 <div class="ansi-escaped-output">
@@ -846,8 +809,8 @@ Quantiles
 Iterations        = 1001:1:2000
 Number of chains  = 1
 Samples per chain = 1000
-Wall duration     = 6.08 seconds
-Compute duration  = 6.08 seconds
+Wall duration     = 7.28 seconds
+Compute duration  = 7.28 seconds
 parameters        = α, β[1], β[2], β[3], β[4]
 internals         = lp, n_steps, is_accept, acceptance_rate, log_density, hamiltonian_energy, hamiltonian_energy_error, max_hamiltonian_energy_error, tree_depth, numerical_error, step_size, nom_step_size
 Summary Statistics
