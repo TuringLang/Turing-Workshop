@@ -1,0 +1,293 @@
+---
+title: "Intro to Turing.jl"
+author: "Jose Storopoli, PhD"
+format:
+  revealjs: 
+    slide-number: true
+    transition: slide
+    chalkboard: 
+      buttons: false
+    preview-links: auto
+    footer: <https://turinglang.org>
+    logo: images/logo.svg
+    callout-appearance: minimal
+execute:
+  echo: true
+  cache: true
+bibliography: references.bib
+jupyter: julia-1.8
+---
+
+```{julia}
+#| echo: false
+#| output: false
+using Turing
+using Distributions
+using StatsPlots
+using CSV
+using DataFramesMeta
+using LazyArrays
+using BenchmarkTools
+using Random: seed!
+setprogress!(false) # hide
+seed!(123)
+```
+
+## Agenda {.scrollable}
+
+::: incremental
+1. Define a Model --- Basic PPL (Probabilistic Programming Language) syntax
+   1. Deterministics and probabilistic assignments
+   1. avoiding `for`-loops and efficient coding
+1. Fit a model
+   1. MCMC sampler choice
+   1. Multi-threaded and Multiprocess
+1. Inspecting chains --- built-in functionality
+1. Visualizing chains --- built-in functionality
+:::
+
+## What we are not covering
+
+But I highly suggest you learn more about:
+
+</br>
+
+::: incremental
+- [Posterior/Prior predictive checks](https://storopoli.github.io/Bayesian-Julia/pages/04_Turing/)
+- [Increment log of the joint probability](https://github.com/TuringLang/TuringExamples/blob/master/benchmarks/hmm_semisup/turing.jl), _e.g._ Hidden Markov Models
+- [Incorporating a ODE system into your model](https://storopoli.github.io/Bayesian-Julia/pages/13_epi_models/)
+- [Data optimizations such as centering and/or QR decomposition](https://storopoli.github.io/Bayesian-Julia/pages/12_Turing_tricks/)
+:::
+
+
+## PPL (Probabilistic Programming Language)
+
+
+It is a programming paradigm in which probabilistic models are specified and inference for these models is performed automatically [@Hardesty_Technology]
+
+. . .
+
+In more clear terms, PP and PP Languages (PPLs) allows us to specify variables as random variables (like `Normal`, `Binominal` etc.) with known or unknown parameters.
+
+. . .
+
+Then, we construct a model using these variables by specifying how the variables related to each other, and finally automatic inference of the variables' unknown parameters is then performed.
+
+## PPL (Probabilistic Programming Language)
+
+In a Bayesian approach this means specifying priors, likelihoods and letting the PPL compute the posterior. 
+
+. . .
+
+Since the denominator in the posterior is often intractable, we use Markov Chain Monte Carlo and some fancy sampler algorithm to approximate the posterior.
+
+. . . 
+
+This involves, besides a suitable PPL, automatic differentiation, MCMC chains interface, and also an efficient HMC algorithm implementation. 
+
+## What is `Turing.jl`
+
+In order to provide all of these features, Turing has a whole ecosystem to address each and every one of these components.
+
+::: incremental
+- [`Turing.jl`](https://github.com/TuringLang/Turing.jl) [@Ge_Xu_Ghahramani_2018]
+- [`MCMCChains.jl`](https://github.com/TuringLang/MCMCChains.jl)
+- [`DynamicPPL.jl`](https://github.com/TuringLang/DynamicPPL.jl) [@Tarek_Xu_Trapp_Ge_Ghahramani_2020]
+- [`AdvancedHMC.jl`](https://github.com/TuringLang/AdvancedHMC.jl) [@Xu_Ge_Tebbutt_Tarek_Trapp_Ghahramani_2020]
+- [`DistributionsAD.jl`](https://github.com/TuringLang/DistributionsAD.jl)
+- [`Bijectors.jl`](https://github.com/TuringLang/Bijectors.jl)
+:::
+
+## What is `Turing.jl` {.scrollable}
+
+`Turing.jl` [@Ge_Xu_Ghahramani_2018] is the main package in the Turing ecosystem and the backbone that glues all the other packages together.
+We specify the model inside a macro `@model` where we can assign variables in two ways:
+
+::: incremental
+- using `~`: which means that a variable follows some probability distribution (Normal, Binomial etc.) and its value is random under that distribution
+- using `=`: which means that a variable does not follow a probability distribution and its value is deterministic (like the normal `=` assignment in programming languages)
+:::
+
+
+## Example --- Dice Throw
+
+```{julia}
+#| output: false
+using Turing
+
+@model function dice_throw(y)
+    p ~ Dirichlet(6, 1)
+
+    for i in eachindex(y)
+        y[i] ~ Categorical(p)
+    end
+end
+```
+
+. . .
+
+</br>
+
+```{julia}
+#| output: false
+using Distributions
+
+my_data = rand(DiscreteUniform(1, 6), 1_000)
+model = dice_throw(my_data)
+
+# NUTS with 1k iter,
+# 1k warmup, and
+# acceptance rate of 80%
+chain = sample(model, NUTS(1_000, 0.8), 1_000)
+```
+
+## Inspecting Chains {.scrollable}
+
+```{julia}
+chain
+```
+
+## Visualizing Chains
+
+```{julia}
+using StatsPlots
+
+plot(chain)
+```
+
+## Different MCMC Samplers
+
+We have [several samplers](https://turinglang.org/dev/docs/using-turing/sampler-viz) available:
+
+::: incremental
+- `MH()`: **M**etropolis-**H**astings
+- `PG()`: **P**article **G**ibbs
+- `SMC()`: **S**equential **M**onte **C**arlo
+- `HMC()`: **H**amiltonian **M**onte **C**arlo
+- `HMCDA()`: **H**amiltonian **M**onte **C**arlo with Nesterov's **D**ual **A**veraging
+- `NUTS()`: **N**o-**U**-**T**urn **S**ampling
+:::
+
+::: aside
+There's also a way to combine MCMC samplers for different variables with `Gibbs`.
+:::
+
+## Example --- Dice Throw `MH()` {.scrollable}
+
+```{julia}
+# Metropolis-Hastings with 2k iters
+chain_mh = sample(model, MH(), 2_000)
+```
+
+
+## Fitting --- Multi-threading and Multiprocess 
+
+There is some methods of `Turing`'s `sample()` that accepts either:
+
+::: incremental
+- `MCMCThreads()`: uses multithread stuff with [`Threads.jl`](https://docs.julialang.org/en/v1/manual/multi-threading/#man-multithreading)
+- `MCMCDistributed()`: uses multiprocesses stuff with [`Distributed.jl`](https://docs.julialang.org/en/v1/manual/distributed-computing/) and uses the [MPI -- Message Passing Interface](https://en.wikipedia.org/wiki/Message_Passing_Interface)
+:::
+
+. . .
+
+Just use `sample(model, sampler, MCMCThreads(), N, chains)`.
+
+## Example --- Dice Throw Multi-threaded {.scrollable}
+
+```{julia}
+# 4 chains
+chain_multi = sample(model, NUTS(1_000, 0.8), MCMCThreads(), 1_000, 4)
+```
+
+## Performance Tips
+
+::: incremental
+- Avoid `for`-loops
+- Use `LazyArrays`
+:::
+
+## Performance Tips -- Example {.scrollable}
+
+Let's use the `wells` dataset [@Gelman_Hill_2006].
+
+. . .
+
+
+Data from a survey of 3,200 residents in a small area of Bangladesh suffering from arsenic contamination of groundwater.
+Respondents with elevated arsenic levels in their wells had been encouraged to switch their water source to a safe public or private well in the nearby area and the survey was conducted several years later to learn which of the affected residents had switched wells.
+
+. . .
+
+- `switch` -- binary/dummy (0 or 1) for well-switching.
+- `arsenic` -- arsenic level in respondent's well.
+- `dist` -- distance (meters) from the respondent's house to the nearest well with safe drinking water.
+- `association` -- binary/dummy (0 or 1) if member(s) of household participate in community organizations.
+- `educ` -- years of education (head of household).
+
+```{julia}
+using CSV
+using DataFrames
+
+wells = CSV.read("data/wells.csv", DataFrame)
+describe(wells)
+```
+
+## Logistic Regression `wells` --- Data Prep
+
+
+```{julia}
+#| output: false
+X = Matrix(select(wells, Not(:switch)))
+y = wells[:, :switch]
+```
+
+## Logistic Regression `wells` --- Naïve Model {.scrollable}
+
+```{julia}
+using BenchmarkTools
+using LinearAlgebra: ⋅
+
+@model function logreg_naive(X, y; predictors=size(X, 2))
+    # priors
+    α ~ Normal(0, 2.5)
+    β ~ filldist(TDist(3), predictors)
+
+    # likelihood
+    for i in eachindex(y)
+        y[i] ~ BernoulliLogit(α + X[i, :] ⋅ β)
+    end
+end
+
+model_naive = logreg_naive(X, y)
+
+@btime sample(model_naive, NUTS(1_000, 0.8), 1_000)
+```
+
+::: aside
+`Turing`'s `BernoulliLogit()` is a logit-parameterised Bernoulli distribution that convert logodds to probability.
+:::
+
+## Logistic Regression `wells` --- Performance Model {.scrollable}
+
+```{julia}
+using LazyArrays
+
+@model function logreg_perf(X, y; predictors=size(X, 2))
+    # priors
+    α ~ Normal(0, 2.5)
+    β ~ filldist(TDist(3), predictors)
+
+    # likelihood
+    y ~ arraydist(LazyArray(@~ BernoulliLogit.(α .+ X * β)))
+end
+
+model_perf = logreg_perf(X, y)
+
+@btime sample(model_perf, NUTS(1_000, 0.8), 1_000)
+```
+
+## References
+
+::: {#refs}
+:::
