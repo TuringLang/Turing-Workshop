@@ -37,7 +37,7 @@ Geilo Winter School, Geilo Norway, 2023-01-22 to 2023-01-27.
 
 ## Getting set up with Julia
 
-See [setting-up-julia.md](./setting-up-julia.md) for how to get set up with Julia.
+See [setting_up_julia.md](../setting_up_julia.md) for how to get set up with Julia.
 
 ## Datasets
 
