@@ -1,10 +1,11 @@
-# Turing-Workshop
+# Turing-Workshops
 
-Turing Workshop
+Turing Workshops
 
 ## Contents
 
 - [2023-Geilo-Winter-School](https://www.sintef.no/projectweb/geilowinterschool/2023-23rd-geilo-winter-school/): 23rd Geilo Winter School, Computational Statistics.
+- [2023-Intro-Turing](https://www.meetup.com/bda-group/events/290842675/): Bayesian Data Analysis Meetup Group.
 
 ## License
 
