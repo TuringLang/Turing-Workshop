@@ -6,13 +6,15 @@ If you're already familiar with Julia and have Julia 1.8 or greater already inst
 
 If you're new to Julia, you will unfortunately have to install yet another language on your device. Luckily, it's a fairly straight forward mission.
 
-
-
 ## "Woah there! I have to *execute* Julia code? HOW?!" - Installing Julia
 
-We'll be using Julia **1.8.x** throughout, so we recommend you use the same version to avoid any issues.
+We'll be using Julia **1.9.x** throughout, so we recommend you use the same version to avoid any issues.
+
+If you're using a Windows machine, we highly recommend checking out the [`Windows Subsystem for Linux (WSL)`](https://learn.microsoft.com/en-us/windows/wsl/install). It's a powerful tool that allows you to run Linux applications, including GUI apps, and even supports GPU acceleration. This can greatly enhance your Julia programming experience.
 
 **Julia can be downloaded at the official website (https://julialang.org/downloads/) and a more detailed instructions can also be found there (https://julialang.org/downloads/platform/).**
+
+*Other than the official installers, you can also try [`Juliaup`](https://github.com/JuliaLang/juliaup) which will make it easier to work with multiple Julia versions down the line.*
 
 At the end of this process you should have access to some way of getting you into the Julia REPL which should present something similar to this:
 
@@ -22,7 +24,7 @@ At the end of this process you should have access to some way of getting you int
   (_)     | (_) (_)    |
    _ _   _| |_  __ _   |  Type "?" for help, "]?" for Pkg help.
   | | | | | | |/ _` |  |
-  | | |_| | | | (_| |  |  Version 1.8.2 (2022-09-29)
+  | | |_| | | | (_| |  |  Version 1.9.3 (2023-08-24)
  _/ |\__'_|_|_|\__'_|  |  Official https://julialang.org/ release
 |__/                   |
 
@@ -31,7 +33,7 @@ julia>
 
 For example, on a Linux device this is generally achieved by running the command `julia` or the executable `/wherever/you/installed/julia/bin/julia`.
 
-(If the version is slightly different, e.g. 1.8.4, that is no problem; the important bit is that you're on a version ≥1.8)
+(If the version is slightly different, e.g. 1.8.4, that is no problem; the important bit is that you're on a version ≥1.8. Julia 1.9 brings a lot of nice features, but 1.8 should suffice.)
 
 ## "But how do I *write* Julia code?!" - Setting up an editor
 
@@ -49,7 +51,7 @@ How and where and with what you want to write these chunks of text is of course 
 
 The latter option might be more familiar if you're coming from a scientific Python background, but VS Code is generally the recommended option.
 
-Amongst us speakers we're both familiar with Jupyter notebooks, José is a VS Code and neovim user, and Tor is a (grumpy) `emacs` user, hence we should be able to provide _some_ support with a few different setups.
+Amongst us speakers we're familiar with Jupyter notebooks, Will and Xianda are VS Code users, and Tor is a (grumpy) `emacs` user, hence we should be able to provide _some_ support with a few different setups.
 
 Note that we expect everyone to act civil during the workshops, regardless of the differences in choices of editor people make. 
 In particular, any criticism of `emacs` will be met by loud boos and shaking of fists from Tor in an attempt to quell potential conflicts.
