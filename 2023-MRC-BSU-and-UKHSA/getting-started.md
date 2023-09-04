@@ -33,7 +33,7 @@ julia>
 
 For example, on a Linux device this is generally achieved by running the command `julia` or the executable `/wherever/you/installed/julia/bin/julia`.
 
-(If the version is slightly different, e.g. 1.8.4, that is no problem; the important bit is that you're on a version ≥1.8. Julia 1.9 brings a lot of nice features, but 1.8 should suffice.)
+(If the version is slightly different, e.g. 1.9.2, that is no problem; the important bit is that you're on a version ≥1.9)
 
 ## "But how do I *write* Julia code?!" - Setting up an editor
 
