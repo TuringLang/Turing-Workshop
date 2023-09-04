@@ -47,7 +47,8 @@ How and where and with what you want to write these chunks of text is of course 
 
 **But most (sane) people will probably prefer something like:**
 1. a proper IDE, in which case [Visual Studio (VS) Code](https://code.visualstudio.com/) with [the Julia extensions](https://www.julia-vscode.org/) is a great option, or
-2. [Jupyter notebooks](https://jupyter.org/), which is easily supported by simply installing the Julia package `IJulia`; once this is installed you should find a `julia` kernel available in your notebook.[^1]
+2. [Pluto.jl](https://github.com/fonsp/Pluto.jl), which is a reactive notebook specifically for and implemented in Julia. This has the benefit of being trivial to set up + the underlying file of the notebook is a simple Julia file, so it's possible to execute it both as a script and view it as a nice notebook in the browser.
+3. [Jupyter notebooks](https://jupyter.org/), which is easily supported by simply installing the Julia package `IJulia`; once this is installed you should find a `julia` kernel available in your notebook.[^1]
 
 The latter option might be more familiar if you're coming from a scientific Python background, but VS Code is generally the recommended option.
 
