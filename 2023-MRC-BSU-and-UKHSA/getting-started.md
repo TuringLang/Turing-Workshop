@@ -28,9 +28,18 @@ For example, on Linux and mac this is generally achieved by running the command 
 
 # Editor Choice
 
-You are free to use your preferred editor (emacs, vims, sublime, notepad++ etc), however, we generally recommend either
-1. [Visual Studio (VS) Code](https://code.visualstudio.com/) with [the Julia extensions](https://www.julia-vscode.org/), or
-2. [Jupyter notebooks](https://jupyter.org/), which is easily supported by simply installing the Julia package `IJulia`; once this is installed you should find a `julia` kernel available in your notebook.[^1]
+As mentioned earlier, at certain points during these workshops you're likely to find yourself in a position where you even need to *write* some Julia code. I know, this is all very demanding.
+
+How and where and with what you want to write these chunks of text is of course completely up to yourself.
+
+- If you live and die by Notepad++, then you're welcome to use Notepad++.
+- If you're one of those wizards who doesn't have to spend 30 minutes trying to exit a file you opened in `vim`, then maybe you should use `vim`.
+- Or if you're part of the opposition of the group of people described in the previous line, i.e. an `emacs` user, then you might want to use `emacs`.
+
+**But most (sane) people will probably prefer something like:**
+1. a proper IDE, in which case [Visual Studio (VS) Code](https://code.visualstudio.com/) with [the Julia extensions](https://www.julia-vscode.org/) is a great option, or
+2. [Pluto.jl](https://github.com/fonsp/Pluto.jl), which is a reactive notebook specifically for and implemented in Julia. This has the benefit of being trivial to set up + the underlying file of the notebook is a simple Julia file, so it's possible to execute it both as a script and view it as a nice notebook in the browser.
+3. [Jupyter notebooks](https://jupyter.org/), which is easily supported by simply installing the Julia package `IJulia`; once this is installed you should find a `julia` kernel available in your notebook.[^1]
 
 The latter option might be more familiar if you're coming from a scientific Python background, but VS Code is generally the recommended option.
 Amongst us speakers we're familiar with Jupyter notebooks, Will and Xianda are VS Code users, and Tor is a (grumpy) `emacs` user, hence we should be able to provide _some_ support with a few different setups.
