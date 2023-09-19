@@ -277,7 +277,7 @@ Yes, yes he could
 And 3.5 years later, he's still writing for-loops. Well, sort of.
 #+HTML: </div>
 
-** But it really is fast                                           :noexport:
+** But it really is fast
 :PROPERTIES:
 :ID:       2023-01-29-16-57-28-But-it-really-is-fast
 :CUSTOM_ID: 2023-01-29-16-57-28-But-it-really-is-fast
@@ -299,6 +299,10 @@ And the consequences are
 - ⟹ "Every" package is written in Julia, so when you encounter a bug you can more easily debug because /the code is in the same language as you're writing code in/!
 - ⟹ Same for /extending/ packages!
   - Moreover, thanks to multiple dispatch, you can change a function /on the fly/ to experiment with code you don't even own!
+
+#+HTML: <div class="fragment (appear)"
+So all in all, it can be quite nice
+#+HTML: </div>
 
 * Base & Standard library
 Julia is mainly a programing language for scientific computing
@@ -3174,20 +3178,20 @@ model().infected
 #+RESULTS:
 #+begin_example
 14-element Vector{Float64}:
-   4.838095658296216
-  22.551321489065078
-  89.64648377290953
- 221.06036279247596
- 272.3553303825668
- 214.64195822082897
- 140.86597658148128
-  86.10342222177007
-  51.03100033022975
-  29.79866852454072
-  17.268278795322
-   9.96423283822255
-   5.736744981131014
-   3.299483981553929
+   2.045278282267525
+   4.1719314481204
+   8.463592114876898
+  16.982881538280996
+  33.35144429728391
+  62.89009851410882
+ 110.43944141129398
+ 173.67998956357812
+ 236.81249111242104
+ 278.12376889737783
+ 287.77818356134276
+ 271.63941458117574
+ 241.2767842275726
+ 206.08954395632932
 #+end_example
 
 Hey, it does!
@@ -3227,7 +3231,7 @@ print(model())
 #+end_src
 
 #+RESULTS:
-: (R0 = 2.585665868357695, recovery_time = 2.803745104449411, infected = [1.7571032239797553, 3.0812303905725638, 5.384294377878151, 9.351715823943568, 16.073526740649505, 27.14334388413688, 44.53215060849231, 69.83161736218938, 102.54882323795303, 138.125564296502, 168.3674350932993, 185.461147597873, 186.6114416820044, 174.57119362817826])
+: (R0 = 5.578052108554251, recovery_time = 1.6184106251985781, infected = [16.430455140203254, 182.9254072058487, 390.7169678308964, 277.09955590850717, 160.73921416675392, 89.63989662512411, 49.40650374221978, 27.106414184874176, 14.840416681752787, 8.116354793408362, 4.436485354821677, 2.42457515773754, 1.3250052214147743, 0.7239404815304972])
 
 #+HTML: </div>
 
@@ -3241,7 +3245,7 @@ chain_prior = sample(model, Prior(), 10_000);
 #+end_src
 
 #+RESULTS:
-: [32mSampling: 100%|█████████████████████████████████████████| Time: 0:00:00[39m
+: [32mSampling: 100%|█████████████████████████████████████████| Time: 0:00:01[39m
 :
 
 #+HTML: </div>
@@ -3257,7 +3261,10 @@ hline!([N], color="red")
 #+end_src
 
 #+RESULTS:
+:RESULTS:
 [[file:assets/outputs/more-julia/f110b08ba2b09629fd9d3c498a45a8ab21e0915a.svg]]
+[[file:assets/outputs/more-julia/f110b08ba2b09629fd9d3c498a45a8ab21e0915a.svg]]
+:END:
 
 #+ATTR_REVEAL: :frag (appear)
 For certain values we get number of infected /larger/ than the actual population
@@ -3287,7 +3294,7 @@ print(quantities_prior[1])
 #+end_src
 
 #+RESULTS:
-: (R0 = 2.8740021411546035, recovery_time = 1.1535761195178322, infected = [5.021566293372626, 24.005585730685635, 92.90497118084582, 199.4016074203979, 203.5747027170663, 135.86196448051402, 76.53892100287278, 40.315396727378015, 20.633469709519883, 10.418889910795397, 5.228427687489811, 2.6156144660654714, 1.3066903510413443, 0.6522314803699414])
+: (R0 = 16.064158353916437, recovery_time = 4.5961550015651325, infected = [25.54664433192158, 341.2329870861155, 582.291266785026, 497.4517243568478, 402.4686620041788, 324.04672948494715, 260.73310729465913, 209.76289783753236, 168.75108612079157, 135.75620551517966, 109.21213227857037, 87.85804244192713, 70.67909288672027, 56.8592954645382])
 
 #+REVEAL: split
 
@@ -3333,12 +3340,12 @@ DataFrame(quantile(chain_quantities_prior[:, [:R0, :recovery_time], :]))
 #+end_src
 
 #+RESULTS:
-: 2×6 DataFrame
-:  Row │ parameters     2.5%      25.0%    50.0%    75.0%    97.5%   
-:      │ Symbol         Float64   Float64  Float64  Float64  Float64 
+: [1m2×6 DataFrame[0m
+: [1m Row [0m│[1m parameters    [0m[1m 2.5%     [0m[1m 25.0%   [0m[1m 50.0%   [0m[1m 75.0%   [0m[1m 97.5%   [0m
+:      │[90m Symbol        [0m[90m Float64  [0m[90m Float64 [0m[90m Float64 [0m[90m Float64 [0m[90m Float64 [0m
 : ─────┼─────────────────────────────────────────────────────────────
-:    1 │ R0             0.523772  2.11525  3.70465  7.15769  65.7714
-:    2 │ recovery_time  0.695614  1.21316  1.85019  3.47764  31.6249
+:    1 │ R0             0.522984  2.02904  3.63259  7.0329   56.6748
+:    2 │ recovery_time  0.708293  1.19377  1.83346  3.41632  28.2667
 
 Compare to our prior knowledge of $R_0 \in [1, 2]$ and $(1/\gamma) \approx 1$ for influenza
 
@@ -3457,14 +3464,14 @@ Before we change the prior, let's also make it a bit easier to change the prior 
 =@submodel= allows you call models within models, e.g.
 
 #+begin_src julia
-@model function A()
+@model function ModelA()
     x_hidden_from_B ~ Normal()
     x = x_hidden_from_B + 100
     return x
 end
 
-@model function B()
-    @submodel x = A()
+@model function ModelB()
+    @submodel x = ModelA()
     y ~ Normal(x, 1)
 
     return (; x, y)
@@ -3472,7 +3479,7 @@ end
 #+end_src
 
 #+RESULTS:
-: B (generic function with 2 methods)
+: ModelB (generic function with 2 methods)
 
 #+HTML: </div>
 
@@ -3480,11 +3487,11 @@ end
 
 #+begin_src julia
 # So if we call `B` we only see `x` and `y`
-println(B()())
+println(ModelB()())
 #+end_src
 
 #+RESULTS:
-: (x = 98.39332451460794, y = 98.31002232535171)
+: (x = 101.38020683691398, y = 103.1132024568557)
 
 #+HTML: </div>
 
@@ -3492,11 +3499,11 @@ println(B()())
 
 #+begin_src julia
 # While if we sample from `B` we get the latent variables
-println(rand(B()))
+println(rand(ModelB()))
 #+end_src
 
 #+RESULTS:
-: (x_hidden_from_B = 1.9521732151494395, y = 103.60120078963402)
+: (x_hidden_from_B = 0.9613929680828116, y = 100.5481850154222)
 
 #+HTML: </div>
 
@@ -3505,11 +3512,11 @@ println(rand(B()))
 To avoid clashes of variable-names, we can specify a =prefix=
 
 #+begin_src julia
-@model A() = (x ~ Normal(); return x + 100)
+@model ModelA() = (x ~ Normal(); return x + 100)
 
-@model function B()
+@model function ModelB()
     # Given it a prefix to use for the variables in `A`.
-    @submodel prefix=:inner x_inner = A()
+    @submodel prefix=:inner x_inner = ModelA()
     x ~ Normal(x_inner, 1)
 
     return (; x_inner, x)
@@ -3517,14 +3524,14 @@ end
 #+end_src
 
 #+RESULTS:
-: B (generic function with 2 methods)
+: ModelB (generic function with 2 methods)
 
 #+begin_src julia
-print(rand(B()))
+print(rand(ModelB()))
 #+end_src
 
 #+RESULTS:
-: (var"inner.x" = 3.1585507595590077, x = 102.52353769387757)
+: (var"inner.x" = 0.16844167629567983, x = 99.58017059461453)
 
 #+REVEAL: split
 
@@ -3671,7 +3678,6 @@ chain_prior_improved = sample(model_improved, Prior(), 10_000; progress=false);
 #+end_src
 
 #+RESULTS:
-: 33795d6c-ce9c-45bc-9cf7-768bfd861f50
 
 Let's compare the resulting priors over some of the quantities of interest
 
@@ -3707,7 +3713,7 @@ hline!([N], color="red", linestyle=:dash)
 #+end_src
 
 #+RESULTS:
-[[file:assets/outputs/2e1579a71c4072534cabe41a233cd283543874e6.png]]
+[[file:assets/outputs/more-julia/2e1579a71c4072534cabe41a233cd283543874e6.svg]]
 
 #+HTML: </div>
 
@@ -3728,7 +3734,7 @@ plot(plt1, plt2, layout=(2, 1))
 #+end_src
 
 #+RESULTS:
-[[file:assets/outputs/cffea7a80541e6f61fd182de85cb18bc8520b0b4.png]]
+[[file:assets/outputs/more-julia/cffea7a80541e6f61fd182de85cb18bc8520b0b4.svg]]
 
 #+HTML: </div>
 
@@ -3743,12 +3749,12 @@ DataFrame(quantile(chain_quantities_improved[:, [:R0, :recovery_time], :]))
 #+end_src
 
 #+RESULTS:
-: 2×6 DataFrame
-:  Row │ parameters     2.5%      25.0%    50.0%    75.0%    97.5%   
-:      │ Symbol         Float64   Float64  Float64  Float64  Float64 
+: [1m2×6 DataFrame[0m
+: [1m Row [0m│[1m parameters    [0m[1m 2.5%     [0m[1m 25.0%   [0m[1m 50.0%   [0m[1m 75.0%   [0m[1m 97.5%   [0m
+:      │[90m Symbol        [0m[90m Float64  [0m[90m Float64 [0m[90m Float64 [0m[90m Float64 [0m[90m Float64 [0m
 : ─────┼─────────────────────────────────────────────────────────────
-:    1 │ R0             0.295478  2.30191  4.52993  8.41333  35.9603
-:    2 │ recovery_time  1.55995   2.55853  3.81049  6.31316  23.6136
+:    1 │ R0             0.286716  2.23462  4.33312  8.11769  33.3006
+:    2 │ recovery_time  1.53444   2.53735  3.72106  6.17165  22.3583
 
 Compare to =model_original=
 
@@ -3757,12 +3763,12 @@ DataFrame(quantile(chain_quantities_original[:, [:R0, :recovery_time], :]))
 #+end_src
 
 #+RESULTS:
-: 2×6 DataFrame
-:  Row │ parameters     2.5%      25.0%    50.0%    75.0%    97.5%   
-:      │ Symbol         Float64   Float64  Float64  Float64  Float64 
+: [1m2×6 DataFrame[0m
+: [1m Row [0m│[1m parameters    [0m[1m 2.5%     [0m[1m 25.0%   [0m[1m 50.0%   [0m[1m 75.0%   [0m[1m 97.5%   [0m
+:      │[90m Symbol        [0m[90m Float64  [0m[90m Float64 [0m[90m Float64 [0m[90m Float64 [0m[90m Float64 [0m
 : ─────┼─────────────────────────────────────────────────────────────
-:    1 │ R0             0.495283  2.10977  3.7219   7.30474  59.9345
-:    2 │ recovery_time  0.693234  1.20832  1.88465  3.48181  29.4579
+:    1 │ R0             0.473824  2.10679  3.68512  7.09941  63.941
+:    2 │ recovery_time  0.714109  1.21813  1.86754  3.44443  28.9721
 
 ** TASK Make =epidemic_model= work for =SEIRProblem=
 :PROPERTIES:
@@ -3811,6 +3817,7 @@ end
 :ID:       2023-01-29-16-57-28-
 :CUSTOM_ID: 2023-01-29-16-57-28-
 :END:
+
 #+begin_src julia
 @model function prior_original(problem_wrapper::SEIRProblem)
     β ~ truncated(Normal(2, 1); lower=0)
@@ -3830,7 +3837,7 @@ print(model_seir())
 #+end_src
 
 #+RESULTS:
-: (R0 = 1.249905922185047, recovery_time = 1.1275375476185503, infected = [0.41458760197101757, 0.175982147386383, 0.07874256170480576, 0.03911764946193381, 0.02298161307777028, 0.01641950959805482, 0.013759122196211936, 0.012689081710378131, 0.012267493170560804, 0.012110652999146742, 0.012061533724674748, 0.012055660061838289, 0.01206858103422115, 0.012088341860835633])
+: (R0 = 10.841276436804648, recovery_time = 4.848273422496571, infected = [1.8556649722515102, 5.109504870724178, 14.128014745551562, 38.02055081470466, 95.42621500541911, 205.1678971459235, 340.4657927412176, 423.48245642091246, 425.60404263438573, 380.6571766736939, 322.5152690195781, 266.93526450913197, 218.78163169041363, 178.58496449305477])
 
 ** WARNING Consult with domain experts
 :PROPERTIES:
@@ -3899,7 +3906,7 @@ plot(chain_mh; size=(800, 500))
 #+end_src
 
 #+RESULTS:
-[[file:assets/outputs/7763ba1e7b6bb223fde4d453cab14cbcf723b75a.png]]
+[[file:assets/outputs/more-julia/7763ba1e7b6bb223fde4d453cab14cbcf723b75a.svg]]
 
 Eeehh doesn't look the greatest
 
@@ -3923,42 +3930,43 @@ parameters        = in_bed[1], in_bed[2], in_bed[3], in_bed[4], in_bed[5], in_be
 internals         = 
 
 Summary Statistics
-  parameters       mean       std   naive_se      mcse          ess      rhat 
-      Symbol    Float64   Float64    Float64   Float64      Float64   Float64 
+ [1m parameters [0m [1m     mean [0m [1m     std [0m [1m    mcse [0m [1m   ess_bulk [0m [1m   ess_tail [0m [1m    rha[0m ⋯
+ [90m     Symbol [0m [90m  Float64 [0m [90m Float64 [0m [90m Float64 [0m [90m    Float64 [0m [90m    Float64 [0m [90m Float6[0m ⋯
 
-   in_bed[1]     3.3239    2.1843     0.0109    0.0157   30552.3306    1.0007
-   in_bed[2]    10.9294    5.2800     0.0264    0.0765    3416.2516    1.0035
-   in_bed[3]    34.2420   15.1777     0.0759    0.3451    1224.2460    1.0094
-   in_bed[4]    93.9719   40.8019     0.2040    1.0230     986.9341    1.0117
-   in_bed[5]   189.9567   76.0954     0.3805    1.6855    1228.9914    1.0092
-   in_bed[6]   251.4305   93.8553     0.4693    1.3148    3319.4564    1.0035
-   in_bed[7]   238.4202   87.8089     0.4390    1.0119    5807.9491    1.0019
-   in_bed[8]   187.8321   70.0577     0.3503    1.0287    3162.2209    1.0030
-   in_bed[9]   133.3270   50.5663     0.2528    0.8771    2085.0535    1.0031
-  in_bed[10]    90.4691   35.6730     0.1784    0.6878    1522.7552    1.0053
-  in_bed[11]    60.0969   24.7118     0.1236    0.5338    1282.4864    1.0065
-  in_bed[12]    39.1181   16.8669     0.0843    0.3941    1036.7038    1.0085
-  in_bed[13]    25.4850   11.6236     0.0581    0.2900     899.2603    1.0112
-  in_bed[14]    16.4625    8.0545     0.0403    0.2026     874.3031    1.0101
+   in_bed[1]     3.3249    2.1920    0.0118   33756.7191   38619.0772    1.000 ⋯
+   in_bed[2]    10.9586    5.4223    0.0969    3388.1068    5478.6177    1.001 ⋯
+   in_bed[3]    34.3216   15.3619    0.4614    1183.2380    2101.3284    1.002 ⋯
+   in_bed[4]    93.6330   41.0836    1.4312     847.9521    1582.5817    1.004 ⋯
+   in_bed[5]   187.9322   77.5176    2.2562    1184.3400    2207.8895    1.005 ⋯
+   in_bed[6]   248.2565   94.9655    1.6925    2960.3179    3339.7323    1.005 ⋯
+   in_bed[7]   235.6735   90.0406    1.1257    6390.9925    4352.1889    1.004 ⋯
+   in_bed[8]   183.8796   70.2155    1.0787    4418.1236    4169.8339    1.003 ⋯
+   in_bed[9]   131.3458   52.2405    1.1180    2381.4977    3047.1447    1.003 ⋯
+  in_bed[10]    89.0473   37.2303    0.9557    1786.5982    1939.8059    1.003 ⋯
+  in_bed[11]    58.8175   25.2954    0.7115    1401.5932    1790.4031    1.002 ⋯
+  in_bed[12]    38.3867   17.5306    0.5328    1186.2437    1603.0100    1.003 ⋯
+  in_bed[13]    24.8612   12.1535    0.4086     966.0334    1510.0551    1.003 ⋯
+  in_bed[14]    16.0139    8.3750    0.2876     926.7078    1442.5682    1.003 ⋯
+[36m                                                               2 columns omitted[0m
 
 Quantiles
-  parameters       2.5%      25.0%      50.0%      75.0%      97.5% 
-      Symbol    Float64    Float64    Float64    Float64    Float64 
+ [1m parameters [0m [1m    2.5% [0m [1m    25.0% [0m [1m    50.0% [0m [1m    75.0% [0m [1m    97.5% [0m
+ [90m     Symbol [0m [90m Float64 [0m [90m  Float64 [0m [90m  Float64 [0m [90m  Float64 [0m [90m  Float64 [0m
 
-   in_bed[1]     0.0000     2.0000     3.0000     5.0000     8.0000
-   in_bed[2]     3.0000     7.0000    10.0000    14.0000    23.0000
-   in_bed[3]    12.0000    24.0000    32.0000    42.0000    70.0000
-   in_bed[4]    35.0000    67.0000    87.0000   113.0000   192.0000
-   in_bed[5]    76.0000   138.0000   179.0000   228.0000   373.0000
-   in_bed[6]   102.0000   188.0000   240.0000   301.0000   469.0000
-   in_bed[7]    97.0000   178.0000   228.0000   287.0000   439.0000
-   in_bed[8]    75.0000   140.0000   180.0000   226.0000   350.0000
-   in_bed[9]    52.0000    98.0000   128.0000   161.0000   250.0000
-  in_bed[10]    34.0000    66.0000    86.0000   110.0000   172.0000
-  in_bed[11]    21.0000    43.0000    57.0000    73.0000   117.0000
-  in_bed[12]    13.0000    28.0000    37.0000    48.0000    78.0000
-  in_bed[13]     8.0000    17.0000    24.0000    32.0000    53.0000
-  in_bed[14]     4.0000    11.0000    15.0000    21.0000    35.0000
+   in_bed[1]    0.0000     2.0000     3.0000     5.0000     8.0000
+   in_bed[2]    3.0000     7.0000    10.0000    14.0000    24.0000
+   in_bed[3]   11.0000    24.0000    32.0000    42.0000    70.0000
+   in_bed[4]   32.0000    66.0000    88.0000   114.0000   190.0000
+   in_bed[5]   68.0000   136.0000   177.0000   228.0000   369.0000
+   in_bed[6]   95.0000   184.0000   237.0000   299.0000   470.0000
+   in_bed[7]   90.0000   174.0000   225.0000   284.0000   444.0000
+   in_bed[8]   71.0000   136.0000   176.0000   222.0000   344.0000
+   in_bed[9]   50.0000    96.0000   125.0000   159.0000   252.0000
+  in_bed[10]   32.0000    64.0000    84.0000   108.0000   176.0000
+  in_bed[11]   21.0000    42.0000    55.0000    72.0000   118.0000
+  in_bed[12]   12.9750    26.0000    36.0000    47.0000    80.0000
+  in_bed[13]    7.0000    17.0000    23.0000    31.0000    54.0000
+  in_bed[14]    4.0000    10.0000    15.0000    20.0000    36.0000
 #+end_example
 
 #+REVEAL: split
@@ -3968,14 +3976,14 @@ plot_trajectories!(plot(legend=false, size=(600, 300)), predictions_mh; data=dat
 #+end_src
 
 #+RESULTS:
-[[file:assets/outputs/53d5bcefafe0e9c29e4ee0f560bc2648d8b43118.png]]
+[[file:assets/outputs/more-julia/53d5bcefafe0e9c29e4ee0f560bc2648d8b43118.svg]]
 
 #+begin_src julia
 plot_trajectory_quantiles!(plot(legend=false, size=(600, 300)), predictions_mh; data=data)
 #+end_src
 
 #+RESULTS:
-[[file:assets/outputs/0d84524cc352ba3471bf66156dda0a8cfd1e66b9.png]]
+[[file:assets/outputs/more-julia/0d84524cc352ba3471bf66156dda0a8cfd1e66b9.svg]]
 
 Okay, it's not /completely/ useless, but my trust-issues are still present.
 
@@ -3986,7 +3994,7 @@ Metropolis-Hastings have disappointed me one too many times before.
 :ID:       2023-01-29-16-57-28-So-instead-let-s-go-NUTS
 :CUSTOM_ID: 2023-01-29-16-57-28-So-instead-let-s-go-NUTS
 :END:
-That's right, we're reaching to the *No U-Turn sampler (NUTS)*
+That's right, we're reaching for the *No U-Turn sampler (NUTS)*
 
 *** 
 :PROPERTIES:
@@ -4046,8 +4054,7 @@ Of importance
 *Important*
 
 #+begin_quote
-When you write code, you don't have to make a choice which one you
-want to use!
+When you write code, you don't have to make a choice which one you want to use!
 #+end_quote
 
 All the (stable) ones, will (mostly) work
@@ -4266,15 +4273,15 @@ For large enough (n), the "combination" of the posteriors should recover the pri
 
 That's very expensive → in practice we just do this once or twice
 
-#+begin_src julia
+#+begin_src julia :results scalar
 # Sample from the conditioned model so we don't get the `in_bed` variables too
-using Random  # Just making usre the numbers of somewhat interesting
+using Random  # Just making sure the numbers of somewhat interesting
 rng = MersenneTwister(43);
 test_values = rand(rng, NamedTuple, model_conditioned)
 #+end_src
 
 #+RESULTS:
-| β | = | 1.2254566808077714 | γ | = | 0.27594266205681933 | ϕ⁻¹ | = | 0.13984179162984164 |
+: (β = 1.2254566808077714, γ = 0.27594266205681933, ϕ⁻¹ = 0.13984179162984164)
 
 Now we condition on those values and run once to generate data
 
@@ -4391,9 +4398,13 @@ lin_reg_conditioned = lin_reg | (y = true_vals.y,);
 
 We can then do =Gibbs= but sampling $β$ using =ESS= and $\sigma^2$ using =HMC=
 
-#+begin_src julia :eval no
-chain_ess_hmc = sample(lin_reg_conditioned, Gibbs(ESS(:β), HMC(1e-3, 16, :σ²)), 1_000)
+#+begin_src julia
+chain_ess_hmc = sample(lin_reg_conditioned, Gibbs(ESS(:β), HMC(1e-3, 16, :σ²)), 1_000);
 #+end_src
+
+#+RESULTS:
+: [32mSampling: 100%|█████████████████████████████████████████| Time: 0:00:00[39m
+:
 
 #+HTML: </div>
 
@@ -4402,44 +4413,38 @@ chain_ess_hmc = sample(lin_reg_conditioned, Gibbs(ESS(:β), HMC(1e-3, 16, :σ²)
 #+HTML: <div class="small-text">
 
 #+begin_src julia
-chain_ess_hmc = sample(lin_reg_conditioned, Gibbs(ESS(:β), HMC(1e-3, 16, :σ²)), 1_000)
+chain_ess_hmc
 #+end_src
 
 #+RESULTS:
-:RESULTS:
-: 
-Sampling:  10%|████▎                                    |  ETA: 0:00:01
-Sampling:  58%|███████████████████████▊                 |  ETA: 0:00:00
-Sampling: 100%|█████████████████████████████████████████| Time: 0:00:00
 #+begin_example
 Chains MCMC chain (1000×4×1 Array{Float64, 3}):
 
 Iterations        = 1:1:1000
 Number of chains  = 1
 Samples per chain = 1000
-Wall duration     = 3.39 seconds
-Compute duration  = 3.39 seconds
+Wall duration     = 0.46 seconds
+Compute duration  = 0.46 seconds
 parameters        = β[1], β[2], σ²
 internals         = lp
 
 Summary Statistics
-  parameters      mean       std   naive_se      mcse        ess      rhat   e ⋯
-      Symbol   Float64   Float64    Float64   Float64    Float64   Float64     ⋯
+ [1m parameters [0m [1m    mean [0m [1m     std [0m [1m    mcse [0m [1m ess_bulk [0m [1m ess_tail [0m [1m    rhat [0m [1m e[0m ⋯
+ [90m     Symbol [0m [90m Float64 [0m [90m Float64 [0m [90m Float64 [0m [90m  Float64 [0m [90m  Float64 [0m [90m Float64 [0m [90m  [0m ⋯
 
-        β[1]   -1.6886    0.1124     0.0036    0.0075   211.1299    1.0006     ⋯
-        β[2]   -0.7129    0.0581     0.0018    0.0024   433.8817    1.0015     ⋯
-          σ²    1.9929    0.0893     0.0028    0.0113    48.7541    1.0021     ⋯
-                                                                1 column omitted
+        β[1]   -0.4997    0.0441    0.0028   337.5415   327.4560    1.0017     ⋯
+        β[2]    0.3895    0.0404    0.0022   289.2465   247.3620    1.0020     ⋯
+          σ²    1.2700    0.0583    0.0089    42.1068    84.2563    1.0555     ⋯
+[36m                                                                1 column omitted[0m
 
 Quantiles
-  parameters      2.5%     25.0%     50.0%     75.0%     97.5% 
-      Symbol   Float64   Float64   Float64   Float64   Float64 
+ [1m parameters [0m [1m    2.5% [0m [1m   25.0% [0m [1m   50.0% [0m [1m   75.0% [0m [1m   97.5% [0m
+ [90m     Symbol [0m [90m Float64 [0m [90m Float64 [0m [90m Float64 [0m [90m Float64 [0m [90m Float64 [0m
 
-        β[1]   -1.7810   -1.7259   -1.6992   -1.6630   -1.6026
-        β[2]   -0.7994   -0.7469   -0.7146   -0.6805   -0.6266
-          σ²    1.8287    1.9345    1.9893    2.0446    2.1821
+        β[1]   -0.5659   -0.5244   -0.5027   -0.4778   -0.4312
+        β[2]    0.3211    0.3662    0.3897    0.4136    0.4686
+          σ²    1.1480    1.2329    1.2714    1.3108    1.3711
 #+end_example
-:END:
 
 Could potentially lead to improvements
 
@@ -4469,57 +4474,52 @@ chain_discrete = sample(
 #+end_src
 
 #+RESULTS:
-:RESULTS:
-: 
-Sampling (4 threads):  75%|█████████████████████▊       |  ETA: 0:00:00
-Sampling (4 threads): 100%|█████████████████████████████| Time: 0:00:00
 #+begin_example
 Chains MCMC chain (1000×13×4 Array{Float64, 3}):
 
 Iterations        = 1:1:1000
 Number of chains  = 4
 Samples per chain = 1000
-Wall duration     = 9.1 seconds
-Compute duration  = 35.2 seconds
+Wall duration     = 8.99 seconds
+Compute duration  = 34.94 seconds
 parameters        = cluster[1], cluster[2], cluster[3], cluster[4], cluster[5], cluster[6], cluster[7], cluster[8], cluster[9], cluster[10], μ[1], μ[2]
 internals         = lp
 
 Summary Statistics
-   parameters       mean       std   naive_se      mcse         ess      rhat  ⋯
-       Symbol    Float64   Float64    Float64   Float64     Float64   Float64  ⋯
+ [1m  parameters [0m [1m    mean [0m [1m     std [0m [1m    mcse [0m [1m  ess_bulk [0m [1m  ess_tail [0m [1m    rhat [0m ⋯
+ [90m      Symbol [0m [90m Float64 [0m [90m Float64 [0m [90m Float64 [0m [90m   Float64 [0m [90m   Float64 [0m [90m Float64 [0m ⋯
 
-   cluster[1]     1.0245    0.1546     0.0024    0.0135     49.1752    1.0586  ⋯
-   cluster[2]     1.0517    0.2215     0.0035    0.0244     24.8047    1.1288  ⋯
-   cluster[3]     1.1227    0.3282     0.0052    0.0375     18.5621    1.2743  ⋯
-   cluster[4]     1.9995    0.0224     0.0004    0.0004   4002.3197    0.9999  ⋯
-   cluster[5]     1.9725    0.1636     0.0026    0.0195     25.6370    1.1311  ⋯
-   cluster[6]     1.9835    0.1274     0.0020    0.0139     61.8799    1.0723  ⋯
-   cluster[7]     1.2712    0.4447     0.0070    0.0532     10.2500    1.9732  ⋯
-   cluster[8]     1.0083    0.0905     0.0014    0.0065    128.4567    1.0179  ⋯
-   cluster[9]     1.3710    0.4831     0.0076    0.0588     10.7308    1.8081  ⋯
-  cluster[10]     2.0000    0.0000     0.0000    0.0000         NaN       NaN  ⋯
-         μ[1]   -10.2644    1.1909     0.0188    0.1496      8.0814    8.8935  ⋯
-         μ[2]     9.6664    0.8387     0.0133    0.1037      8.4436    3.7077  ⋯
-                                                                1 column omitted
+   cluster[1]    1.9997    0.0158    0.0002   4016.0965         NaN    1.0000  ⋯
+   cluster[2]    2.0000    0.0000       NaN         NaN         NaN       NaN  ⋯
+   cluster[3]    1.9995    0.0224    0.0005   2004.0160         NaN    1.0010  ⋯
+   cluster[4]    1.9995    0.0224    0.0004   4002.3197         NaN    0.9999  ⋯
+   cluster[5]    2.0000    0.0000       NaN         NaN         NaN       NaN  ⋯
+   cluster[6]    1.9992    0.0274    0.0006   2406.5231         NaN    1.0005  ⋯
+   cluster[7]    1.9965    0.0591    0.0032    340.3033         NaN    1.0061  ⋯
+   cluster[8]    1.9995    0.0224    0.0005   1691.3376         NaN    1.0010  ⋯
+   cluster[9]    2.0000    0.0000       NaN         NaN         NaN       NaN  ⋯
+  cluster[10]    1.0008    0.0274    0.0006   2222.0124   2222.0124    1.0005  ⋯
+         μ[1]   -8.6166    0.5168    0.1786      8.7221     15.2414    3.2763  ⋯
+         μ[2]    9.4711    0.5231    0.1767      9.3008     14.8740    2.4261  ⋯
+[36m                                                                1 column omitted[0m
 
 Quantiles
-   parameters       2.5%      25.0%      50.0%     75.0%     97.5% 
-       Symbol    Float64    Float64    Float64   Float64   Float64 
+ [1m  parameters [0m [1m    2.5% [0m [1m   25.0% [0m [1m   50.0% [0m [1m   75.0% [0m [1m   97.5% [0m
+ [90m      Symbol [0m [90m Float64 [0m [90m Float64 [0m [90m Float64 [0m [90m Float64 [0m [90m Float64 [0m
 
-   cluster[1]     1.0000     1.0000     1.0000    1.0000    1.0000
-   cluster[2]     1.0000     1.0000     1.0000    1.0000    2.0000
-   cluster[3]     1.0000     1.0000     1.0000    1.0000    2.0000
-   cluster[4]     2.0000     2.0000     2.0000    2.0000    2.0000
-   cluster[5]     1.0000     2.0000     2.0000    2.0000    2.0000
-   cluster[6]     2.0000     2.0000     2.0000    2.0000    2.0000
-   cluster[7]     1.0000     1.0000     1.0000    2.0000    2.0000
-   cluster[8]     1.0000     1.0000     1.0000    1.0000    1.0000
-   cluster[9]     1.0000     1.0000     1.0000    2.0000    2.0000
-  cluster[10]     2.0000     2.0000     2.0000    2.0000    2.0000
-         μ[1]   -11.8037   -11.3141   -10.4745   -9.3795   -8.2947
-         μ[2]     8.4038     8.9560     9.6131   10.4825   11.0633
+   cluster[1]    2.0000    2.0000    2.0000    2.0000    2.0000
+   cluster[2]    2.0000    2.0000    2.0000    2.0000    2.0000
+   cluster[3]    2.0000    2.0000    2.0000    2.0000    2.0000
+   cluster[4]    2.0000    2.0000    2.0000    2.0000    2.0000
+   cluster[5]    2.0000    2.0000    2.0000    2.0000    2.0000
+   cluster[6]    2.0000    2.0000    2.0000    2.0000    2.0000
+   cluster[7]    2.0000    2.0000    2.0000    2.0000    2.0000
+   cluster[8]    2.0000    2.0000    2.0000    2.0000    2.0000
+   cluster[9]    2.0000    2.0000    2.0000    2.0000    2.0000
+  cluster[10]    1.0000    1.0000    1.0000    1.0000    1.0000
+         μ[1]   -9.7048   -8.8341   -8.5010   -8.2766   -7.7699
+         μ[2]    8.3393    9.0501    9.5868    9.9171   10.1812
 #+end_example
-:END:
 
 #+HTML: </div>
 
@@ -4530,14 +4530,20 @@ Quantiles
 #+begin_src julia 
 ps = []
 for (i, realizations) in enumerate(eachcol(Array(group(chain_discrete, :cluster))))
-    p = density(realizations, legend=false, ticks=false); vline!(p, [fake_values_mixture.cluster[i]])
+    p = density(
+        realizations,
+        legend=false,
+        ticks=false,
+        border=:none
+    )
+    vline!(p, [fake_values_mixture.cluster[i]])
     push!(ps, p)
 end
 plot(ps..., layout=(length(ps) ÷ 2, 2), size=(600, 40 * length(ps)))
 #+end_src
 
 #+RESULTS:
-[[file:assets/outputs/f64dea8a5533f00397817ee6703ff49dcb105c25.png]]
+[[file:assets/outputs/more-julia/d49b052ee893e7410f4c67e9ca34a5e5faee8850.svg]]
 
 #+HTML: </div>
 
@@ -4692,7 +4698,7 @@ Quantiles
 
 
 
-*** TODO TuringCallbacks.jl
+*** TuringCallbacks.jl
 
 #+begin_src julia 
 using TuringCallbacks
@@ -4704,21 +4710,23 @@ using TuringCallbacks
 model = simple_demo(1.5, 2.0);
 #+end_src
 
+#+RESULTS:
+
 #+begin_src julia :async yes
 logdir = mktempdir()
 #+end_src
 
 #+RESULTS:
-: "/tmp/jl_yrYT2p"
+: "/tmp/jl_QMfUjM"
 
 #+begin_src julia :async yes
 callback = TensorBoardCallback(joinpath(logdir, "logs"); include_hyperparams=true)
-chain = sample(model, NUTS(), 1000; callback=callback);
+chain = sample(model, NUTS(0.8), 1000; callback=callback);
 #+end_src
 
 #+RESULTS:
 : [36m[1m┌ [22m[39m[36m[1mInfo: [22m[39mFound initial step size
-: [36m[1m└ [22m[39m  ϵ = 0.8500000000000001
+: [36m[1m└ [22m[39m  ϵ = 1.6
 : [32mSampling: 100%|█████████████████████████████████████████| Time: 0:00:01[39m
 :
 
@@ -4727,14 +4735,21 @@ chain = sample(model, NUTS(), 1000; callback=callback);
 If you have =tensorboard= installed, you can then run
 
 #+begin_src sh :eval no
-python3 -m tensorboard.main --logdir /tmp/jl_yrYT2p
+python3 -m tensorboard.main --logdir /tmp/jl_QMfUjM
 #+end_src
 
 #+DOWNLOADED: file:///home/tor/Downloads/tensorboard_demo_histograms_screen.png @ 2023-01-25 20:50:11
-#+ATTR_HTML: :width 600px
+#+ATTR_HTML: :width 800px
 #+ATTR_ORG: :width 600
 [[file:assets/attachments/2023-01-25_20-50-11_tensorboard_demo_histograms_screen.png]]
 
+#+REVEAL: split
+
+Can inspect hyperparameters, e.g. target acceptance rate for =NUTS=
+
+#+DOWNLOADED: file:///tmp/Spectacle.EtZoaa/Screenshot_20230919_213557.png @ 2023-09-19 21:36:15
+#+attr_org: :width 600px
+[[file:.more-julia/attachments/2023-09-19_21-36-15_Screenshot_20230919_213557.png]]
 
 
 ** Downsides of using Turing.jl
@@ -4744,11 +4759,13 @@ python3 -m tensorboard.main --logdir /tmp/jl_yrYT2p
 :END:
 
 #+ATTR_REVEAL: :frag (appear)
-- No depedency-extraction of the model ⟹ can't do things like automatic marginalization
+- ${\color{red} \times}$ No depedency-extraction of the model
+  - ⟹ can't do things like automatic marginalization
   - /But/ it's not impossible; just a matter of development effort
-  - Ongoing work in =TuringLang= to make a [[https://www.mrc-bsu.cam.ac.uk/software/bugs/][BUGS]] compatible model "compiler" / parser (in colab with Andrew Thomas & others)
-- NUTS performance is at the mercy of AD in Julia
-- You _can_ put anything in a model; whether you _should_ is a another matter
+  - ${\color{green} \checkmark}$ And we have JuliaBUGS now!
+- ${\color{red} \times}$ NUTS performance is at the mercy of AD in Julia
+- ${\color{green} \checkmark}$ You _can_ put anything in a model
+- ${\color{red} \times}$ Whether you _should_ put anything in a model is a another matter
 
 
 * Setting up a project environment
@@ -6049,7 +6066,7 @@ On the flip-side, once addressed (a type-instability), it's [[https://github.com
 
 Julia is pretty darn awesome
 
-Easy to get going, and you can always make it faster by just optimizing your Julia code
+Easy to get going, and you can always make it faster by just optimizing _Julia_ code
 
 No need to drop down to C++
 
@@ -6061,8 +6078,7 @@ Otherwise, it's worth a try
 
 Godspeed to you
 
-#+REVEAL: split
-Fin.
+* Fin
 
 * Going fast                                                       :noexport:
 #+begin_src julia :exports none

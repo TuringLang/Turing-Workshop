@@ -3,7 +3,7 @@ module TorsWorkshop
 using Turing
 using StatsPlots
 using DataFrames
-# using DiffEqBase
+using DiffEqBase
 
 export to_chains, plot_trajectories!, plot_trajectories, plot_trajectory_quantiles!, plot_trajectory_quantiles, issuccess
 
