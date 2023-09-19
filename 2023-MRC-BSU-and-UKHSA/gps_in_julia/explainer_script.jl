@@ -4,7 +4,7 @@ import KernelFunctions: kernelmatrix, kernelmatrix_diag, TestUtils
 
 
 #
-# Using kernels
+# Using kernels from KernelFunctions.jl
 #
 
 # You can call a kernel on individual inputs to return a scalar:
@@ -24,6 +24,14 @@ x = randn(5)
 y = randn(4)
 kernelmatrix(SEKernel(), x, y)
 kernelmatrix(SEKernel(), x)
+
+# What variations?
+Matern32Kernel()
+with_lengthscale(SEKernel(), 2.0)
+5.0 * with_lengthscale(SEKernel(), 2.0)
+5.0 * with_lengthscale(Matern32Kernel(), 2.0)
+5.0 * with_lengthscale(Matern32Kernel() + SEKernel(), 2.0)
+5.0 * with_lengthscale(Matern32Kernel() * SEKernel(), 2.0)
 
 # If your data is multi-dimensional, store it data in a `Matrix`, and wrap this in
 # a `ColVecs` (if your matrix represents a collection of column vectors), and `RowVecs` (if
@@ -47,6 +55,8 @@ kernelmatrix(SEKernel(), x)
 # design choice: 
 # https://juliagaussianprocesses.github.io/KernelFunctions.jl/dev/design/#why_abstract_vectors
 
+# Combining kernels
+# Normalisation of kernel (eveything is normalised by default).
 
 #
 # Defining your own kernel
@@ -56,11 +66,6 @@ kernelmatrix(SEKernel(), x)
 struct MyEQKernel{Tl<:Real, Tv<:Real} <: Kernel
     l::Tl
     v::Tv
-    function MyEQKernel(l::Tl, v::Tv) where {Tl, Tv}
-        @assert l > 0
-        @assert v > 0
-        return new{Tl, Tv}(l, v)
-    end
 end
 
 # At a minimum, you must specify what evaluating your kernel on a pair of inputs returns.
