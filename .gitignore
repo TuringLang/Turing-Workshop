@@ -29,3 +29,6 @@ docs/site/
 
 # Jupyter
 *.ob-jupyter
+
+# Emacs
+*~undo-tree~
