@@ -57,9 +57,9 @@
 - [ ] =EpimapSimple=
   - Show off the submodel stuff.
 - [ ] Add some more stuff to TuringCallbacks.jl sectione
-- [ ] For condtioning:
-  - [ ] Maybe =missing=
-  - [ ] Example of failure to do constnat prop
+- [X] For condtioning:
+  - [X] Maybe =missing=
+  - [X] Example of failure to do constnat prop
 - [ ] Regarding case-studies
   - [ ] Can we make MiniEpimap.jl work?
     - [ ] Can we give them a =chain= and let them work with this?
@@ -81,6 +81,13 @@ pwd()
 #+RESULTS:
 : "/drive-2/Projects/public/Turing-Workshop/2023-MRC-BSU-and-UKHSA/TorsWorkshop"
 
+#+begin_src julia :exports none
+outputdir(args...) = joinpath("assets", "outputs", "more-julia", args...)
+#+end_src
+
+#+RESULTS:
+: outputdir (generic function with 1 method)
+
 Then run something like (depending on which OS you are on)
 
 #+begin_src sh :eval no
@@ -94,7 +101,7 @@ or if you're already in a REPL, do
 #+end_src
 
 #+RESULTS:
-:   Activating project at `/drive-2/Projects/public/Turing-Workshop/2023-MRC-BSU-and-UKHSA/TorsWorkshop`
+: [32m[1m  Activating[22m[39m project at `/drive-2/Projects/public/Turing-Workshop/2023-MRC-BSU-and-UKHSA/TorsWorkshop`
 
 to activate the project
 
@@ -108,19 +115,28 @@ And just to check that you're in the correct one
 
 #+RESULTS:
 #+begin_example
-Project TorsWorkshop v0.1.0
-Status `/drive-2/Projects/public/Turing-Workshop/2023-MRC-BSU-and-UKHSA/TorsWorkshop/Project.toml`
-  [336ed68f] CSV v0.10.11
-  [a93c6f00] DataFrames v1.6.1
-  [0c46a032] DifferentialEquations v7.9.1
-  [31c24e10] Distributions v0.25.100
-  [7073ff75] IJulia v1.24.2
-  [7f7a1694] Optimization v3.17.0
-  [36348300] OptimizationOptimJL v0.1.9
-  [91a5bcdd] Plots v1.39.0
-  [f3b207a7] StatsPlots v0.15.6
-  [fce5fe82] Turing v0.29.1
-  [ade2ca70] Dates
+[36m[1mProject[22m[39m TorsWorkshop v0.1.0
+[32m[1mStatus[22m[39m `/drive-2/Projects/public/Turing-Workshop/2023-MRC-BSU-and-UKHSA/TorsWorkshop/Project.toml`
+  [90m[336ed68f] [39mCSV v0.10.11
+  [90m[124859b0] [39mDataDeps v0.7.11
+  [90m[a93c6f00] [39mDataFrames v1.6.1
+  [90m[2b5f629d] [39mDiffEqBase v6.129.0
+  [90m[0c46a032] [39mDifferentialEquations v7.9.1
+  [90m[31c24e10] [39mDistributions v0.25.100
+  [90m[7073ff75] [39mIJulia v1.24.2
+  [90m[7f7a1694] [39mOptimization v3.17.0
+  [90m[36348300] [39mOptimizationOptimJL v0.1.9
+  [90m[e4faabce] [39mPProf v2.3.0
+  [90m[91a5bcdd] [39mPlots v1.39.0
+  [90m[37e2e3b7] [39mReverseDiff v1.15.1
+  [90m[4c63d2b9] [39mStatsFuns v1.3.0
+  [90m[f3b207a7] [39mStatsPlots v0.15.6
+  [90m[fce5fe82] [39mTuring v0.29.1
+  [90m[0db1332d] [39mTuringBenchmarking v0.3.1
+  [90m[ea0860ee] [39mTuringCallbacks v0.4.0
+  [90m[0004c1f4] [39mTuringGLM v2.8.1
+  [90m[1986cc42] [39mUnitful v1.17.0
+  [90m[ade2ca70] [39mDates
 #+end_example
 
 Download and install dependencies
@@ -379,14 +395,14 @@ end
 
 #+RESULTS:
 : Thread 1: 1
-: Thread 4: 7
-: Thread 3: 9
-: Thread 3: 2
-: Thread 4: 8
+: Thread 4: 2
+: Thread 4: 3
+: Thread 4: 9
+: Thread 4: 10
+: Thread 3: 7
+: Thread 3: 8
 : Thread 2: 4
 : Thread 2: 5
-: Thread 3: 3
-: Thread 2: 10
 : Thread 2: 6
 
 https://docs.julialang.org/en/v1/base/multi-threading/
@@ -412,14 +428,14 @@ before = Dates.now()
 #+end_src
 
 #+RESULTS:
-: 2023-09-15T10:53:09.147
+: 2023-09-19T20:52:35.850
 
 #+begin_src julia
 Dates.now() - before
 #+end_src
 
 #+RESULTS:
-: 354 milliseconds
+: 704 milliseconds
 
 #+begin_src julia
 dump(before)
@@ -429,7 +445,7 @@ dump(before)
 : DateTime
 :   instant: Dates.UTInstant{Millisecond}
 :     periods: Millisecond
-:       value: Int64 63830458389147
+:       value: Int64 63830839955850
 
 https://docs.julialang.org/en/v1/stdlib/Dates/
 
@@ -681,7 +697,7 @@ pmap(hostname_and_number, 1:12)
  (2, 1, "tor-Prestige-15-A10SC")
  (3, 2, "beastly")
  (2, 3, "tor-Prestige-15-A10SC")
- (2, 4, "tor-Prestige-15-A10SC")
+ (3, 4, "beastly")
  (2, 5, "tor-Prestige-15-A10SC")
  (2, 6, "tor-Prestige-15-A10SC")
  (2, 7, "tor-Prestige-15-A10SC")
@@ -703,14 +719,14 @@ v = ones(100)
 #+end_src
 
 #+RESULTS:
-: ┌ Info: Some variables
-: │   A =
-: │    4×4 Matrix{Int64}:
-: │     1  1  1  1
-: │     1  1  1  1
-: │     1  1  1  1
-: │     1  1  1  1
-: └   s = 100.0
+: [36m[1m┌ [22m[39m[36m[1mInfo: [22m[39mSome variables
+: [36m[1m│ [22m[39m  A =
+: [36m[1m│ [22m[39m   4×4 Matrix{Int64}:
+: [36m[1m│ [22m[39m    1  1  1  1
+: [36m[1m│ [22m[39m    1  1  1  1
+: [36m[1m│ [22m[39m    1  1  1  1
+: [36m[1m│ [22m[39m    1  1  1  1
+: [36m[1m└ [22m[39m  s = 100.0
 
 https://docs.julialang.org/en/v1/stdlib/Logging/
 
@@ -721,7 +737,7 @@ https://docs.julialang.org/en/v1/stdlib/Logging/
 *Extra:* Parallelize it.
 
 
-#+begin_src julia :exports (by-backend (reveal "none") (t "code"))
+#+begin_src julia :exports (by-backend (reveal "none") (t "code")) :tangle yes
 # Some space so you don't cheat.
 
 
@@ -744,6 +760,8 @@ https://docs.julialang.org/en/v1/stdlib/Logging/
 
 # Are you sure?
 #+end_src
+
+#+RESULTS:
 
 
 ** SOLUTION Estimate $\pi$
@@ -783,9 +801,11 @@ end
 #+end_src
 
 #+RESULTS:
-: 3.142068
+: 3.14244
 
-#+begin_src julia :exports none 
+#+begin_src julia :exports none :exports none :tangle no
+using StatsPlots
+
 ts = -π:0.01:π
 p = plot(
     cos.(ts), sin.(ts);
@@ -807,7 +827,7 @@ gif(anim, outputdir("pi.gif"));
 #+end_src
 
 #+RESULTS:
-: [ Info: Saved animation to /drive-2/Projects/public/Turing-Workshop/2023-MRC-BSU-and-UKHSA/TorsWorkshop/assets/outputs/more-julia/pi.gif
+: [36m[1m[ [22m[39m[36m[1mInfo: [22m[39mSaved animation to /drive-2/Projects/public/Turing-Workshop/2023-MRC-BSU-and-UKHSA/TorsWorkshop/assets/outputs/more-julia/pi.gif
 
 [[./assets/outputs/more-julia/pi.gif]]
 
@@ -867,7 +887,7 @@ x = rand(dist)
 #+end_src
 
 #+RESULTS:
-: -0.9250567049017008
+: -1.012052713069845
 
 #+REVEAL: split
 
@@ -876,7 +896,7 @@ logpdf(dist, x)
 #+end_src
 
 #+RESULTS:
-: -1.346803486846469
+: -1.4310638802206896
 
 #+begin_src julia
 cdf(dist, 0.5)
@@ -903,7 +923,7 @@ fit(Normal, xs)
 #+end_src
 
 #+RESULTS:
-: Normal{Float64}(μ=1.1650560616082066, σ=1.7370190617792156)
+: Normal{Float64}(μ=1.2893234567407714, σ=1.7249112221240255)
 
 * DataFrames.jl
 
@@ -938,9 +958,9 @@ df = DataFrame(A=1:3, B=5:7, fixed=1)
 #+end_src
 
 #+RESULTS:
-: 3×3 DataFrame
-:  Row │ A      B      fixed 
-:      │ Int64  Int64  Int64 
+: [1m3×3 DataFrame[0m
+: [1m Row [0m│[1m A     [0m[1m B     [0m[1m fixed [0m
+:      │[90m Int64 [0m[90m Int64 [0m[90m Int64 [0m
 : ─────┼─────────────────────
 :    1 │     1      5      1
 :    2 │     2      6      1
@@ -951,9 +971,9 @@ DataFrame(Dict("A" => 1:3, "B" => 5:7, "fixed" => 1))
 #+end_src
 
 #+RESULTS:
-: 3×3 DataFrame
-:  Row │ A      B      fixed 
-:      │ Int64  Int64  Int64 
+: [1m3×3 DataFrame[0m
+: [1m Row [0m│[1m A     [0m[1m B     [0m[1m fixed [0m
+:      │[90m Int64 [0m[90m Int64 [0m[90m Int64 [0m
 : ─────┼─────────────────────
 :    1 │     1      5      1
 :    2 │     2      6      1
@@ -1004,9 +1024,9 @@ df[:, [:A, :B]]
 #+end_src
 
 #+RESULTS:
-: 3×2 DataFrame
-:  Row │ A      B     
-:      │ Int64  Int64 
+: [1m3×2 DataFrame[0m
+: [1m Row [0m│[1m A     [0m[1m B     [0m
+:      │[90m Int64 [0m[90m Int64 [0m
 : ─────┼──────────────
 :    1 │     1      5
 :    2 │     2      6
@@ -1017,9 +1037,9 @@ df[:, Not(:fixed)]
 #+end_src
 
 #+RESULTS:
-: 3×2 DataFrame
-:  Row │ A      B     
-:      │ Int64  Int64 
+: [1m3×2 DataFrame[0m
+: [1m Row [0m│[1m A     [0m[1m B     [0m
+:      │[90m Int64 [0m[90m Int64 [0m
 : ─────┼──────────────
 :    1 │     1      5
 :    2 │     2      6
@@ -1079,9 +1099,9 @@ data = DataFrame(datafile)
 
 #+RESULTS:
 #+begin_example
-14×4 DataFrame
- Row │ Column1  date        in_bed  convalescent 
-     │ Int64    Date        Int64   Int64        
+[1m14×4 DataFrame[0m
+[1m Row [0m│[1m Column1 [0m[1m date       [0m[1m in_bed [0m[1m convalescent [0m
+     │[90m Int64   [0m[90m Date       [0m[90m Int64  [0m[90m Int64        [0m
 ─────┼───────────────────────────────────────────
    1 │       1  1978-01-22       3             0
    2 │       2  1978-01-23       8             0
@@ -1208,13 +1228,6 @@ attractor = Lorenz()
 
 #+RESULTS:
 : Lorenz(0.02, 10.0, 28.0, 2.6666666666666665, 1.0, 1.0, 1.0)
-
-#+begin_src julia :exports none
-outputdir(args...) = joinpath("assets", "outputs", "more-julia", args...)
-#+end_src
-
-#+RESULTS:
-: outputdir (generic function with 1 method)
 
 #+REVEAL: split
 
@@ -1424,7 +1437,7 @@ end
 #+end_src
 
 #+RESULTS:
-: ODEProblem with uType Vector{Float64} and tType Float64. In-place: true
+: [38;2;86;182;194mODEProblem[0m with uType [38;2;86;182;194mVector{Float64}[0m and tType [38;2;86;182;194mFloat64[0m. In-place: [38;2;86;182;194mtrue[0m
 : timespan: (0.0, 14.0)
 : u0: 3-element Vector{Float64}:
 :  762.0
@@ -1555,6 +1568,78 @@ using Optimization
 #+end_src
 
 #+RESULTS:
+#+begin_example
+[91m[1m┌ [22m[39m[91m[1mError: [22m[39mError during package callback
+[91m[1m│ [22m[39m  exception =
+[91m[1m│ [22m[39m   [0m1-element ExceptionStack:
+[91m[1m│ [22m[39m   On worker 3:
+[91m[1m│ [22m[39m   ArgumentError: Package Optimization [7f7a1694-90dd-40f0-9382-eb1efda571ba] is required but does not seem to be installed:
+[91m[1m│ [22m[39m    - Run `Pkg.instantiate()` to install all recorded dependencies.
+[91m[1m│ [22m[39m   
+[91m[1m│ [22m[39m   Stacktrace:
+[91m[1m│ [22m[39m     [1] [0m[1m_require[22m
+[91m[1m│ [22m[39m   [90m    @[39m [90m./[39m[90m[4mloading.jl:1774[24m[39m
+[91m[1m│ [22m[39m     [2] [0m[1m_require_prelocked[22m
+[91m[1m│ [22m[39m   [90m    @[39m [90m./[39m[90m[4mloading.jl:1660[24m[39m
+[91m[1m│ [22m[39m     [3] [0m[1m_require_prelocked[22m
+[91m[1m│ [22m[39m   [90m    @[39m [90m./[39m[90m[4mloading.jl:1658[24m[39m[90m [inlined][39m
+[91m[1m│ [22m[39m     [4] [0m[1mmacro expansion[22m
+[91m[1m│ [22m[39m   [90m    @[39m [90m./[39m[90m[4mlock.jl:267[24m[39m[90m [inlined][39m
+[91m[1m│ [22m[39m     [5] [0m[1mrequire[22m
+[91m[1m│ [22m[39m   [90m    @[39m [90m./[39m[90m[4mloading.jl:1655[24m[39m
+[91m[1m│ [22m[39m     [6] [0m[1m#2[22m
+[91m[1m│ [22m[39m   [90m    @[39m [90m~/.julia/juliaup/julia-1.9.3+0.x64.linux.gnu/share/julia/stdlib/v1.9/Distributed/src/[39m[90m[4mDistributed.jl:83[24m[39m
+[91m[1m│ [22m[39m     [7] [0m[1m#invokelatest#2[22m
+[91m[1m│ [22m[39m   [90m    @[39m [90m./[39m[90m[4messentials.jl:819[24m[39m[90m [inlined][39m
+[91m[1m│ [22m[39m     [8] [0m[1minvokelatest[22m
+[91m[1m│ [22m[39m   [90m    @[39m [90m./[39m[90m[4messentials.jl:816[24m[39m
+[91m[1m│ [22m[39m     [9] [0m[1m#114[22m
+[91m[1m│ [22m[39m   [90m    @[39m [90m~/.julia/juliaup/julia-1.9.3+0.x64.linux.gnu/share/julia/stdlib/v1.9/Distributed/src/[39m[90m[4mprocess_messages.jl:301[24m[39m
+[91m[1m│ [22m[39m    [10] [0m[1mrun_work_thunk[22m
+[91m[1m│ [22m[39m   [90m    @[39m [90m~/.julia/juliaup/julia-1.9.3+0.x64.linux.gnu/share/julia/stdlib/v1.9/Distributed/src/[39m[90m[4mprocess_messages.jl:70[24m[39m
+[91m[1m│ [22m[39m    [11] [0m[1mrun_work_thunk[22m
+[91m[1m│ [22m[39m   [90m    @[39m [90m~/.julia/juliaup/julia-1.9.3+0.x64.linux.gnu/share/julia/stdlib/v1.9/Distributed/src/[39m[90m[4mprocess_messages.jl:79[24m[39m
+[91m[1m│ [22m[39m    [12] [0m[1m#100[22m
+[91m[1m│ [22m[39m   [90m    @[39m [90m./[39m[90m[4mtask.jl:514[24m[39m
+[91m[1m│ [22m[39m   Stacktrace:
+[91m[1m│ [22m[39m     [1] [0m[1msync_end[22m[0m[1m([22m[90mc[39m::[0mChannel[90m{Any}[39m[0m[1m)[22m
+[91m[1m│ [22m[39m   [90m    @[39m [90mBase[39m [90m./[39m[90m[4mtask.jl:445[24m[39m
+[91m[1m│ [22m[39m     [2] [0m[1mmacro expansion[22m
+[91m[1m│ [22m[39m   [90m    @[39m [90m./[39m[90m[4mtask.jl:477[24m[39m[90m [inlined][39m
+[91m[1m│ [22m[39m     [3] [0m[1m_require_callback[22m[0m[1m([22m[90mmod[39m::[0mBase.PkgId[0m[1m)[22m
+[91m[1m│ [22m[39m   [90m    @[39m [35mDistributed[39m [90m~/.julia/juliaup/julia-1.9.3+0.x64.linux.gnu/share/julia/stdlib/v1.9/Distributed/src/[39m[90m[4mDistributed.jl:77[24m[39m
+[91m[1m│ [22m[39m     [4] [0m[1m#invokelatest#2[22m
+[91m[1m│ [22m[39m   [90m    @[39m [90m./[39m[90m[4messentials.jl:819[24m[39m[90m [inlined][39m
+[91m[1m│ [22m[39m     [5] [0m[1minvokelatest[22m
+[91m[1m│ [22m[39m   [90m    @[39m [90m./[39m[90m[4messentials.jl:816[24m[39m[90m [inlined][39m
+[91m[1m│ [22m[39m     [6] [0m[1mrun_package_callbacks[22m[0m[1m([22m[90mmodkey[39m::[0mBase.PkgId[0m[1m)[22m
+[91m[1m│ [22m[39m   [90m    @[39m [90mBase[39m [90m./[39m[90m[4mloading.jl:1129[24m[39m
+[91m[1m│ [22m[39m     [7] [0m[1m_require_prelocked[22m[0m[1m([22m[90muuidkey[39m::[0mBase.PkgId, [90menv[39m::[0mString[0m[1m)[22m
+[91m[1m│ [22m[39m   [90m    @[39m [90mBase[39m [90m./[39m[90m[4mloading.jl:1667[24m[39m
+[91m[1m│ [22m[39m     [8] [0m[1mmacro expansion[22m
+[91m[1m│ [22m[39m   [90m    @[39m [90m./[39m[90m[4mloading.jl:1648[24m[39m[90m [inlined][39m
+[91m[1m│ [22m[39m     [9] [0m[1mmacro expansion[22m
+[91m[1m│ [22m[39m   [90m    @[39m [90m./[39m[90m[4mlock.jl:267[24m[39m[90m [inlined][39m
+[91m[1m│ [22m[39m    [10] [0m[1mrequire[22m[0m[1m([22m[90minto[39m::[0mModule, [90mmod[39m::[0mSymbol[0m[1m)[22m
+[91m[1m│ [22m[39m   [90m    @[39m [90mBase[39m [90m./[39m[90m[4mloading.jl:1611[24m[39m
+[91m[1m│ [22m[39m    [11] [0m[1meval[22m
+[91m[1m│ [22m[39m   [90m    @[39m [90m./[39m[90m[4mboot.jl:370[24m[39m[90m [inlined][39m
+[91m[1m│ [22m[39m    [12] [0m[1minclude_string[22m[0m[1m([22m[90mmapexpr[39m::[0mtypeof(REPL.softscope), [90mmod[39m::[0mModule, [90mcode[39m::[0mString, [90mfilename[39m::[0mString[0m[1m)[22m
+[91m[1m│ [22m[39m   [90m    @[39m [90mBase[39m [90m./[39m[90m[4mloading.jl:1903[24m[39m
+[91m[1m│ [22m[39m    [13] [0m[1msoftscope_include_string[22m[0m[1m([22m[90mm[39m::[0mModule, [90mcode[39m::[0mString, [90mfilename[39m::[0mString[0m[1m)[22m
+[91m[1m│ [22m[39m   [90m    @[39m [36mSoftGlobalScope[39m [90m~/.julia/packages/SoftGlobalScope/u4UzH/src/[39m[90m[4mSoftGlobalScope.jl:65[24m[39m
+[91m[1m│ [22m[39m    [14] [0m[1mexecute_request[22m[0m[1m([22m[90msocket[39m::[0mZMQ.Socket, [90mmsg[39m::[0mIJulia.Msg[0m[1m)[22m
+[91m[1m│ [22m[39m   [90m    @[39m [32mIJulia[39m [90m~/.julia/packages/IJulia/Vo51o/src/[39m[90m[4mexecute_request.jl:67[24m[39m
+[91m[1m│ [22m[39m    [15] [0m[1m#invokelatest#2[22m
+[91m[1m│ [22m[39m   [90m    @[39m [90m./[39m[90m[4messentials.jl:819[24m[39m[90m [inlined][39m
+[91m[1m│ [22m[39m    [16] [0m[1minvokelatest[22m
+[91m[1m│ [22m[39m   [90m    @[39m [90m./[39m[90m[4messentials.jl:816[24m[39m[90m [inlined][39m
+[91m[1m│ [22m[39m    [17] [0m[1meventloop[22m[0m[1m([22m[90msocket[39m::[0mZMQ.Socket[0m[1m)[22m
+[91m[1m│ [22m[39m   [90m    @[39m [32mIJulia[39m [90m~/.julia/packages/IJulia/Vo51o/src/[39m[90m[4meventloop.jl:8[24m[39m
+[91m[1m│ [22m[39m    [18] [0m[1m(::IJulia.var"#15#18")[22m[0m[1m([22m[0m[1m)[22m
+[91m[1m│ [22m[39m   [90m    @[39m [32mIJulia[39m [90m./[39m[90m[4mtask.jl:514[24m[39m
+[91m[1m└ [22m[39m[90m@ Base loading.jl:1134[39m
+#+end_example
 
 #+DOWNLOADED: file:///tmp/Spectacle.paVgAL/Screenshot_20230915_130639.png @ 2023-09-15 13:06:48
 #+CAPTION: https://docs.sciml.ai/Optimization/stable/#Overview-of-the-Optimizers (2023-09-15)
@@ -1634,9 +1719,83 @@ opt = solve(opt_problem, NelderMead())
 #+end_src
 
 #+RESULTS:
+:RESULTS:
+#+begin_example
+[91m[1m┌ [22m[39m[91m[1mError: [22m[39mError during package callback
+[91m[1m│ [22m[39m  exception =
+[91m[1m│ [22m[39m   [0m1-element ExceptionStack:
+[91m[1m│ [22m[39m   On worker 3:
+[91m[1m│ [22m[39m   ArgumentError: Package OptimizationOptimJL [36348300-93cb-4f02-beb5-3c3902f8871e] is required but does not seem to be installed:
+[91m[1m│ [22m[39m    - Run `Pkg.instantiate()` to install all recorded dependencies.
+[91m[1m│ [22m[39m   
+[91m[1m│ [22m[39m   Stacktrace:
+[91m[1m│ [22m[39m     [1] [0m[1m_require[22m
+[91m[1m│ [22m[39m   [90m    @[39m [90m./[39m[90m[4mloading.jl:1774[24m[39m
+[91m[1m│ [22m[39m     [2] [0m[1m_require_prelocked[22m
+[91m[1m│ [22m[39m   [90m    @[39m [90m./[39m[90m[4mloading.jl:1660[24m[39m
+[91m[1m│ [22m[39m     [3] [0m[1m_require_prelocked[22m
+[91m[1m│ [22m[39m   [90m    @[39m [90m./[39m[90m[4mloading.jl:1658[24m[39m[90m [inlined][39m
+[91m[1m│ [22m[39m     [4] [0m[1mmacro expansion[22m
+[91m[1m│ [22m[39m   [90m    @[39m [90m./[39m[90m[4mlock.jl:267[24m[39m[90m [inlined][39m
+[91m[1m│ [22m[39m     [5] [0m[1mrequire[22m
+[91m[1m│ [22m[39m   [90m    @[39m [90m./[39m[90m[4mloading.jl:1655[24m[39m
+[91m[1m│ [22m[39m     [6] [0m[1m#2[22m
+[91m[1m│ [22m[39m   [90m    @[39m [90m~/.julia/juliaup/julia-1.9.3+0.x64.linux.gnu/share/julia/stdlib/v1.9/Distributed/src/[39m[90m[4mDistributed.jl:83[24m[39m
+[91m[1m│ [22m[39m     [7] [0m[1m#invokelatest#2[22m
+[91m[1m│ [22m[39m   [90m    @[39m [90m./[39m[90m[4messentials.jl:819[24m[39m[90m [inlined][39m
+[91m[1m│ [22m[39m     [8] [0m[1minvokelatest[22m
+[91m[1m│ [22m[39m   [90m    @[39m [90m./[39m[90m[4messentials.jl:816[24m[39m
+[91m[1m│ [22m[39m     [9] [0m[1m#114[22m
+[91m[1m│ [22m[39m   [90m    @[39m [90m~/.julia/juliaup/julia-1.9.3+0.x64.linux.gnu/share/julia/stdlib/v1.9/Distributed/src/[39m[90m[4mprocess_messages.jl:301[24m[39m
+[91m[1m│ [22m[39m    [10] [0m[1mrun_work_thunk[22m
+[91m[1m│ [22m[39m   [90m    @[39m [90m~/.julia/juliaup/julia-1.9.3+0.x64.linux.gnu/share/julia/stdlib/v1.9/Distributed/src/[39m[90m[4mprocess_messages.jl:70[24m[39m
+[91m[1m│ [22m[39m    [11] [0m[1mrun_work_thunk[22m
+[91m[1m│ [22m[39m   [90m    @[39m [90m~/.julia/juliaup/julia-1.9.3+0.x64.linux.gnu/share/julia/stdlib/v1.9/Distributed/src/[39m[90m[4mprocess_messages.jl:79[24m[39m
+[91m[1m│ [22m[39m    [12] [0m[1m#100[22m
+[91m[1m│ [22m[39m   [90m    @[39m [90m./[39m[90m[4mtask.jl:514[24m[39m
+[91m[1m│ [22m[39m   Stacktrace:
+[91m[1m│ [22m[39m     [1] [0m[1msync_end[22m[0m[1m([22m[90mc[39m::[0mChannel[90m{Any}[39m[0m[1m)[22m
+[91m[1m│ [22m[39m   [90m    @[39m [90mBase[39m [90m./[39m[90m[4mtask.jl:445[24m[39m
+[91m[1m│ [22m[39m     [2] [0m[1mmacro expansion[22m
+[91m[1m│ [22m[39m   [90m    @[39m [90m./[39m[90m[4mtask.jl:477[24m[39m[90m [inlined][39m
+[91m[1m│ [22m[39m     [3] [0m[1m_require_callback[22m[0m[1m([22m[90mmod[39m::[0mBase.PkgId[0m[1m)[22m
+[91m[1m│ [22m[39m   [90m    @[39m [35mDistributed[39m [90m~/.julia/juliaup/julia-1.9.3+0.x64.linux.gnu/share/julia/stdlib/v1.9/Distributed/src/[39m[90m[4mDistributed.jl:77[24m[39m
+[91m[1m│ [22m[39m     [4] [0m[1m#invokelatest#2[22m
+[91m[1m│ [22m[39m   [90m    @[39m [90m./[39m[90m[4messentials.jl:819[24m[39m[90m [inlined][39m
+[91m[1m│ [22m[39m     [5] [0m[1minvokelatest[22m
+[91m[1m│ [22m[39m   [90m    @[39m [90m./[39m[90m[4messentials.jl:816[24m[39m[90m [inlined][39m
+[91m[1m│ [22m[39m     [6] [0m[1mrun_package_callbacks[22m[0m[1m([22m[90mmodkey[39m::[0mBase.PkgId[0m[1m)[22m
+[91m[1m│ [22m[39m   [90m    @[39m [90mBase[39m [90m./[39m[90m[4mloading.jl:1129[24m[39m
+[91m[1m│ [22m[39m     [7] [0m[1m_require_prelocked[22m[0m[1m([22m[90muuidkey[39m::[0mBase.PkgId, [90menv[39m::[0mString[0m[1m)[22m
+[91m[1m│ [22m[39m   [90m    @[39m [90mBase[39m [90m./[39m[90m[4mloading.jl:1667[24m[39m
+[91m[1m│ [22m[39m     [8] [0m[1mmacro expansion[22m
+[91m[1m│ [22m[39m   [90m    @[39m [90m./[39m[90m[4mloading.jl:1648[24m[39m[90m [inlined][39m
+[91m[1m│ [22m[39m     [9] [0m[1mmacro expansion[22m
+[91m[1m│ [22m[39m   [90m    @[39m [90m./[39m[90m[4mlock.jl:267[24m[39m[90m [inlined][39m
+[91m[1m│ [22m[39m    [10] [0m[1mrequire[22m[0m[1m([22m[90minto[39m::[0mModule, [90mmod[39m::[0mSymbol[0m[1m)[22m
+[91m[1m│ [22m[39m   [90m    @[39m [90mBase[39m [90m./[39m[90m[4mloading.jl:1611[24m[39m
+[91m[1m│ [22m[39m    [11] [0m[1meval[22m
+[91m[1m│ [22m[39m   [90m    @[39m [90m./[39m[90m[4mboot.jl:370[24m[39m[90m [inlined][39m
+[91m[1m│ [22m[39m    [12] [0m[1minclude_string[22m[0m[1m([22m[90mmapexpr[39m::[0mtypeof(REPL.softscope), [90mmod[39m::[0mModule, [90mcode[39m::[0mString, [90mfilename[39m::[0mString[0m[1m)[22m
+[91m[1m│ [22m[39m   [90m    @[39m [90mBase[39m [90m./[39m[90m[4mloading.jl:1903[24m[39m
+[91m[1m│ [22m[39m    [13] [0m[1msoftscope_include_string[22m[0m[1m([22m[90mm[39m::[0mModule, [90mcode[39m::[0mString, [90mfilename[39m::[0mString[0m[1m)[22m
+[91m[1m│ [22m[39m   [90m    @[39m [36mSoftGlobalScope[39m [90m~/.julia/packages/SoftGlobalScope/u4UzH/src/[39m[90m[4mSoftGlobalScope.jl:65[24m[39m
+[91m[1m│ [22m[39m    [14] [0m[1mexecute_request[22m[0m[1m([22m[90msocket[39m::[0mZMQ.Socket, [90mmsg[39m::[0mIJulia.Msg[0m[1m)[22m
+[91m[1m│ [22m[39m   [90m    @[39m [32mIJulia[39m [90m~/.julia/packages/IJulia/Vo51o/src/[39m[90m[4mexecute_request.jl:67[24m[39m
+[91m[1m│ [22m[39m    [15] [0m[1m#invokelatest#2[22m
+[91m[1m│ [22m[39m   [90m    @[39m [90m./[39m[90m[4messentials.jl:819[24m[39m[90m [inlined][39m
+[91m[1m│ [22m[39m    [16] [0m[1minvokelatest[22m
+[91m[1m│ [22m[39m   [90m    @[39m [90m./[39m[90m[4messentials.jl:816[24m[39m[90m [inlined][39m
+[91m[1m│ [22m[39m    [17] [0m[1meventloop[22m[0m[1m([22m[90msocket[39m::[0mZMQ.Socket[0m[1m)[22m
+[91m[1m│ [22m[39m   [90m    @[39m [32mIJulia[39m [90m~/.julia/packages/IJulia/Vo51o/src/[39m[90m[4meventloop.jl:8[24m[39m
+[91m[1m│ [22m[39m    [18] [0m[1m(::IJulia.var"#15#18")[22m[0m[1m([22m[0m[1m)[22m
+[91m[1m│ [22m[39m   [90m    @[39m [32mIJulia[39m [90m./[39m[90m[4mtask.jl:514[24m[39m
+[91m[1m└ [22m[39m[90m@ Base loading.jl:1134[39m
+#+end_example
 : u: 2-element Vector{Float64}:
 :  1.6692320164955483
 :  0.44348639177622445
+:END:
 
 #+begin_src julia :results scalar
 β, λ = opt
@@ -1644,7 +1803,6 @@ opt = solve(opt_problem, NelderMead())
 #+end_src
 
 #+RESULTS:
-: (1.6692320164955483, 0.44348639177622445)
 
 #+REVEAL: split
 
@@ -1971,7 +2129,7 @@ recovered(::SIRProblem, u::AbstractMatrix) = u[3, :]
 #+end_src
 
 #+RESULTS:
-: recovered (generic function with 2 methods)
+: recovered (generic function with 1 method)
 
 So that once we've solved the problem, we can easily extract the compartment we want, e.g.
 
@@ -1981,6 +2139,7 @@ infected(sir, sol)
 #+end_src
 
 #+RESULTS:
+:RESULTS:
 #+begin_example
 15-element Vector{Float64}:
    1.0
@@ -1999,6 +2158,25 @@ infected(sir, sol)
   10.158687874394722
    6.070415830241046
 #+end_example
+#+begin_example
+15-element Vector{Float64}:
+   1.0
+   4.026799533924022
+  15.824575905720003
+  56.779007685250534
+ 154.43105799061686
+ 248.98982384839158
+ 243.67838619968526
+ 181.93939659551984
+ 120.64627375763273
+  75.92085282572398
+  46.58644927641269
+  28.214678599716414
+  16.96318676577873
+  10.158687874394722
+   6.070415830241046
+#+end_example
+:END:
 
 ** TASK Implement =SEIRProblem=
 :PROPERTIES:
@@ -2179,7 +2357,7 @@ chain = sample(model, NUTS(), 1000);
 
 #+RESULTS:
 : [36m[1m┌ [22m[39m[36m[1mInfo: [22m[39mFound initial step size
-: [36m[1m└ [22m[39m  ϵ = 0.80625
+: [36m[1m└ [22m[39m  ϵ = 1.6
 : [32mSampling: 100%|█████████████████████████████████████████| Time: 0:00:00[39m
 :
 
@@ -2196,25 +2374,25 @@ Chains MCMC chain (1000×14×1 Array{Float64, 3}):
 Iterations        = 501:1:1500
 Number of chains  = 1
 Samples per chain = 1000
-Wall duration     = 1.0 seconds
-Compute duration  = 1.0 seconds
+Wall duration     = 1.06 seconds
+Compute duration  = 1.06 seconds
 parameters        = s, m
 internals         = lp, n_steps, is_accept, acceptance_rate, log_density, hamiltonian_energy, hamiltonian_energy_error, max_hamiltonian_energy_error, tree_depth, numerical_error, step_size, nom_step_size
 
 Summary Statistics
-  parameters      mean       std      mcse   ess_bulk   ess_tail      rhat   e ⋯
-      Symbol   Float64   Float64   Float64    Float64    Float64   Float64     ⋯
+ [1m parameters [0m [1m    mean [0m [1m     std [0m [1m    mcse [0m [1m ess_bulk [0m [1m ess_tail [0m [1m    rhat [0m [1m e[0m ⋯
+ [90m     Symbol [0m [90m Float64 [0m [90m Float64 [0m [90m Float64 [0m [90m  Float64 [0m [90m  Float64 [0m [90m Float64 [0m [90m  [0m ⋯
 
-           s    2.1163    1.9180    0.0910   534.5515   565.5679    0.9996     ⋯
-           m    1.1124    0.8566    0.0417   459.2515   321.1319    0.9991     ⋯
-                                                                1 column omitted
+           s    2.5473    5.2060    0.6183   211.8820    82.0100    1.0014     ⋯
+           m    1.2801    1.2390    0.1610   181.4128    63.2533    1.0123     ⋯
+[36m                                                                1 column omitted[0m
 
 Quantiles
-  parameters      2.5%     25.0%     50.0%     75.0%     97.5% 
-      Symbol   Float64   Float64   Float64   Float64   Float64 
+ [1m parameters [0m [1m    2.5% [0m [1m   25.0% [0m [1m   50.0% [0m [1m   75.0% [0m [1m   97.5% [0m
+ [90m     Symbol [0m [90m Float64 [0m [90m Float64 [0m [90m Float64 [0m [90m Float64 [0m [90m Float64 [0m
 
-           s    0.6177    1.0544    1.6027    2.5045    6.5169
-           m   -0.7707    0.6558    1.1462    1.5936    2.8486
+           s    0.5559    1.0290    1.5377    2.3967   11.1825
+           m   -0.4322    0.6709    1.1794    1.6321    4.0980
 #+end_example
 
 #+REVEAL: split
@@ -2277,6 +2455,13 @@ which, as we can see, results in a few =simple_demo= methods
 model = simple_demo(1.5, 2.0)
 #+end_src
 
+#+RESULTS:
+: Model(
+:   args = (:x, :y)
+:   defaults = ()
+:   context = DynamicPPL.DefaultContext()
+: )
+
 #+REVEAL: split
 
 In fact, we can call the =model=
@@ -2322,7 +2507,7 @@ model()
 #+end_src
 
 #+RESULTS:
-: (s = 1.326217735188978, m = -0.5885299252950968, x = 1.5, y = 2.0, hello = 42)
+: (s = 1.1025520712639092, m = -1.5289265819798645, x = 1.5, y = 2.0, hello = 42)
 
 When we call the =model=, =s= and =m= are sampled from the prior
 
@@ -2343,7 +2528,7 @@ model_buggy()
 :RESULTS:
 # [goto error]
 #+begin_example
-DomainError with -0.7439096662915797:
+DomainError with -1.214255447361705:
 Normal: the condition σ >= zero(σ) is not satisfied.
 
 Stacktrace:
@@ -2361,8 +2546,8 @@ Stacktrace:
     @ Distributions ~/.julia/packages/Distributions/Ufrz2/src/univariate/continuous/normal.jl:42
   [7] macro expansion
     @ ~/.julia/packages/DynamicPPL/YThRW/src/compiler.jl:555 [inlined]
-  [8] demo_buggy(__model__::DynamicPPL.Model{typeof(demo_buggy), (), (), (), Tuple{}, Tuple{}, DynamicPPL.DefaultContext}, __varinfo__::DynamicPPL.ThreadSafeVarInfo{DynamicPPL.UntypedVarInfo{DynamicPPL.Metadata{Dict{AbstractPPL.VarName, Int64}, Vector{Distribution}, Vector{AbstractPPL.VarName}, Vector{Real}, Vector{Set{DynamicPPL.Selector}}}, Float64}, Vector{Base.RefValue{Float64}}}, __context__::DynamicPPL.SamplingContext{DynamicPPL.SampleFromPrior, DynamicPPL.DefaultContext, Random.TaskLocalRNG})
-    @ Main ./In[13]:3
+  [8] demo_buggy(__model__::DynamicPPL.Model{typeof(demo_buggy), (), (), (), Tuple{}, Tuple{}, DynamicPPL.DefaultContext}, __varinfo__::DynamicPPL.ThreadSafeVarInfo{DynamicPPL.UntypedVarInfo{DynamicPPL.Metadata{Dict{AbstractPPL.VarName, Int64}, Vector{Distribution}, Vector{AbstractPPL.VarName}, Vector{Real}, Vector{Set{DynamicPPL.Selector}}}, Float64}, Vector{Base.RefValue{Float64}}}, __context__::DynamicPPL.SamplingContext{DynamicPPL.SampleFromPrior, DynamicPPL.DefaultContext, TaskLocalRNG})
+    @ Main ./In[164]:3
   [9] _evaluate!!
     @ ~/.julia/packages/DynamicPPL/YThRW/src/model.jl:963 [inlined]
  [10] evaluate_threadsafe!!
@@ -2376,7 +2561,7 @@ Stacktrace:
  [14] (::DynamicPPL.Model{typeof(demo_buggy), (), (), (), Tuple{}, Tuple{}, DynamicPPL.DefaultContext})()
     @ DynamicPPL ~/.julia/packages/DynamicPPL/YThRW/src/model.jl:860
  [15] top-level scope
-    @ In[13]:6
+    @ In[164]:6
 #+end_example
 :END:
 
@@ -2397,10 +2582,10 @@ model_buggy()
 
 #+RESULTS:
 :RESULTS:
-: x=-1.0099745932280166
+: x=-1.5669000963448219
 # [goto error]
 #+begin_example
-DomainError with -1.0099745932280166:
+DomainError with -1.5669000963448219:
 Normal: the condition σ >= zero(σ) is not satisfied.
 
 Stacktrace:
@@ -2416,13 +2601,13 @@ Stacktrace:
     @ ~/.julia/packages/Distributions/Ufrz2/src/univariate/continuous/normal.jl:42 [inlined]
   [6] Normal(μ::Int64, σ::Float64)
     @ Distributions ~/.julia/packages/Distributions/Ufrz2/src/univariate/continuous/normal.jl:42
-  [7] demo_buggy(__model__::DynamicPPL.Model{typeof(demo_buggy), (), (), (), Tuple{}, Tuple{}, DynamicPPL.DefaultContext}, __varinfo__::DynamicPPL.ThreadSafeVarInfo{DynamicPPL.UntypedVarInfo{DynamicPPL.Metadata{Dict{AbstractPPL.VarName, Int64}, Vector{Distribution}, Vector{AbstractPPL.VarName}, Vector{Real}, Vector{Set{DynamicPPL.Selector}}}, Float64}, Vector{Base.RefValue{Float64}}}, __context__::DynamicPPL.SamplingContext{DynamicPPL.SampleFromPrior, DynamicPPL.DefaultContext, Random.TaskLocalRNG})
-    @ Main ./In[14]:4
+  [7] demo_buggy(__model__::DynamicPPL.Model{typeof(demo_buggy), (), (), (), Tuple{}, Tuple{}, DynamicPPL.DefaultContext}, __varinfo__::DynamicPPL.ThreadSafeVarInfo{DynamicPPL.UntypedVarInfo{DynamicPPL.Metadata{Dict{AbstractPPL.VarName, Int64}, Vector{Distribution}, Vector{AbstractPPL.VarName}, Vector{Real}, Vector{Set{DynamicPPL.Selector}}}, Float64}, Vector{Base.RefValue{Float64}}}, __context__::DynamicPPL.SamplingContext{DynamicPPL.SampleFromPrior, DynamicPPL.DefaultContext, TaskLocalRNG})
+    @ Main ./In[165]:4
   [8] _evaluate!!
     @ ~/.julia/packages/DynamicPPL/YThRW/src/model.jl:963 [inlined]
-  [9] evaluate_threadsafe!!(model::DynamicPPL.Model{typeof(demo_buggy), (), (), (), Tuple{}, Tuple{}, DynamicPPL.DefaultContext}, varinfo::DynamicPPL.UntypedVarInfo{DynamicPPL.Metadata{Dict{AbstractPPL.VarName, Int64}, Vector{Distribution}, Vector{AbstractPPL.VarName}, Vector{Real}, Vector{Set{DynamicPPL.Selector}}}, Float64}, context::DynamicPPL.SamplingContext{DynamicPPL.SampleFromPrior, DynamicPPL.DefaultContext, Random.TaskLocalRNG})
+  [9] evaluate_threadsafe!!(model::DynamicPPL.Model{typeof(demo_buggy), (), (), (), Tuple{}, Tuple{}, DynamicPPL.DefaultContext}, varinfo::DynamicPPL.UntypedVarInfo{DynamicPPL.Metadata{Dict{AbstractPPL.VarName, Int64}, Vector{Distribution}, Vector{AbstractPPL.VarName}, Vector{Real}, Vector{Set{DynamicPPL.Selector}}}, Float64}, context::DynamicPPL.SamplingContext{DynamicPPL.SampleFromPrior, DynamicPPL.DefaultContext, TaskLocalRNG})
     @ DynamicPPL ~/.julia/packages/DynamicPPL/YThRW/src/model.jl:952
- [10] evaluate!!(model::DynamicPPL.Model{typeof(demo_buggy), (), (), (), Tuple{}, Tuple{}, DynamicPPL.DefaultContext}, varinfo::DynamicPPL.UntypedVarInfo{DynamicPPL.Metadata{Dict{AbstractPPL.VarName, Int64}, Vector{Distribution}, Vector{AbstractPPL.VarName}, Vector{Real}, Vector{Set{DynamicPPL.Selector}}}, Float64}, context::DynamicPPL.SamplingContext{DynamicPPL.SampleFromPrior, DynamicPPL.DefaultContext, Random.TaskLocalRNG})
+ [10] evaluate!!(model::DynamicPPL.Model{typeof(demo_buggy), (), (), (), Tuple{}, Tuple{}, DynamicPPL.DefaultContext}, varinfo::DynamicPPL.UntypedVarInfo{DynamicPPL.Metadata{Dict{AbstractPPL.VarName, Int64}, Vector{Distribution}, Vector{AbstractPPL.VarName}, Vector{Real}, Vector{Set{DynamicPPL.Selector}}}, Float64}, context::DynamicPPL.SamplingContext{DynamicPPL.SampleFromPrior, DynamicPPL.DefaultContext, TaskLocalRNG})
     @ DynamicPPL ~/.julia/packages/DynamicPPL/YThRW/src/model.jl:887
  [11] evaluate!! (repeats 2 times)
     @ ~/.julia/packages/DynamicPPL/YThRW/src/model.jl:900 [inlined]
@@ -2431,7 +2616,7 @@ Stacktrace:
  [13] (::DynamicPPL.Model{typeof(demo_buggy), (), (), (), Tuple{}, Tuple{}, DynamicPPL.DefaultContext})()
     @ DynamicPPL ~/.julia/packages/DynamicPPL/YThRW/src/model.jl:860
  [14] top-level scope
-    @ In[14]:8
+    @ In[165]:8
 #+end_example
 :END:
 
@@ -2451,8 +2636,8 @@ model_buggy()
 #+end_src
 
 #+RESULTS:
-: x=1.036657675533995
-: y=-0.5315585228590461
+: x=1.1710107037640873
+: y=-0.55896646743747
 
 It works!
 
@@ -2656,6 +2841,73 @@ plot(chainscat(chain_v1, chain_v2, chain_v3))
 
 #+RESULTS:
 [[file:assets/outputs/more-julia/03bc977a68859f71cedc48d9a2d1f1c823036872.svg]]
+
+#+REVEAL: split
+
+One thing that Turing.jl cannot handle is the following
+
+#+begin_src julia 
+@model function simple_demo_v1_failure(x, y)
+    s ~ InverseGamma(2, 3)
+    m ~ Normal(0, sqrt(s))
+
+    x ~ Normal(m, sqrt(s))
+    # Used to be: y ~ Normal(m, sqrt(s))
+    z = y
+    z ~ Normal(m, sqrt(s))
+end
+
+model_v1_failure = simple_demo_v1_failure(1.5, 2.0)
+model_v1_failure() # `y` is treated as a random variable!!!
+#+end_src
+
+#+RESULTS:
+: -1.262744522413113
+
+Turing.jl performs no analysis of the code, and thus cannot know that =y= is a constant
+
+#+REVEAL: split
+
+=decondition= can be used to "undo" the conditioning of a variable
+
+For _argument-based conditioning_, we need to replace it with =missing=
+
+#+begin_src julia 
+model_v1_decondition = simple_demo_v1(1.5, missing)
+model_v1_decondition()  # `y` is now a random variable
+#+end_src
+
+#+RESULTS:
+: -0.2820674051533346
+
+For _|-based conditioning_, we can just call =decondition=
+
+#+begin_src julia
+model_v2_decondition = DynamicPPL.decondition(model_v2, @varname(y))
+model_v2_decondition()  # `y` is now a random variable!
+#+end_src
+
+#+RESULTS:
+: -1.0537785826772716
+
+For _literal-based conditioning_, =y= is hard-coded, so deconditioning is not possible
+
+#+REVEAL: split
+
+Overall, |-based conditioning is preferred, i.e.
+
+#+begin_src julia :eval no
+@model function simple_demo_v2()
+    s ~ InverseGamma(2, 3)
+    m ~ Normal(0, sqrt(s))
+
+    x ~ Normal(m, sqrt(s))
+    y ~ Normal(m, sqrt(s))
+end
+model_v2 = simple_demo_v2() | (x = 1.5, y = 2.0)
+#+end_src
+
+But you will encounter the other two approaches in the wild
 
 ** Other actions on a =Model=
 
