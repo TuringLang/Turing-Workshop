@@ -11,6 +11,7 @@
 #+REVEAL_EXTRA_CSS: assets/css/custom.css
 #+REVEAL_THEME: white
 #+REVEAL_PLUGINS: (markdown zoom)
+#+REVEAL_INIT_OPTIONS: slideNumber:true
 #+HTML_HEAD: <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
 
 #+AUTHOR: Tor Erlend Fjelde
@@ -2003,7 +2004,13 @@ and so we are finally here
 
 #+RESULTS:
 
-** Simplest demo
+** A simple demo
+
+#+begin_src julia :exports none
+using StatsPlots, DifferentialEquations
+#+end_src
+
+#+RESULTS:
 
 #+begin_src julia :async yes
 # 1. Define the model
@@ -2022,7 +2029,7 @@ chain = sample(model, NUTS(), 1000);
 
 #+RESULTS:
 : [36m[1m┌ [22m[39m[36m[1mInfo: [22m[39mFound initial step size
-: [36m[1m└ [22m[39m  ϵ = 0.8
+: [36m[1m└ [22m[39m  ϵ = 0.80625
 : [32mSampling: 100%|█████████████████████████████████████████| Time: 0:00:00[39m
 :
 
@@ -2039,8 +2046,8 @@ Chains MCMC chain (1000×14×1 Array{Float64, 3}):
 Iterations        = 501:1:1500
 Number of chains  = 1
 Samples per chain = 1000
-Wall duration     = 1.06 seconds
-Compute duration  = 1.06 seconds
+Wall duration     = 1.0 seconds
+Compute duration  = 1.0 seconds
 parameters        = s, m
 internals         = lp, n_steps, is_accept, acceptance_rate, log_density, hamiltonian_energy, hamiltonian_energy_error, max_hamiltonian_energy_error, tree_depth, numerical_error, step_size, nom_step_size
 
@@ -2048,16 +2055,16 @@ Summary Statistics
   parameters      mean       std      mcse   ess_bulk   ess_tail      rhat   e ⋯
       Symbol   Float64   Float64   Float64    Float64    Float64   Float64     ⋯
 
-           s    2.1682    2.1282    0.1191   424.6322   384.1415    0.9994     ⋯
-           m    1.1267    0.8762    0.0439   461.9315   330.6685    0.9999     ⋯
+           s    2.1163    1.9180    0.0910   534.5515   565.5679    0.9996     ⋯
+           m    1.1124    0.8566    0.0417   459.2515   321.1319    0.9991     ⋯
                                                                 1 column omitted
 
 Quantiles
   parameters      2.5%     25.0%     50.0%     75.0%     97.5% 
       Symbol   Float64   Float64   Float64   Float64   Float64 
 
-           s    0.5461    1.0918    1.5478    2.3830    8.9461
-           m   -0.7510    0.6568    1.1621    1.6589    2.8254
+           s    0.6177    1.0544    1.6027    2.5045    6.5169
+           m   -0.7707    0.6558    1.1462    1.5936    2.8486
 #+end_example
 
 #+REVEAL: split
@@ -2071,9 +2078,6 @@ plot(chain)
 
 #+REVEAL: split
 
-#+begin_quote
-Okay, what is going on here?
-#+end_quote
 
 #+begin_src julia :display text/plain :eval no
 # 1. Define the model
@@ -2090,7 +2094,11 @@ model = simple_demo(1.5, 2.0)
 chain = sample(model, NUTS(), 1000);
 #+end_src
 
-Let's break it down!
+#+begin_quote
+Okay, what is going on here?
+#+end_quote
+
+Let's break it down
 
 #+REVEAL: split
 
@@ -2107,15 +2115,209 @@ end
 #+end_src
 
 #+RESULTS:
-: simple_demo (generic function with 4 methods)
+: simple_demo (generic function with 2 methods)
 
-which, as we can see, results in a few methods =simple_demo=
+which, as we can see, results in a few =simple_demo= methods
 
+#+ATTR_REVEAL: :frag appear
 - One method is for evaluation of the model
 - The rest (one, here) are for constructing the =Model=
 
 #+REVEAL: split
 
+In fact, we can call the =model=
+
+#+begin_src julia 
+model()
+#+end_src
+
+#+RESULTS:
+: 2.0
+
+It returns =2.0= because the last line was
+
+#+begin_src julia :eval no
+y ~ Normal(m, sqrt(s))
+#+end_src
+
+where =y= is conditioned to be =2.0=
+
+#+REVEAL: split
+
+We can add an explicit =return= statement if we want
+
+#+begin_src julia 
+@model function simple_demo(x, y)
+    s ~ InverseGamma(2, 3)
+    m ~ Normal(0, sqrt(s))
+
+    x ~ Normal(m, sqrt(s))
+    y ~ Normal(m, sqrt(s))
+
+    # This is just standard Julia, so we can put anything in here.
+    return (; s, m, x, y, hello=42)
+end
+#+end_src
+
+#+RESULTS:
+: simple_demo (generic function with 2 methods)
+
+#+begin_src julia :results scalar
+model = simple_demo(1.5, 2.0)
+model()
+#+end_src
+
+#+RESULTS:
+: (s = 1.326217735188978, m = -0.5885299252950968, x = 1.5, y = 2.0, hello = 42)
+
+When we call the =model=, =s= and =m= are sampled from the prior
+
+#+REVEAL: split
+
+This can be very useful for debugging, e.g.
+
+#+begin_src julia 
+@model function demo_buggy()
+    x ~ truncated(Normal(), -10, 0)
+    y ~ Normal(0, x)
+end
+model_buggy = demo_buggy()
+model_buggy()
+#+end_src
+
+#+RESULTS:
+:RESULTS:
+# [goto error]
+#+begin_example
+DomainError with -0.7439096662915797:
+Normal: the condition σ >= zero(σ) is not satisfied.
+
+Stacktrace:
+  [1] #371
+    @ ~/.julia/packages/Distributions/Ufrz2/src/univariate/continuous/normal.jl:37 [inlined]
+  [2] check_args
+    @ ~/.julia/packages/Distributions/Ufrz2/src/utils.jl:89 [inlined]
+  [3] #Normal#370
+    @ ~/.julia/packages/Distributions/Ufrz2/src/univariate/continuous/normal.jl:37 [inlined]
+  [4] Normal
+    @ ~/.julia/packages/Distributions/Ufrz2/src/univariate/continuous/normal.jl:36 [inlined]
+  [5] #Normal#373
+    @ ~/.julia/packages/Distributions/Ufrz2/src/univariate/continuous/normal.jl:42 [inlined]
+  [6] Normal(μ::Int64, σ::Float64)
+    @ Distributions ~/.julia/packages/Distributions/Ufrz2/src/univariate/continuous/normal.jl:42
+  [7] macro expansion
+    @ ~/.julia/packages/DynamicPPL/YThRW/src/compiler.jl:555 [inlined]
+  [8] demo_buggy(__model__::DynamicPPL.Model{typeof(demo_buggy), (), (), (), Tuple{}, Tuple{}, DynamicPPL.DefaultContext}, __varinfo__::DynamicPPL.ThreadSafeVarInfo{DynamicPPL.UntypedVarInfo{DynamicPPL.Metadata{Dict{AbstractPPL.VarName, Int64}, Vector{Distribution}, Vector{AbstractPPL.VarName}, Vector{Real}, Vector{Set{DynamicPPL.Selector}}}, Float64}, Vector{Base.RefValue{Float64}}}, __context__::DynamicPPL.SamplingContext{DynamicPPL.SampleFromPrior, DynamicPPL.DefaultContext, Random.TaskLocalRNG})
+    @ Main ./In[13]:3
+  [9] _evaluate!!
+    @ ~/.julia/packages/DynamicPPL/YThRW/src/model.jl:963 [inlined]
+ [10] evaluate_threadsafe!!
+    @ ~/.julia/packages/DynamicPPL/YThRW/src/model.jl:952 [inlined]
+ [11] evaluate!!
+    @ ~/.julia/packages/DynamicPPL/YThRW/src/model.jl:887 [inlined]
+ [12] evaluate!! (repeats 2 times)
+    @ ~/.julia/packages/DynamicPPL/YThRW/src/model.jl:900 [inlined]
+ [13] evaluate!!
+    @ ~/.julia/packages/DynamicPPL/YThRW/src/model.jl:908 [inlined]
+ [14] (::DynamicPPL.Model{typeof(demo_buggy), (), (), (), Tuple{}, Tuple{}, DynamicPPL.DefaultContext})()
+    @ DynamicPPL ~/.julia/packages/DynamicPPL/YThRW/src/model.jl:860
+ [15] top-level scope
+    @ In[13]:6
+#+end_example
+:END:
+
+#+REVEAL: split
+
+Let's insert some good old-fashioned print-statements
+
+#+begin_src julia 
+@model function demo_buggy()
+    x ~ truncated(Normal(), -10, 0)
+    println("x=$x")
+    y ~ Normal(0, x)
+    println("y=$y")
+end
+model_buggy = demo_buggy()
+model_buggy()
+#+end_src
+
+#+RESULTS:
+:RESULTS:
+: x=-1.0099745932280166
+# [goto error]
+#+begin_example
+DomainError with -1.0099745932280166:
+Normal: the condition σ >= zero(σ) is not satisfied.
+
+Stacktrace:
+  [1] #371
+    @ ~/.julia/packages/Distributions/Ufrz2/src/univariate/continuous/normal.jl:37 [inlined]
+  [2] check_args
+    @ ~/.julia/packages/Distributions/Ufrz2/src/utils.jl:89 [inlined]
+  [3] #Normal#370
+    @ ~/.julia/packages/Distributions/Ufrz2/src/univariate/continuous/normal.jl:37 [inlined]
+  [4] Normal
+    @ ~/.julia/packages/Distributions/Ufrz2/src/univariate/continuous/normal.jl:36 [inlined]
+  [5] #Normal#373
+    @ ~/.julia/packages/Distributions/Ufrz2/src/univariate/continuous/normal.jl:42 [inlined]
+  [6] Normal(μ::Int64, σ::Float64)
+    @ Distributions ~/.julia/packages/Distributions/Ufrz2/src/univariate/continuous/normal.jl:42
+  [7] demo_buggy(__model__::DynamicPPL.Model{typeof(demo_buggy), (), (), (), Tuple{}, Tuple{}, DynamicPPL.DefaultContext}, __varinfo__::DynamicPPL.ThreadSafeVarInfo{DynamicPPL.UntypedVarInfo{DynamicPPL.Metadata{Dict{AbstractPPL.VarName, Int64}, Vector{Distribution}, Vector{AbstractPPL.VarName}, Vector{Real}, Vector{Set{DynamicPPL.Selector}}}, Float64}, Vector{Base.RefValue{Float64}}}, __context__::DynamicPPL.SamplingContext{DynamicPPL.SampleFromPrior, DynamicPPL.DefaultContext, Random.TaskLocalRNG})
+    @ Main ./In[14]:4
+  [8] _evaluate!!
+    @ ~/.julia/packages/DynamicPPL/YThRW/src/model.jl:963 [inlined]
+  [9] evaluate_threadsafe!!(model::DynamicPPL.Model{typeof(demo_buggy), (), (), (), Tuple{}, Tuple{}, DynamicPPL.DefaultContext}, varinfo::DynamicPPL.UntypedVarInfo{DynamicPPL.Metadata{Dict{AbstractPPL.VarName, Int64}, Vector{Distribution}, Vector{AbstractPPL.VarName}, Vector{Real}, Vector{Set{DynamicPPL.Selector}}}, Float64}, context::DynamicPPL.SamplingContext{DynamicPPL.SampleFromPrior, DynamicPPL.DefaultContext, Random.TaskLocalRNG})
+    @ DynamicPPL ~/.julia/packages/DynamicPPL/YThRW/src/model.jl:952
+ [10] evaluate!!(model::DynamicPPL.Model{typeof(demo_buggy), (), (), (), Tuple{}, Tuple{}, DynamicPPL.DefaultContext}, varinfo::DynamicPPL.UntypedVarInfo{DynamicPPL.Metadata{Dict{AbstractPPL.VarName, Int64}, Vector{Distribution}, Vector{AbstractPPL.VarName}, Vector{Real}, Vector{Set{DynamicPPL.Selector}}}, Float64}, context::DynamicPPL.SamplingContext{DynamicPPL.SampleFromPrior, DynamicPPL.DefaultContext, Random.TaskLocalRNG})
+    @ DynamicPPL ~/.julia/packages/DynamicPPL/YThRW/src/model.jl:887
+ [11] evaluate!! (repeats 2 times)
+    @ ~/.julia/packages/DynamicPPL/YThRW/src/model.jl:900 [inlined]
+ [12] evaluate!!
+    @ ~/.julia/packages/DynamicPPL/YThRW/src/model.jl:908 [inlined]
+ [13] (::DynamicPPL.Model{typeof(demo_buggy), (), (), (), Tuple{}, Tuple{}, DynamicPPL.DefaultContext})()
+    @ DynamicPPL ~/.julia/packages/DynamicPPL/YThRW/src/model.jl:860
+ [14] top-level scope
+    @ In[14]:8
+#+end_example
+:END:
+
+#+REVEAL: split
+
+=x= is negative ⟶ let's fix that
+
+#+begin_src julia 
+@model function demo_buggy()
+    x ~ truncated(Normal(), 0, 10)
+    println("x=$x")
+    y ~ Normal(0, x)
+    println("y=$y")
+end
+model_buggy = demo_buggy()
+model_buggy()
+#+end_src
+
+#+RESULTS:
+: x=1.036657675533995
+: y=-0.5315585228590461
+
+It works!
+
+#+REVEAL: split
+
+But let's get back to our =simple_demo= example
+
+#+begin_src julia :eval no
+@model function simple_demo(x, y)
+    s ~ InverseGamma(2, 3)
+    m ~ Normal(0, sqrt(s))
+
+    x ~ Normal(m, sqrt(s))
+    y ~ Normal(m, sqrt(s))
+end
+#+end_src
+
+
+#+HTML: <div class="fragment (appear)"
 We've seen a =function= before, so that part isn't new
 
 #+begin_src julia :eval no
@@ -2125,8 +2327,9 @@ end
 #+end_src
 
 Roughly, =@model= "transforms" the function =simple_demo= in a "certain way"
+#+HTML: </div>
 
-#+HTML: <div class="small-text">
+#+HTML: <div class="x-small-text">
 
 #+HTML: <div class="fragment (appear)">
 
@@ -2215,14 +2418,11 @@ y ~ Normal(m, sqrt(s))
 #+end_src
 
 #+HTML: <div class="fragment (appear)">
-
 _Important:_ only lines of the form =LEFT ~ RIGHT= are touched by =@model=
-
-⟹ Everything that is _not_ of the form =LEFT ~ RIGHT= is _not_ touched by =@model=
-
 #+HTML: </div>
 
 #+HTML: <div class="fragment (appear)">
+⟹ Everything that is _not_ of the form =LEFT ~ RIGHT= is _not_ touched by =@model=
 
 #+begin_quote
 If it's valid Julia code, it's valid inside a =@model= block
@@ -2242,7 +2442,7 @@ But in our simple demo model, =s= and =m= are treated differently than =x= and =
 
 Basically, =L ~ R= is considered a /conditioned/ variable if either
 1. =L= is present in the arguments of the function defining the model, or
-2. =L= is /conditioned/ using =condition(model, left = ...)= or similar.
+2. =L= is /conditioned/ using =model | (left = ..., )= or similar.
 3. =L= is a /literal/, e.g. =1.5 ~ Normal()=.
 
 _Otherwise_, =L= is considered a random variable
@@ -2263,7 +2463,9 @@ The following are all equivalent
     y ~ Normal(m, sqrt(s))
 end
 model_v1 = simple_demo_v1(1.5, 2.0)
+#+end_src
 
+#+begin_src julia :results none
 # (2): using the `|` operator / `condition`
 @model function simple_demo_v2()
     s ~ InverseGamma(2, 3)
@@ -2273,7 +2475,9 @@ model_v1 = simple_demo_v1(1.5, 2.0)
     y ~ Normal(m, sqrt(s))
 end
 model_v2 = simple_demo_v2() | (x = 1.5, y = 2.0)
+#+end_src
 
+#+begin_src julia :results none
 # (3): when `L` is a literal
 @model function simple_demo_v3()
     s ~ InverseGamma(2, 3)
@@ -2287,36 +2491,95 @@ model_v3 = simple_demo_v3()
 
 #+REVEAL: split
 
-#+begin_src julia
-chain_v1 = sample(model_v1, NUTS(), 1000; progress=false)
-chain_v2 = sample(model_v2, NUTS(), 1000; progress=false)
-chain_v3 = sample(model_v3, NUTS(), 1000; progress=false)
+#+begin_src julia :async yes
+with_logger(NullLogger()) do  # just surpressing the log output for presentation
+    chain_v1 = sample(model_v1, NUTS(), 1000; progress=false)
+    chain_v2 = sample(model_v2, NUTS(), 1000; progress=false)
+    chain_v3 = sample(model_v3, NUTS(), 1000; progress=false)
+end
 plot(chainscat(chain_v1, chain_v2, chain_v3))
 #+end_src
 
 #+RESULTS:
-[[file:assets/outputs/more-julia/ae7432222c2ded4319fbd5722be20d1312f53a11.svg]]
+[[file:assets/outputs/more-julia/03bc977a68859f71cedc48d9a2d1f1c823036872.svg]]
 
+** Other actions on a =Model=
 
-#+REVEAL: split
-
-
-#+REVEAL: split
-
-And then we can call it to get a =Model=
+*Computing probabilities*
 
 #+begin_src julia 
-model = simple_demo([1.0, 2.0, 3.0])
+logprior(model, (s = 1, m = 1))
 #+end_src
 
 #+RESULTS:
-: Model(
-:   args = (:x,)
-:   defaults = ()
-:   context = DynamicPPL.DefaultContext()
-: )
+: -2.221713955868453
 
-** Back to our working example
+#+begin_src julia
+loglikelihood(model, (s = 1, m = 1))
+#+end_src
+
+#+RESULTS:
+: -2.4628770664093453
+
+#+begin_src julia
+logjoint(model, (s = 1, m = 1))
+#+end_src
+
+#+RESULTS:
+: -4.6845910222777984
+
+#+REVEAL: split
+
+*Conditioning and fixing*
+
+#+begin_src julia :results scalar
+# Condition a variable to be a value
+model_with_condition = Turing.condition(model, s=1.0)  # equivalent to `|` operator
+model_with_condition()
+#+end_src
+
+#+RESULTS:
+: (s = 1.0, m = -0.7072604928423466, x = 1.5, y = 2.0, hello = 42)
+
+#+begin_src julia :results scalar
+# Fix a variable to a value
+model_with_fixed = Turing.fix(model, s=1.0)
+model_with_fixed()
+#+end_src
+
+#+RESULTS:
+: (s = 1.0, m = -0.2580013604654765, x = 1.5, y = 2.0, hello = 42)
+
+Difference between conditioning and fixing
+
+#+begin_src julia :results scalar
+logjoint(model_with_condition, (m=1,)), logjoint(model_with_fixed, (m=1,))
+#+end_src
+
+#+RESULTS:
+: (-4.6845910222777984, -3.881815599614018)
+
+A =fixed= variable is not included in the log joint
+
+#+REVEAL: split
+
+And can query the model about these things
+
+#+begin_src julia :results scalar
+DynamicPPL.observations(model_with_condition)
+#+end_src
+
+#+RESULTS:
+: (s = 1.0,)
+
+#+begin_src julia :results scalar
+DynamicPPL.fixed(model_with_fixed)
+#+end_src
+
+#+RESULTS:
+: (s = 1.0,)
+
+** Back to our working example: S(E)IR model
 
 #+REVEAL: split
 
