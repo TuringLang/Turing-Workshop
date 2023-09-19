@@ -1,7 +1,7 @@
 #+SETUPFILE: ~/org-blog/setup.org
 #+OPTIONS: tex:t toc:nil date:nil
 #+PROPERTY: header-args:R :session :exports both :eval no
-#+PROPERTY: header-args:julia :session mrc-biostats-2023-more-julia :tangle more-julia.jl :exports both :kernel julia-4-threads-1.9 :async no :file (f-join "assets" "outputs" "more-julia" (sha1 (plist-get (cadr (org-element-at-point)) :value)))
+#+PROPERTY: header-args:julia :session mrc-biostats-2023-more-julia :tangle more-julia.jl :exports both :kernel julia-4-threads-1.9 :async yes :file (f-join "assets" "outputs" "more-julia" (sha1 (plist-get (cadr (org-element-at-point)) :value)))
 #+EXCLUDE_TAGS: noexport
 #+TODO: TODO(t) TASK(q) WARNING(w) | DONE(d) SOLUTION(s)
 
@@ -23,11 +23,11 @@
   - Xianda covers
     - A bit of IO
     - A
-- [ ] Problem: estimate pi
+- [X] Problem: estimate pi
 - [ ] distriubtions.jl
   - Show a table of distrubiotns
   - Show a table of API
-- [ ] turing
+- [X] turing
   - use product dist
   - debugging
     - broken simple model
@@ -56,7 +56,16 @@
   - Adaptive MH and PMMH methods are more explicitly talked about here: [cite:@kxs052]
 - [ ] =EpimapSimple=
   - Show off the submodel stuff.
-- [ ] Add some more stuff to TuringCallbacks.jl section
+- [ ] Add some more stuff to TuringCallbacks.jl sectione
+- [ ] For condtioning:
+  - [ ] Maybe =missing=
+  - [ ] Example of failure to do constnat prop
+- [ ] Regarding case-studies
+  - [ ] Can we make MiniEpimap.jl work?
+    - [ ] Can we give them a =chain= and let them work with this?
+  - [ ] Tutorials
+  - [ ] Make some minor notes on the different case studies
+- [ ] Quick slide on GPUs
 * Before we begin
 :PROPERTIES:
 :ID:       2023-01-29-16-57-28-Before-we-begin
@@ -135,6 +144,145 @@ using TorsWorkshop
 
 to get some functionality I've implemented for the occasion
 
+* The story of a little Norwegian boy
+:PROPERTIES:
+:ID:       2023-01-29-16-57-28-The-story-of-a-little-Norwegian-boy
+:CUSTOM_ID: 2023-01-29-16-57-28-The-story-of-a-little-Norwegian-boy
+:END:
+
+#+REVEAL: split
+
+There once was a little Norwegian boy
+
+#+DOWNLOADED: file:///home/tor/Downloads/471337_3317365246956_1262712540_o.jpg @ 2023-01-18 14:49:24
+#+ATTR_HTML: :height 400px
+#+ATTR_ORG: :width 600
+[[file:assets/attachments/2023-01-18_14-49-24_471337_3317365246956_1262712540_o.jpg]]
+
+
+#+REVEAL: split
+
+When this little boy was 20 years old, he was working as a parking guard near Preikestolen/Pulpit rock
+
+
+#+DOWNLOADED: file:///home/tor/Downloads/Preikestolen-plateau-Go-Fjords-Bob-Engelsen-P1026771_kljg5o.jpeg @ 2023-01-18 14:57:08
+#+ATTR_HTML: :height 400px
+#+ATTR_ORG: :width 600
+[[file:assets/attachments/2023-01-18_14-57-08_Preikestolen-plateau-Go-Fjords-Bob-Engelsen-P1026771_kljg5o.jpeg]]
+
+
+#+REVEAL: split
+
+One day it was raining and there was nobody hiking, and so there was no cars in sight for the little boy to point
+
+#+HTML: <div class="fragment (appear)">
+
+When his boss wasn't looking, the little 20 year-old boy had an amazing idea
+
+#+begin_quote
+Maybe I can use this method of Mr. Bayes I learned a bit about yesterday to model football / Premier League?
+#+end_quote
+
+#+HTML: </div>
+
+#+ATTR_REVEAL: :frag (appear)
+The little boy got very excited and started looking for stuff on the big interwebs
+
+#+REVEAL: split
+
+The little boy came across this
+
+#+DOWNLOADED: file:///tmp/Spectacle.jWiYMk/Screenshot_20230118_144454.png @ 2023-01-18 14:46:02
+[[file:assets/attachments/2023-01-18_14-46-02_Screenshot_20230118_144454.png]]
+
+And got _very_ excited
+
+#+REVEAL: split
+
+But at the time, the little boy knew next to _nothing_ about programming
+
+The little boy couldn't write the code to do the inference
+
+#+ATTR_REVEAL: :frag (appear)
+Whence the little boy became a _sad_ little boy :(
+
+#+REVEAL: split
+
+But time heals all wounds, and at some point the little boy learned Python
+
+And in Python, the boy found the /probabilistic programming language/ =pymc3=
+
+#+HTML: <div class="fragment (appear)">
+#+begin_quote
+Maybe I can use =pymc3= to perform inference in that football / Premier League model?
+#+end_quote
+
+And so the sad boy once more became an _excited_ little boy :)
+#+HTML: </div>
+
+#+REVEAL: split
+
+But there was a problem
+
+The boy wanted to write a for-loop in his model, but the model didn't want it to be so and complained!
+
+#+ATTR_REVEAL: :frag (appear)
+The boy got frustrated and gave up, once more becoming a _sad_ little boy :(
+
+#+HTML: <div class="small-text">
+
+#+ATTR_REVEAL: :frag (appear)
+The boy should have known that the computational backend =theano= that was used by =pymc3= at the time couldn't handle a for-loop, and instead he should have used =scan=. But the boy was only 20-something years old; he didn't know.
+
+#+HTML: </div>
+
+#+REVEAL: split
+
+Some years later the boy discovers a programming language called _Julia_
+
+#+HTML: <div class="fragment (appear)">
+Julia makes a few promises
+#+ATTR_REVEAL: :frag (appear)
+1. It's fast. Like /really/ fast.
+2. It's interactive; doesn't require full compilation for you to play with it.
+3. You don't have to specify types everywhere.
+#+HTML: </div>
+
+#+HTML: <div class="fragment (appear)">
+The boy thinks
+
+#+begin_quote
+Wait, but this sounds like Python but the only difference is that...I CAN WRITE FOR-LOOPS WITHOUT FEELING BAD ABOUT IT?!
+#+end_quote
+
+Yes, yes he could
+
+#+ATTR_REVEAL: :frag (appear)
+And 3.5 years later, he's still writing for-loops. Well, sort of.
+#+HTML: </div>
+
+** But it really is fast                                           :noexport:
+:PROPERTIES:
+:ID:       2023-01-29-16-57-28-But-it-really-is-fast
+:CUSTOM_ID: 2023-01-29-16-57-28-But-it-really-is-fast
+:END:
+
+
+#+DOWNLOADED: file:///tmp/Spectacle.jWiYMk/Screenshot_20230118_153122.png @ 2023-01-18 15:31:28
+#+CAPTION: https://julialang.org/benchmarks/ (2023-01-18)
+#+ATTR_HTML: :height 400px
+#+ATTR_ORG: :width 600
+[[file:assets/attachments/2023-01-18_15-31-28_Screenshot_20230118_153122.png]]
+
+#+REVEAL: split
+
+And the consequences are
+#+ATTR_REVEAL: :frag (appear)
+- Even a naive implementation will be fast; and if you want to go faster, you just optimize the code /in Julia/!
+  - No need to drop down to C(++)
+- ⟹ "Every" package is written in Julia, so when you encounter a bug you can more easily debug because /the code is in the same language as you're writing code in/!
+- ⟹ Same for /extending/ packages!
+  - Moreover, thanks to multiple dispatch, you can change a function /on the fly/ to experiment with code you don't even own!
 
 * Base & Standard library
 Julia is mainly a programing language for scientific computing
@@ -566,7 +714,6 @@ v = ones(100)
 
 https://docs.julialang.org/en/v1/stdlib/Logging/
 
-*** =Pkg=
 ** TASK Estimate $\pi$
 
 [[./assets/outputs/more-julia/pi.gif]]
@@ -764,6 +911,8 @@ fit(Normal, xs)
 using DataFrames
 #+end_src
 
+#+RESULTS:
+
 In Julia, the go-to for working with datasets is =DataFrames.jl=
 
 #+HTML: <div class="small-text">
@@ -878,6 +1027,8 @@ df[:, Not(:fixed)]
 
 #+REVEAL: split
 
+*TODO: Just add a list of methods*
+
 #+begin_src julia
 names(df)
 #+end_src
@@ -961,8 +1112,6 @@ This is thanks to [[https://tables.juliadata.org/stable/][Tables.jl]], a simple 
 Such light-weight interface packages allow modules to seemlessly interact with each other without explicit dependencies
 
 This is a very typical pattern in Julia
-
-#+REVEAL: split
 
 * Plots.jl
 
@@ -1138,7 +1287,7 @@ It also contains the macro =@df= for working with dataframes
 #+RESULTS:
 [[file:assets/outputs/more-julia/1425b863a8661542a4b00f6bce46205730eb2531.svg]]
 
-** TASK Recreate the above plot using standard Plots.jl functionality
+** TASK Recreate the above plot using standard Plots.jl functionality :noexport:
 
 That is, don't use =@df data ...=, but call the =scatter= function directly
 
@@ -1470,7 +1619,7 @@ opt_problem = OptimizationProblem(
 #+end_src
 
 #+RESULTS:
-: OptimizationProblem. In-place: true
+: [38;2;86;182;194mOptimizationProblem[0m. In-place: [38;2;86;182;194mtrue[0m
 : u0: 2-element Vector{Float64}:
 :  2.0
 :  0.5
@@ -1629,7 +1778,7 @@ end
 #+end_src
 
 #+RESULTS:
-: ODEProblem with uType Vector{Int64} and tType Float64. In-place: true
+: [38;2;86;182;194mODEProblem[0m with uType [38;2;86;182;194mVector{Int64}[0m and tType [38;2;86;182;194mFloat64[0m. In-place: [38;2;86;182;194mtrue[0m
 : timespan: (0.0, 14.0)
 : u0: 4-element Vector{Int64}:
 :  762
@@ -1706,45 +1855,46 @@ end
 #+RESULTS:
 : loss_seir (generic function with 1 method)
 
-#+begin_src julia
-opt = optimize(Base.Fix1(loss_seir, problem_seir), [0, 0, 0], [Inf, Inf, Inf], [2.0, 0.5, 0.9], Fminbox(NelderMead()))
+#+begin_src julia 
+opt_problem = OptimizationProblem(
+    OptimizationFunction(
+        (p,_) -> loss_seir(problem_seir, p), # function to minimize
+        Optimization.AutoForwardDiff()       # use ForwardDiff for automatic differentiation
+    ),
+    [2.0, 0.5, 0.9],                         # initial values
+    lb = [0, 0, 0],                          # lower bounds on variables
+    ub = [Inf, Inf, Inf],                    # upper bounds on variables
+)
 #+end_src
 
 #+RESULTS:
-#+begin_example
-,* Status: success (reached maximum number of iterations)
+: [38;2;86;182;194mOptimizationProblem[0m. In-place: [38;2;86;182;194mtrue[0m
+: u0: 3-element Vector{Float64}:
+:  2.0
+:  0.5
+:  0.9
 
-,* Candidate solution
-   Final objective value:     3.115978e+03
+#+begin_src julia
+opt = solve(opt_problem, NelderMead())
+#+end_src
 
-,* Found with
-   Algorithm:     Fminbox with Nelder-Mead
-
-,* Convergence measures
-   |x - x'|               = 0.00e+00 ≤ 0.0e+00
-   |x - x'|/|x'|          = 0.00e+00 ≤ 0.0e+00
-   |f(x) - f(x')|         = 0.00e+00 ≤ 0.0e+00
-   |f(x) - f(x')|/|f(x')| = 0.00e+00 ≤ 0.0e+00
-   |g(x)|                 = 1.77e+05 ≰ 1.0e-08
-
-,* Work counters
-   Seconds run:   1  (vs limit Inf)
-   Iterations:    3
-   f(x) calls:    13286
-   ∇f(x) calls:   1
-#+end_example
+#+RESULTS:
+: u: 3-element Vector{Float64}:
+:  4.853892250588215
+:  0.46714672936112517
+:  0.8150220601014526
 
 #+REVEAL: split
 
 #+begin_src julia
-β, γ, σ = Optim.minimizer(opt)
+β, γ, σ = opt
 #+end_src
 
 #+RESULTS:
-: 3-element Vector{Float64}:
-:  4.853872993924619
-:  0.4671485850111774
-:  0.8150294098438762
+: u: 3-element Vector{Float64}:
+:  4.853892250588215
+:  0.46714672936112517
+:  0.8150220601014526
 
 #+begin_src julia
 sol_seir = solve(remake(problem_seir, p=(β, γ, σ)), saveat=1)
@@ -1753,7 +1903,7 @@ scatter!(1:14, data.in_bed, label="Data", color="black")
 #+end_src
 
 #+RESULTS:
-[[file:assets/outputs/62ee261fb15aead33e6f49e82e01a7482b56017f.png]]
+[[file:assets/outputs/more-julia/42df237b1d7d830e89b857e29552483eb45ebc0c.svg]]
 
 #+REVEAL: split
 
@@ -1834,17 +1984,17 @@ infected(sir, sol)
 #+begin_example
 15-element Vector{Float64}:
    1.0
-   4.026799533924021
-  15.824575905720002
+   4.026799533924022
+  15.824575905720003
   56.779007685250534
- 154.4310579906169
+ 154.43105799061686
  248.98982384839158
- 243.67838619968524
- 181.93939659551987
- 120.64627375763271
+ 243.67838619968526
+ 181.93939659551984
+ 120.64627375763273
   75.92085282572398
   46.58644927641269
-  28.214678599716418
+  28.214678599716414
   16.96318676577873
   10.158687874394722
    6.070415830241046
@@ -1935,8 +2085,8 @@ infected(seir, sol)
 15-element Vector{Float64}:
    1.0
    1.9941817088874336
-   6.958582307202902
-  23.9262335176065
+   6.9585823072029
+  23.926233517606498
   74.23638542794971
  176.98368495653585
  276.06126059898344
@@ -1945,7 +2095,7 @@ infected(seir, sol)
  189.07578975511504
  134.2373192679034
   91.82578430804273
-  61.38108478932363
+  61.38108478932364
   40.42264366743211
   26.357816296754425
 #+end_example
@@ -1977,7 +2127,7 @@ loss(SIRProblem(N), [2.0, 0.6])
 #+end_src
 
 #+RESULTS:
-: 50257.83978134881
+: 50257.839781348805
 
 #+begin_src julia 
 loss(SEIRProblem(N), [2.0, 0.6, 0.8])
@@ -2122,6 +2272,10 @@ which, as we can see, results in a few =simple_demo= methods
 #+ATTR_REVEAL: :frag appear
 - One method is for evaluation of the model
 - The rest (one, here) are for constructing the =Model=
+
+#+begin_src julia 
+model = simple_demo(1.5, 2.0)
+#+end_src
 
 #+REVEAL: split
 
@@ -2442,7 +2596,7 @@ But in our simple demo model, =s= and =m= are treated differently than =x= and =
 
 Basically, =L ~ R= is considered a /conditioned/ variable if either
 1. =L= is present in the arguments of the function defining the model, or
-2. =L= is /conditioned/ using =model | (left = ..., )= or similar.
+2. =L= is /conditioned/ using =model | (L9 = ..., )= or similar.
 3. =L= is a /literal/, e.g. =1.5 ~ Normal()=.
 
 _Otherwise_, =L= is considered a random variable
@@ -2613,9 +2767,9 @@ plot(
 
 #+REVEAL: split
 
-A =NegativeBinomial(r, p)= represents the number of trials to achieve $r$ successes, where each trial has a probability $p$ of success
+=NegativeBinomial(r, p)= represents the number of trials to achieve $r$ successes, where each trial has a probability $p$ of success
 
-A =NegativeBinomial2(μ, ϕ)= is the same, but parameterized using the mean $μ$ and /dispersion/ $\phi$
+=NegativeBinomial2(μ, ϕ)= is parameterized by the mean $μ$ and /dispersion/ $\phi$
 
 #+begin_src julia
 # `NegativeBinomial` already exists, so let's just make an alternative constructor instead.
@@ -2639,27 +2793,6 @@ mean(dist) ≈ μ && var(dist) ≈ μ + μ^2 / ϕ
 
 #+RESULTS:
 : true
-
-#+REVEAL: split
-
-Can be considered a generalization of =Poisson=
-
-#+begin_src julia :eval no
-μ = 2.0
-anim = @animate for ϕ ∈ [0.1, 0.5, 1.0, 2.0, 5.0, 10.0, 25.0, 100.0]
-    p = plot(size=(500, 300))
-    plot!(p, Poisson(μ); label="Poisson($μ)")
-    plot!(p, NegativeBinomial2(μ, ϕ), label="NegativeBinomial2($μ, $ϕ)")
-    xlims!(0, 20); ylims!(0, 0.35);
-    p
-end
-gif(anim, outputdir("negative_binomial.gif"), fps=2);
-#+end_src
-
-#+RESULTS:
-: [ Info: Saved animation to /drive-2/Projects/public/Turing-Workshop/2023-MRC-BSU-and-UKHSA/TorsWorkshop/assets/outputs/more-julia/negative_binomial.gif
-
-[[./assets/outputs/more-julia/negative_binomial.gif]]
 
 #+REVEAL: split
 
@@ -2696,23 +2829,11 @@ end
 #+RESULTS:
 : sir_model (generic function with 2 methods)
 
-Let's break it down
+It's break-down time
 
 #+REVEAL: split
 
 #+begin_src julia :eval no :tangle no
-@model function sir_model(...)
-#+end_src
-
-This is the =@model= macro from =Turing=
-
-It takes in a standard Julia function and from this defines two things:
-1. A method for constructing the =Turing.Model=
-2. A method for executing the model.
-
-#+REVEAL: split
-
-#+begin_src julia 
 function sir_model(
     num_days;                                  # Number of days to model
     tspan = (0.0, float(num_days)),            # Timespan to model
@@ -2768,7 +2889,7 @@ end
 
 #+REVEAL: split
 
-Finally we return some values that might be of interest to
+Finally we return some values that might be of interest
 
 #+begin_src julia :eval no :tangle no
 # Some quantities we might be interested in.
@@ -2785,7 +2906,7 @@ model = sir_model(length(data.in_bed))
 
 #+RESULTS:
 : Model(
-:   args = (:num_days, :tspan, :u0, :p0, :problem)
+:   args = (:num_days,)
 :   defaults = (:tspan, :u0, :p0, :problem)
 :   context = DynamicPPL.DefaultContext()
 : )
@@ -2801,20 +2922,20 @@ model().infected
 #+RESULTS:
 #+begin_example
 14-element Vector{Float64}:
-   4.629880098761509
-  20.51149899075346
-  76.01682025343723
- 170.19683994223317
- 188.1484617193551
- 130.8534765547809
-  74.41578155120635
-  38.968883878630315
-  19.70373448216648
-   9.79913321292256
-   4.837363010506036
-   2.3788515858966703
-   1.167609404493511
-   0.5726457769454385
+   4.838095658296216
+  22.551321489065078
+  89.64648377290953
+ 221.06036279247596
+ 272.3553303825668
+ 214.64195822082897
+ 140.86597658148128
+  86.10342222177007
+  51.03100033022975
+  29.79866852454072
+  17.268278795322
+   9.96423283822255
+   5.736744981131014
+   3.299483981553929
 #+end_example
 
 Hey, it does!
@@ -2854,7 +2975,7 @@ print(model())
 #+end_src
 
 #+RESULTS:
-: (R0 = 1.5744220262579935, recovery_time = 1.0914322040400142, infected = [1.686706278885068, 2.8316832197830895, 4.716863573067216, 7.756274929408289, 12.489841589345032, 19.460362335608362, 28.856011572547263, 39.90424926578871, 50.43351515502132, 57.45932083686618, 58.82922439267481, 54.59403067743465, 46.666918039077295, 37.41622088550463])
+: (R0 = 2.585665868357695, recovery_time = 2.803745104449411, infected = [1.7571032239797553, 3.0812303905725638, 5.384294377878151, 9.351715823943568, 16.073526740649505, 27.14334388413688, 44.53215060849231, 69.83161736218938, 102.54882323795303, 138.125564296502, 168.3674350932993, 185.461147597873, 186.6114416820044, 174.57119362817826])
 
 #+HTML: </div>
 
@@ -2862,19 +2983,14 @@ print(model())
 
 Or by just calling =sample= using =Prior=
 
-#+begin_src julia
+#+begin_src julia :async yes
 # Sample from prior.
 chain_prior = sample(model, Prior(), 10_000);
 #+end_src
 
 #+RESULTS:
-: 
-Sampling:  17%|███████                                  |  ETA: 0:00:01
-Sampling:  38%|███████████████▋                         |  ETA: 0:00:01
-Sampling:  58%|███████████████████████▋                 |  ETA: 0:00:00
-Sampling:  72%|█████████████████████████████▊           |  ETA: 0:00:00
-Sampling:  87%|███████████████████████████████████▋     |  ETA: 0:00:00
-Sampling: 100%|█████████████████████████████████████████| Time: 0:00:00
+: [32mSampling: 100%|█████████████████████████████████████████| Time: 0:00:00[39m
+:
 
 #+HTML: </div>
 
@@ -2882,14 +2998,14 @@ Sampling: 100%|█████████████████████�
 
 Let's have a look at the prior predictive
 
-#+begin_src julia
+#+begin_src julia :async yes
 p = plot(legend=false, size=(600, 300))
 plot_trajectories!(p, group(chain_prior, :in_bed); n = 1000)
 hline!([N], color="red")
 #+end_src
 
 #+RESULTS:
-[[file:assets/outputs/f110b08ba2b09629fd9d3c498a45a8ab21e0915a.png]]
+[[file:assets/outputs/more-julia/f110b08ba2b09629fd9d3c498a45a8ab21e0915a.svg]]
 
 #+ATTR_REVEAL: :frag (appear)
 For certain values we get number of infected /larger/ than the actual population
@@ -2914,15 +3030,12 @@ return (R0 = β / γ, recovery_time = 1 / γ, infected = sol_for_observed)
 and so =generated_quantities= (conditioned on =chain_prior=) gives us
 
 #+begin_src julia
-quantities_prior = generated_quantities(
-    model,
-    MCMCChains.get_sections(chain_prior, :parameters)
-)
+quantities_prior = generated_quantities(model, chain_prior)
 print(quantities_prior[1])
 #+end_src
 
 #+RESULTS:
-: (R0 = 4.605690136988736, recovery_time = 2.233647692485423, infected = [4.984997209753707, 24.029092981830093, 99.82240918848625, 261.07361336182714, 344.54043982014423, 295.98314301752475, 215.79118631762378, 148.29201252405755, 99.44804435344652, 65.92385902526553, 43.43722911865047, 28.520552363047532, 18.69045660211042, 12.232600393221547])
+: (R0 = 2.8740021411546035, recovery_time = 1.1535761195178322, infected = [5.021566293372626, 24.005585730685635, 92.90497118084582, 199.4016074203979, 203.5747027170663, 135.86196448051402, 76.53892100287278, 40.315396727378015, 20.633469709519883, 10.418889910795397, 5.228427687489811, 2.6156144660654714, 1.3066903510413443, 0.6522314803699414])
 
 #+REVEAL: split
 
@@ -2939,7 +3052,7 @@ hline!([N], color="red")
 #+end_src
 
 #+RESULTS:
-[[file:assets/outputs/a1b75cd5d378febc7029c1ed63db2831e09ab9ee.png]]
+[[file:assets/outputs/more-julia/a1b75cd5d378febc7029c1ed63db2831e09ab9ee.svg]]
 
 #+HTML: <div class="x-small-text">
 
@@ -2958,7 +3071,7 @@ hline!(p, [N], color="red")
 #+end_src
 
 #+RESULTS:
-[[file:assets/outputs/3f7598c6f0df5f376d9f89161504465787bacf25.png]]
+[[file:assets/outputs/more-julia/3f7598c6f0df5f376d9f89161504465787bacf25.svg]]
 
 #+REVEAL: split
 
@@ -2972,8 +3085,8 @@ DataFrame(quantile(chain_quantities_prior[:, [:R0, :recovery_time], :]))
 :  Row │ parameters     2.5%      25.0%    50.0%    75.0%    97.5%   
 :      │ Symbol         Float64   Float64  Float64  Float64  Float64 
 : ─────┼─────────────────────────────────────────────────────────────
-:    1 │ R0             0.487053  2.09801  3.70619  7.31515  62.3576
-:    2 │ recovery_time  0.706025  1.21271  1.88363  3.46962  29.1143
+:    1 │ R0             0.523772  2.11525  3.70465  7.15769  65.7714
+:    2 │ recovery_time  0.695614  1.21316  1.85019  3.47764  31.6249
 
 Compare to our prior knowledge of $R_0 \in [1, 2]$ and $(1/\gamma) \approx 1$ for influenza
 
@@ -3017,7 +3130,7 @@ plot(
 #+end_src
 
 #+RESULTS:
-[[file:assets/outputs/80c76ad5d3151ec0f3e044a075b2a5b88956d14b.png]]
+[[file:assets/outputs/more-julia/80c76ad5d3151ec0f3e044a075b2a5b88956d14b.svg]]
 
 #+HTML: </div>
 
@@ -3040,75 +3153,9 @@ plot(truncated(Normal(0.4, 0.5); lower=0), label=nothing, title="γ", size=(500,
 #+end_src
 
 #+RESULTS:
-[[file:assets/outputs/ed3058dc552f72dbe5151feb938d103b75251f63.png]]
+[[file:assets/outputs/more-julia/ed3058dc552f72dbe5151feb938d103b75251f63.svg]]
 
 _Should probably be putting less probability mass near 0_
-
-** SOLUTION ${\color{red} \gamma}$ should not be larger than 1
-:PROPERTIES:
-:ID:       2023-01-29-16-57-28-color-red-gamma-should-not-be-larger-than-1
-:CUSTOM_ID: 2023-01-29-16-57-28-color-red-gamma-should-not-be-larger-than-1
-:END:
-\begin{equation*}
-\begin{split}
-  \frac{\mathrm{d} S}{\mathrm{d} t} &= - \beta S \frac{I}{N} \\
-  \frac{\mathrm{d} I}{\mathrm{d} t} &= \beta S \frac{I}{N} - {\color{red} \gamma I} \\
-  \frac{\mathrm{d} R}{\mathrm{d} t} &= {\color{red} \gamma I}
-\end{split}
-\end{equation*}
-
-If ${\color{red} \gamma} > 1$ ⟹ (R)ecovered increase by /more/ than the (I)nfected
-
-⟹ _healthy people are recovering_
-
-#+HTML: <div class="small-text" style="color: red;">
-
-[2023-01-27] This was, _rightly so_, contested when I presented this, as the conservation is preserved by the system independent of the value of $\gamma$ (as long as it's positive). There is an argument to be made about having a recovery time of <1 day, i.e. $\gamma > 1$, being unreasonable, but *the reasoning above is incorrect!*
-
-#+HTML: </div>
-
-#+REVEAL: split
-
-#+HTML: <div style="color: red;">
-
-Just to convince ourselves that it is indeed not a problem with $\gamma > 1$, we can just run the model with a large $\gamma$ and look at the =in_bed= under this prior.
-
-#+HTML: </div>
-
-#+HTML: <div class="small-text">
-
-#+begin_src julia 
-model_gamma = model | (γ = 1.5, )
-chain_gamma = sample(model_gamma, Prior(), 10_000, progress=false)
-
-p1 = plot_trajectories!(plot(legend=false), group(chain_gamma, :in_bed))
-hline!(p1, [N], color="red")
-
-p2 = plot_trajectory_quantiles!(plot(legend=false), group(chain_gamma, :in_bed))
-hline!(p2, [N], color="red")
-
-plot(p1, p2, layout=(2,1), size=(600, 400))
-#+end_src
-
-#+RESULTS:
-[[file:assets/outputs/856d2889f03822cd9dffef93e27f71c0c4c4c645.png]]
-
-#+HTML: </div>
-
-#+REVEAL: split
-
-Maybe something like
-
-#+begin_src julia
-plot(Beta(2, 5), label="new", size=(500, 300))
-plot!(truncated(Normal(0.4, 0.5); lower=0), label="old", color="red")
-#+end_src
-
-#+RESULTS:
-[[file:assets/outputs/bc9d6892a46d578ee1b80fb8d98ab74a44e0e9ce.png]]
-
-- [X] Bounded at 1 to exclude recovery time of less than 1 day
-- [X] Allows smaller values (i.e. longer recovery time) but rapidly decreases near zero
 
 ** SOLUTION What if ${\color{red} \beta} > N$?
 :PROPERTIES:
@@ -3185,7 +3232,7 @@ println(B()())
 #+end_src
 
 #+RESULTS:
-: (x = 101.54969461293537, y = 102.48444715535948)
+: (x = 98.39332451460794, y = 98.31002232535171)
 
 #+HTML: </div>
 
@@ -3197,7 +3244,7 @@ println(rand(B()))
 #+end_src
 
 #+RESULTS:
-: (x_hidden_from_B = 0.18899969500711336, y = 99.3704062023967)
+: (x_hidden_from_B = 1.9521732151494395, y = 103.60120078963402)
 
 #+HTML: </div>
 
@@ -3225,7 +3272,7 @@ print(rand(B()))
 #+end_src
 
 #+RESULTS:
-: (var"inner.x" = 0.45580772395367214, x = 100.5643900955249)
+: (var"inner.x" = 3.1585507595590077, x = 102.52353769387757)
 
 #+REVEAL: split
 
@@ -3297,9 +3344,9 @@ end
     # Extract the `infected`.
     sol_for_observed = infected(problem_wrapper, sol)[2:end]
 
-    # NOTE: `arraydist` is faster for larger dimensional problems,
+    # NOTE: `product_distribution` is faster for larger dimensional problems,
     # and it does not require explicit allocation of the vector.
-    in_bed ~ arraydist(NegativeBinomial2.(sol_for_observed .+ 1e-5, ϕ))
+    in_bed ~ product_distribution(NegativeBinomial2.(sol_for_observed .+ 1e-5, ϕ))
 
     β, γ = p[1:2]
     return (R0 = β / γ, recovery_time = 1 / γ, infected = sol_for_observed)
@@ -3307,7 +3354,7 @@ end
 #+end_src
 
 #+RESULTS:
-: epidemic_model (generic function with 3 methods)
+: epidemic_model (generic function with 2 methods)
 
 #+REVEAL: split
 
@@ -3340,9 +3387,9 @@ Another neat trick is to return early if integration fail
     # Extract the `infected`.
     sol_for_observed = infected(problem_wrapper, sol)[2:end]
 
-    # `arraydist` is faster for larger dimensional problems,
+    # `product_distribution` is faster for larger dimensional problems,
     # and it does not require explicit allocation of the vector.
-    in_bed ~ arraydist(NegativeBinomial2.(sol_for_observed .+ 1e-5, ϕ))
+    in_bed ~ product_distribution(NegativeBinomial2.(sol_for_observed .+ 1e-5, ϕ))
 
     β, γ = p[1:2]
     return (R0 = β / γ, recovery_time = 1 / γ, infected = sol_for_observed)
@@ -3350,7 +3397,7 @@ end
 #+end_src
 
 #+RESULTS:
-: epidemic_model (generic function with 3 methods)
+: epidemic_model (generic function with 2 methods)
 
 #+REVEAL: split
 
@@ -3372,6 +3419,7 @@ chain_prior_improved = sample(model_improved, Prior(), 10_000; progress=false);
 #+end_src
 
 #+RESULTS:
+: 33795d6c-ce9c-45bc-9cf7-768bfd861f50
 
 Let's compare the resulting priors over some of the quantities of interest
 
@@ -3385,14 +3433,14 @@ Let's compare the =generated_quantities=, e.g. $R_0$
 chain_quantities_original = to_chains(
     generated_quantities(
         model_original,
-        MCMCChains.get_sections(chain_prior_original, :parameters)
+        chain_prior_original
     );
 );
 
 chain_quantities_improved = to_chains(
     generated_quantities(
         model_improved,
-        MCMCChains.get_sections(chain_prior_improved, :parameters)
+        chain_prior_improved
     );
 );
 #+end_src
@@ -4157,7 +4205,7 @@ Means one can also mix discrete and continuous
 @model function mixture(n)
     cluster ~ filldist(Categorical([0.25, 0.75]), n)
     μ ~ MvNormal([-10.0, 10.0], I)
-    x ~ arraydist(Normal.(μ[cluster], 1))
+    x ~ product_distribution(Normal.(μ[cluster], 1))
 end
 
 model_mixture = mixture(10)
@@ -4451,7 +4499,7 @@ python3 -m tensorboard.main --logdir /tmp/jl_yrYT2p
 - You _can_ put anything in a model; whether you _should_ is a another matter
 
 
-* Case study: making a project from scratch
+* Setting up a project environment
 
 ** Set up
 
@@ -4469,6 +4517,26 @@ pwd()
 This will generate a folder that looks something like
 
 * Case study: ???
+
+- Covid19: ImperialReport13
+  - ${\color{red} \times}$ Complicated model
+  - ${\color{red} \times}$ Slow (2-3hrs with 6 cores)
+  - ${\color{red} \times}$ Only works with ForwardDiff.jl
+    - Has potential of being vectorized, but not that's what we want to spend our time doing
+- MiniEpimap
+  - Epimap but with much less data
+  - ${\color{red} \times}$ Still proper slow + very complicated model
+  - ${\color{green} \checkmark}$ nicely demonstrates
+    1. Going from working prototype to something we can actually use
+    2. Strenghts of =@submodel=
+- Rats
+  - ${\color{green} \checkmark}$ Problem and model is easy to understand
+    - A sequence of slightly more complex models, but they're still very simple
+  - ${\color{red} \times}$ Worried it's too simple
+- Continue with our S(?)IR models for influenza
+  - ${\color{green} \checkmark}$ Simple model + involves ODEs
+  - ${\color{green} \checkmark}$ Can be extended to more complex models, e.g. they might want to try and implement their own stuff
+  - ${\color{red} \times}$ We've already gone through most of this as we walk through the tutorial
 
 ** Covid19: ImperialReport13
 
