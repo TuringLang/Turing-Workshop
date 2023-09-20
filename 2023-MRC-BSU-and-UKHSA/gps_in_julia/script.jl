@@ -1,45 +1,9 @@
 using AbstractGPs, CSV, DataDeps, DataFrames, KernelFunctions, LinearAlgebra,
     LogExpFunctions, MCMCChains, Plots, Random, ReverseDiff, Turing
 
-# Aim of session: understand core tools available in Julia for GPs (how they are designed,
-# how to extend them as required, how to pick + choose which bits you use in your particular
-# application, and how to use them), and how they interact with Turing.jl.
-#
-# If you are interested in GPs, my hope is that you leave this session with an understanding
-# of the tooling that's available to you in Julia, why it looks the way it does, its
-# limitations, and how you might extend it to suit your needs.
-#
-# Regardless whether you are interested in GPs, my hope is that this session gets you
-# further accumstomed to the kinds of abstractions and package designs that are commonly
-# employed in Julia.
-#
-# Overall plan:
-# 1. intro + (trivial) complete example (~10 mins)
-# 2. start from basics and build towards complete example (~35 mins)
-#    - brief intro to GPs
-#    - KernelFunctions.jl
-#    - AbstractGPs.jl
-#    - strategies for utilising GPs in Turing
-# 3. free-form time to work on whatever is interesting, and clarify and issues (~15 mins)
-#    - you might also expand on anything you've found interesting thus far in the session
-
 # We're going to use ReverseDiff to perform AD.
 Turing.setadbackend(:reversediff)
 Turing.setrdcache(true)
-
-function LinearAlgebra.:*(
-    x::LowerTriangular{<:Number, <:ReverseDiff.TrackedMatrix{T, D}},
-    y::ReverseDiff.TrackedVector{T, D},
-) where {T, D}
-    @show typeof(collect(x))
-    return ReverseDiff.record_mul(x, y, D)
-end
-
-function noncentered(fx::AbstractMvNormal)
-    m, C = mean_and_cov(fx)
-    b = Bijectors.Shift(m) ∘ Bijectors.Scale(cholesky(Symmetric(C)).L)
-    return transformed(MvNormal(ones(length(fx))), b)
-end
 
 # Very small dataset from Gelman et al.
 register(DataDep(
@@ -50,13 +14,21 @@ register(DataDep(
 ));
 
 @model function putting_model(d, n; jitter=1e-4)
-    v ~ InverseGamma(2, 3)
-    l ~ InverseGamma(2, 3)
+    v ~ Gamma(2, 1)
+    l ~ Gamma(4, 1)
     f = GP(v * with_lengthscale(SEKernel(), l))
     f_latent ~ f(d, jitter)
-    y_dist = product_distribution(Binomial.(n, logistic.(f_latent)))
-    y ~ y_dist
-    return (fx=f(d, jitter), f_latent=f_latent, y=y, y_dist=y_dist)
+    y ~ product_distribution(Binomial.(n, logistic.(f_latent)))
+    return (fx=f(d, jitter), f_latent=f_latent, y=y)
+end
+
+function plot_data(d, n, y, xticks, yticks)
+    ylims = (0, round(maximum(n), RoundUp; sigdigits=2))
+    margin = -0.5 * Plots.mm
+    plt = plot(xticks=xticks, yticks=yticks, ylims=ylims, margin=margin, grid=false)
+    bar!(plt, d, n; color=:red, label="", alpha=0.5)
+    bar!(plt, d, y; label="", color=:blue, alpha=0.7)
+    return plt
 end
 
 function putting_example()
@@ -67,12 +39,18 @@ function putting_example()
 
     # Construct model and run some prior predictive checks.
     m = putting_model(Float64.(df.distance), df.n)
-    hists = [bar(df.distance, m().y; label="", xlabel="") for _ in 1:20]
+    hists = map(1:20) do j
+        xticks = j > 15 ? :auto : nothing
+        yticks = rem(j, 5) == 1 ? :auto : nothing
+        return plot_data(df.distance, df.n, m().y, xticks, yticks)
+    end
     savefig(plot(hists...; layout=(4, 5), dpi=300), "prior_pred.png")
 
     # Construct a simple model with a latent GP.
     m_post = m | (y=df.y, )
     chn = sample(Xoshiro(123456), m_post, NUTS(), 1_000)
+    display(chn)
+    println()
 
     # Compute sample probabilities of success.
     d_pred = 1:0.2:21
@@ -85,16 +63,19 @@ function putting_example()
     savefig(p, "putting_success_probs.png")
 
     # Generate some replications of y to get a sense for the remaining marginal uncertainty.
-    ys = [rand(x.y_dist) for x in generated_quantities(m_post, chn)[1:10:end]]
-    hists = vcat(
-        bar(df.distance, df.y; label="", xlabel=""),
-        [bar(df.distance, ys[j]; label="", xlabel="") for j in 1:8],
-    )
-    savefig(plot(hists...; layout=(3, 3), dpi=300), "posterior_pred.png")
+    ys = [x.y for x in generated_quantities(m, predict(rng, m, chn))[1:10:end]]
+    post_hists = map(1:20) do j
+        xticks = j > 15 ? :auto : nothing
+        yticks = rem(j, 5) == 1 ? :auto : nothing
+        return plot_data(df.distance, df.n, ys[j], xticks, yticks)
+    end
+    hists = vcat(plot_data(df.distance, df.n, df.y, nothing, :auto), post_hists[2:end])
+    savefig(plot(hists...; layout=(4, 5), dpi=300), "posterior_pred.png")
 
-    # Sample using ESS + HMC.
-    chn_ess = sample(Xoshiro(123456), m_post, Gibbs(ESS(:f_latent), HMC(0.1, 3, :v, :l)), 1_000)
+    # # Sample using ESS + HMC.
+    # chn_ess = sample(Xoshiro(123456), m_post, Gibbs(ESS(:f_latent), HMC(0.1, 3, :v, :l)), 1_000)
 end
 
 # Notes:
 # 5. Motivate GPs - chat with Tor / other examples from outside infectious diseases
+# 11. check out time series example in the docs
