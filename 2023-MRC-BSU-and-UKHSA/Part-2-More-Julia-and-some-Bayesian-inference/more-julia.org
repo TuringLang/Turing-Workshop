@@ -19,12 +19,8 @@
 
 * Notes                                                            :noexport:
 
-- [ ] How much do I need to cover of LinearAlgebra?
-  - Xianda covers
-    - A bit of IO
-    - A
 - [X] Problem: estimate pi
-- [ ] distriubtions.jl
+- [X] distriubtions.jl
   - Show a table of distrubiotns
   - Show a table of API
 - [X] turing
@@ -38,7 +34,7 @@
 - [ ] Starting a project from scratch
   - +Maybe use the rats example from https://github.com/kskyten/BayesWorkshop2021/tree/generated/notebooks/Turing+
   - [ ] Use infectious disease example instead
-- [ ] Case studies
+- [X] Case studies
   - Rats example
     - Simple to get started
     - Can progressively make more and more complicated models
@@ -55,18 +51,16 @@
     - Maybe they want to try to implement something else?
 - [ ] Implement Adaptive MH from [cite:@journal.pcbi.1011088]
   - Adaptive MH and PMMH methods are more explicitly talked about here: [cite:@kxs052]
-- [ ] =EpimapSimple=
-  - Show off the submodel stuff.
 - [X] Add some more stuff to TuringCallbacks.jl sectione
 - [X] For condtioning:
   - [X] Maybe =missing=
   - [X] Example of failure to do constnat prop
-- [ ] Regarding case-studies
-  - [ ] Can we make MiniEpimap.jl work?
-    - [ ] Can we give them a =chain= and let them work with this?
-  - [ ] Tutorials
-  - [ ] Make some minor notes on the different case studies
-- [ ] Quick slide on GPUs
+- [X] Regarding case-studies
+  - [X] Can we make MiniEpimap.jl work?
+    - [X] +Can we give them a =chain= and let them work with this?+
+      - Nah.
+  - [X] Make some minor notes on the different case studies
+- [X] Quick slide on GPUs
 * Aim of these two days
 
 /Ideally/, you walk away from this workshop with the ability to _solve whatever research problem you have with Julia and Turing.jl_
@@ -5264,36 +5258,19 @@ Can inspect hyperparameters, e.g. target acceptance rate for =NUTS=
 
 * Setting up a project environment
 
-** Set up
-
-First we need to set up our project.
-
-#+begin_src julia
-pwd()
-#+end_src
-
-#+RESULTS:
-: "/drive-2/Projects/public/Turing-Workshop/2023-MRC-BSU-and-UKHSA/Part2"
-
-This will generate a folder that looks something like
+Now we're going to do some live-coding!
 
 ** What we're doing
 
 1. Create project.
-   - Look at the structure of the project.
+   - What does that mean?
 2. Add dependencies.
-   - Talk about Project.toml and Manifest.toml
-   - Dependencies we want:
-     - DrWatson.jl
-       - [ ] Do we set up the project using their structure?
-       - https://juliadynamics.github.io/DrWatson.jl/dev/project/#Default-Project-Setup-1
-       - [ ] Oooor maybe not talk about DrWatson.jl at all.
-     - Revise.jl
-     - Turing.jl
-     - DifferentialEquations.jl
-     - StatsPlots.jl
-     - DataDeps.jl
-3. 
+   - Project.toml and Manifest.toml
+   - Dependencies we need
+3. Get our S(?)IR implementation into the project.
+4. Run some experiments.
+   - Use Pluto.jl notebook to get started
+   - Move into a script if we have time
 
 * Case study
 
