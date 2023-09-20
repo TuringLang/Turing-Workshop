@@ -5292,10 +5292,6 @@ Or you can just do =]add RDatasets= and knock yourself out
 
 https://github.com/JuliaStats/RDatasets.jl
 
-** TODO EpimapMini                                                 :noexport:
-
-** Covid19: ImperialReport13                                       :noexport:
-
 * Julia: The Good, the Bad, and the Ugly
 :PROPERTIES:
 :ID:       2023-01-29-16-57-28-Julia-The-Good-the-Bad-and-the-Ugly
@@ -5620,18 +5616,6 @@ arr
 :   4.4
 
 [[https://docs.julialang.org/en/v1/manual/calling-c-and-fortran-code/#Creating-C-Compatible-Julia-Function-Pointers][Example is from Julia docs]]
-
-*** RCall.jl                                                       :noexport:
-:PROPERTIES:
-:ID:       2023-01-29-16-57-28-RCall-dot-jl
-:CUSTOM_ID: 2023-01-29-16-57-28-RCall-dot-jl
-:END:
-
-*** PyCall.jl                                                      :noexport:
-:PROPERTIES:
-:ID:       2023-01-29-16-57-28-PyCall-dot-jl
-:CUSTOM_ID: 2023-01-29-16-57-28-PyCall-dot-jl
-:END:
 
 *** The Bad
 :PROPERTIES:
