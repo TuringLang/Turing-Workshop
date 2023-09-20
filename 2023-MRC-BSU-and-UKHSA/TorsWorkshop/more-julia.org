@@ -36,7 +36,8 @@
 - [X] Pidgeon and MCMCTempering
 - [X] TuringGLM example
 - [ ] Starting a project from scratch
-  - Maybe use the rats example from https://github.com/kskyten/BayesWorkshop2021/tree/generated/notebooks/Turing
+  - +Maybe use the rats example from https://github.com/kskyten/BayesWorkshop2021/tree/generated/notebooks/Turing+
+  - [ ] Use infectious disease example instead
 - [ ] Case studies
   - Rats example
     - Simple to get started
@@ -56,7 +57,7 @@
   - Adaptive MH and PMMH methods are more explicitly talked about here: [cite:@kxs052]
 - [ ] =EpimapSimple=
   - Show off the submodel stuff.
-- [ ] Add some more stuff to TuringCallbacks.jl sectione
+- [X] Add some more stuff to TuringCallbacks.jl sectione
 - [X] For condtioning:
   - [X] Maybe =missing=
   - [X] Example of failure to do constnat prop
@@ -66,99 +67,17 @@
   - [ ] Tutorials
   - [ ] Make some minor notes on the different case studies
 - [ ] Quick slide on GPUs
-* Before we begin
-:PROPERTIES:
-:ID:       2023-01-29-16-57-28-Before-we-begin
-:CUSTOM_ID: 2023-01-29-16-57-28-Before-we-begin
-:END:
+* Aim of these two days
 
-Make sure you're in the correct directory
+/Ideally/, you walk away from this workshop with the ability to _solve whatever research problem you have with Julia and Turing.jl_
 
-#+begin_src julia
-pwd()
-#+end_src
+#+HTML: <div class="fragment (appear)>"
+/Likely/, you walk away from this workshop with _slightly_ better understanding of how to solve your research problems with Julia and Turing.jl + _a whole lot of questions_.
+#+HTML: </div>
 
-#+RESULTS:
-: "/drive-2/Projects/public/Turing-Workshop/2023-MRC-BSU-and-UKHSA/TorsWorkshop"
-
-#+begin_src julia :exports none
-outputdir(args...) = joinpath("assets", "outputs", "more-julia", args...)
-#+end_src
-
-#+RESULTS:
-: outputdir (generic function with 1 method)
-
-Then run something like (depending on which OS you are on)
-
-#+begin_src sh :eval no
-julia --project
-#+end_src
-
-or if you're already in a REPL, do
-
-#+begin_src julia :tangle no
-]activate .
-#+end_src
-
-#+RESULTS:
-: [32m[1m  Activating[22m[39m project at `/drive-2/Projects/public/Turing-Workshop/2023-MRC-BSU-and-UKHSA/TorsWorkshop`
-
-to activate the project
-
-#+REVEAL: split
-
-And just to check that you're in the correct one
-
-#+begin_src julia :tangle no
-]status
-#+end_src
-
-#+RESULTS:
-#+begin_example
-[36m[1mProject[22m[39m TorsWorkshop v0.1.0
-[32m[1mStatus[22m[39m `/drive-2/Projects/public/Turing-Workshop/2023-MRC-BSU-and-UKHSA/TorsWorkshop/Project.toml`
-  [90m[336ed68f] [39mCSV v0.10.11
-  [90m[124859b0] [39mDataDeps v0.7.11
-  [90m[a93c6f00] [39mDataFrames v1.6.1
-  [90m[2b5f629d] [39mDiffEqBase v6.129.0
-  [90m[0c46a032] [39mDifferentialEquations v7.9.1
-  [90m[31c24e10] [39mDistributions v0.25.100
-  [90m[7073ff75] [39mIJulia v1.24.2
-  [90m[7f7a1694] [39mOptimization v3.17.0
-  [90m[36348300] [39mOptimizationOptimJL v0.1.9
-  [90m[e4faabce] [39mPProf v2.3.0
-  [90m[91a5bcdd] [39mPlots v1.39.0
-  [90m[37e2e3b7] [39mReverseDiff v1.15.1
-  [90m[4c63d2b9] [39mStatsFuns v1.3.0
-  [90m[f3b207a7] [39mStatsPlots v0.15.6
-  [90m[fce5fe82] [39mTuring v0.29.1
-  [90m[0db1332d] [39mTuringBenchmarking v0.3.1
-  [90m[ea0860ee] [39mTuringCallbacks v0.4.0
-  [90m[0004c1f4] [39mTuringGLM v2.8.1
-  [90m[1986cc42] [39mUnitful v1.17.0
-  [90m[ade2ca70] [39mDates
-#+end_example
-
-Download and install dependencies
-
-#+begin_src julia :tangle no
-]instantiate
-#+end_src
-
-#+RESULTS:
-
-#+REVEAL: split
-
-And finally, do
-
-#+begin_src julia 
-using TorsWorkshop
-#+end_src
-
-#+RESULTS:
-
-
-to get some functionality I've implemented for the occasion
+#+HTML: <div class="fragment (appear)>"
+But we will do our best
+#+HTML: </div>
 
 * The story of a little Norwegian boy
 :PROPERTIES:
@@ -294,15 +213,113 @@ And 3.5 years later, he's still writing for-loops. Well, sort of.
 
 And the consequences are
 #+ATTR_REVEAL: :frag (appear)
-- Even a naive implementation will be fast; and if you want to go faster, you just optimize the code /in Julia/!
+- Even a naive implementation will be fairly fast!
+  - If you want to go faster, you just optimize the code /in Julia/!
   - No need to drop down to C(++)
-- ⟹ "Every" package is written in Julia, so when you encounter a bug you can more easily debug because /the code is in the same language as you're writing code in/!
+- ⟹ "Every" package is written in Julia!
+  - Encountered a bug? Have to debug the _Julia_ code
+  - Same language as you're writing in!
 - ⟹ Same for /extending/ packages!
-  - Moreover, thanks to multiple dispatch, you can change a function /on the fly/ to experiment with code you don't even own!
+  - Can change functions to experiment with code you don't even own!
+
 
 #+HTML: <div class="fragment (appear)"
 So all in all, it can be quite nice
 #+HTML: </div>
+
+* Before we begin
+:PROPERTIES:
+:ID:       2023-01-29-16-57-28-Before-we-begin
+:CUSTOM_ID: 2023-01-29-16-57-28-Before-we-begin
+:END:
+
+Make sure you're in the correct directory
+
+#+begin_src julia
+pwd()
+#+end_src
+
+#+RESULTS:
+: "/drive-2/Projects/public/Turing-Workshop/2023-MRC-BSU-and-UKHSA/TorsWorkshop"
+
+#+begin_src julia :exports none
+outputdir(args...) = joinpath("assets", "outputs", "more-julia", args...)
+#+end_src
+
+#+RESULTS:
+: outputdir (generic function with 1 method)
+
+Then run something like (depending on which OS you are on)
+
+#+begin_src sh :eval no
+julia --project
+#+end_src
+
+or if you're already in a REPL, do
+
+#+begin_src julia :tangle no
+]activate .
+#+end_src
+
+#+RESULTS:
+: [32m[1m  Activating[22m[39m project at `/drive-2/Projects/public/Turing-Workshop/2023-MRC-BSU-and-UKHSA/TorsWorkshop`
+
+to activate the project
+
+#+REVEAL: split
+
+And just to check that you're in the correct one
+
+#+begin_src julia :tangle no
+]status
+#+end_src
+
+#+RESULTS:
+#+begin_example
+[36m[1mProject[22m[39m TorsWorkshop v0.1.0
+[32m[1mStatus[22m[39m `/drive-2/Projects/public/Turing-Workshop/2023-MRC-BSU-and-UKHSA/TorsWorkshop/Project.toml`
+  [90m[336ed68f] [39mCSV v0.10.11
+  [90m[124859b0] [39mDataDeps v0.7.11
+  [90m[a93c6f00] [39mDataFrames v1.6.1
+  [90m[2b5f629d] [39mDiffEqBase v6.129.0
+  [90m[0c46a032] [39mDifferentialEquations v7.9.1
+  [90m[31c24e10] [39mDistributions v0.25.100
+  [90m[7073ff75] [39mIJulia v1.24.2
+  [90m[7f7a1694] [39mOptimization v3.17.0
+  [90m[36348300] [39mOptimizationOptimJL v0.1.9
+  [90m[e4faabce] [39mPProf v2.3.0
+  [90m[91a5bcdd] [39mPlots v1.39.0
+  [90m[37e2e3b7] [39mReverseDiff v1.15.1
+  [90m[4c63d2b9] [39mStatsFuns v1.3.0
+  [90m[f3b207a7] [39mStatsPlots v0.15.6
+  [90m[fce5fe82] [39mTuring v0.29.1
+  [90m[0db1332d] [39mTuringBenchmarking v0.3.1
+  [90m[ea0860ee] [39mTuringCallbacks v0.4.0
+  [90m[0004c1f4] [39mTuringGLM v2.8.1
+  [90m[1986cc42] [39mUnitful v1.17.0
+  [90m[ade2ca70] [39mDates
+#+end_example
+
+Download and install dependencies
+
+#+begin_src julia :tangle no
+]instantiate
+#+end_src
+
+#+RESULTS:
+
+#+REVEAL: split
+
+And finally, do
+
+#+begin_src julia 
+using TorsWorkshop
+#+end_src
+
+#+RESULTS:
+
+
+to get some functionality I've implemented for the occasion
 
 * Base & Standard library
 Julia is mainly a programing language for scientific computing
@@ -332,15 +349,8 @@ Relevant modules you'll find in =Base=
 - [[https://docs.julialang.org/en/v1/base/multi-threading/][Threads]]
 
 *** Filesystem
-#+begin_src julia 
-Base.Filesystem
-#+end_src
-
-#+RESULTS:
-: Base.Filesystem
-
 #+begin_src julia
-pwd()
+pwd()  # current working directory
 #+end_src
 
 #+RESULTS:
@@ -356,7 +366,6 @@ pwd()
 https://docs.julialang.org/en/v1/base/file/
 
 *** Multi-threading
-One example of a 
 
 #+begin_src julia 
 Threads
@@ -372,7 +381,7 @@ Threads.nthreads()
 #+RESULTS:
 : 4
 
-Or we can call =using Threads= so so we don't have to write =Threads.= all the time
+Or we can call =using Threads= so so we don't have to write =Threads.=
 
 #+begin_src julia 
 using Base.Threads
@@ -412,17 +421,24 @@ end
 https://docs.julialang.org/en/v1/base/multi-threading/
 
 ** Standard library
+These are all the packages that come with Julia but you explicitly have to load with =using=
+
+#+HTML: <div class="side-by-side">
 - [[https://docs.julialang.org/en/v1/stdlib/Pkg/][Pkg]]
 - [[https://docs.julialang.org/en/v1/stdlib/LinearAlgebra/][LinearAlgebra]]
 - [[https://docs.julialang.org/en/v1/stdlib/SparseArrays/][SparseArrays]]
 - [[https://docs.julialang.org/en/v1/stdlib/Statistics/][Statistics]]
 - [[https://docs.julialang.org/en/v1/stdlib/Random/][Random]]
 - [[https://docs.julialang.org/en/v1/stdlib/Distributed/][Distributed]]
+#+HTML: </div>
+
+#+HTML: <div class="side-by-side">
 - [[https://docs.julialang.org/en/v1/stdlib/Logging/][Logging]]
 - [[https://docs.julialang.org/en/v1/stdlib/Dates/][Dates]]
 - [[https://docs.julialang.org/en/v1/stdlib/Serialization/][Serialization]]
 - [[https://docs.julialang.org/en/v1/stdlib/Downloads/][Downloads]]
 - [[https://docs.julialang.org/en/v1/stdlib/Test/][Unit testing]]
+#+HTML: </div>
 
 *** =Dates=
 
@@ -477,6 +493,7 @@ rand()
 #+RESULTS:
 : 0.32597672886359486
 
+#+HTML: <div class="fragment (appear)>"
 Or provide the RNG explicitly
 
 #+begin_src julia
@@ -487,8 +504,11 @@ rand(rng) # <= same as before
 
 #+RESULTS:
 : 0.32597672886359486
+#+HTML: </div>
 
+#+HTML: <div class="fragment (appear)>"
 Most functions using RNGs follow this pattern of optionally accepting an RNG as the first argument
+#+HTML: </div>
 
 #+REVEAL: split
 
@@ -514,6 +534,7 @@ rand(3, 3)
 :  0.639562  0.205168  0.0739957
 :  0.839622  0.527184  0.571586
 
+#+HTML: <div class="fragment (appear)>"
 And we can also specify the type of the output
 
 #+begin_src julia
@@ -522,6 +543,7 @@ rand(Float32)
 
 #+RESULTS:
 : 0.07271612f0
+#+HTML: </div>
 
 #+REVEAL: split
 
@@ -562,14 +584,14 @@ A = [1 2 3; 4 1 6; 7 8 1]
 :  4  1  6
 :  7  8  1
 
-#+begin_src julia
+#+begin_src julia :results scalar
 using LinearAlgebra
 
-norm(A)
+norm(A), dot(A[:, 1], A[:, 3])
 #+end_src
 
 #+RESULTS:
-: 13.45362404707371
+: (13.45362404707371, 34)
 
 #+begin_src julia
 @which norm
@@ -659,7 +681,7 @@ addprocs(1)
 :  2
 
 #+begin_src julia
-# Spawn a remote worker
+# Spawn a remote worker (this machine won't work on your computer)
 addprocs(["tor@beastly"], tunnel=true, dir="/tmp/")
 #+end_src
 
@@ -792,20 +814,18 @@ But that's not fair.
 
 #+begin_src julia 
 num_within = 0; num_total = 1_000_000
-
 for i in 1:num_total
     x = 2 .* rand(2) .- 1
     if norm(x) < 1
         num_within += 1
     end
 end
-
 # Area of a circle = πr^2 = π * (1/2)^2 = π/4
 4 * num_within / num_total
 #+end_src
 
 #+RESULTS:
-: 3.14244
+: 3.140156
 
 #+begin_src julia :exports none :exports none :tangle no
 using StatsPlots
@@ -836,14 +856,21 @@ gif(anim, outputdir("pi.gif"));
 [[./assets/outputs/more-julia/pi.gif]]
 
 * Scientific computing ecosystem
+#+HTML: <div class="side-by-side">
 - [[https://dataframes.juliadata.org/stable/][DataFrames.jl]], etc.
 - [[https://docs.juliaplots.org/stable/][Plots.jl]], etc.
 - [[https://juliastats.org/Distributions.jl/stable/][Distributions.jl]], etc.
 - [[https://docs.sciml.ai/Optimization/stable/][Optimization.jl]] and all it contains
+#+HTML: </div>
+
+#+HTML: <div class="side-by-side">
 - [[https://docs.sciml.ai/DiffEqDocs/stable/][DifferentialEquations.jl]]
 - Deep learning, e.g. [[https://fluxml.ai/Flux.jl/stable/][Flux.jl]]
 - Automatic Differentiation
 - BenchmarkTools.jl
+#+HTML: </div>
+
+And more, of course
 * Running example
 
 We'll work with an outbreak of influenza A (H1N1) in 1978 at a British boarding school
@@ -864,7 +891,7 @@ using Distributions
 
 In Julia, the go-to for working with distributions is [[https://juliastats.org/Distributions.jl/stable/][=Distributions.jl=]]
 
-This package provides a large number of distributions (see the docs for a full overview)
+This package provides a large number of distributions
 
 Used throughout the Julia community, e.g. =Turing= uses this
 
@@ -928,6 +955,158 @@ fit(Normal, xs)
 
 #+RESULTS:
 : Normal{Float64}(μ=1.2893234567407714, σ=1.7249112221240255)
+
+#+REVEAL: split
+
+But exactly what distributions are there?
+
+Well, we can just check by inspecting the subtypes of =Distribution=
+
+#+begin_src julia
+# Filter away abstract types.
+nonabstract_dist_subtypes = filter(!isabstracttype, subtypes(Distribution))
+# Filter away types which are not found in Distributions.jl.
+dist_types_from_distributions = filter(
+    Base.Fix1(hasproperty, Distributions) ∘ Symbol,
+    nonabstract_dist_subtypes
+)
+#+end_src
+
+#+RESULTS:
+#+begin_example
+84-element Vector{Any}:
+ Arcsine
+ Bernoulli
+ BernoulliLogit
+ Beta
+ BetaBinomial
+ BetaPrime
+ Binomial
+ Biweight
+ Cauchy
+ Chernoff
+ Chi
+ Chisq
+ Cosine
+ ⋮
+ Soliton
+ StudentizedRange
+ SymTriangularDist
+ TDist
+ TriangularDist
+ Triweight
+ Truncated
+ Uniform
+ VonMises
+ VonMisesFisher
+ Weibull
+ Wishart
+#+end_example
+
+#+REVEAL: split
+
+Okay, there are a bit too many
+
+Let's separate between different variate types
+
+#+begin_src julia
+filter(x -> x <: UnivariateDistribution, dist_types_from_distributions)
+#+end_src
+
+#+RESULTS:
+#+begin_example
+70-element Vector{Any}:
+ Arcsine
+ Bernoulli
+ BernoulliLogit
+ Beta
+ BetaBinomial
+ BetaPrime
+ Binomial
+ Biweight
+ Cauchy
+ Chernoff
+ Chi
+ Chisq
+ Cosine
+ ⋮
+ SkewNormal
+ SkewedExponentialPower
+ Soliton
+ StudentizedRange
+ SymTriangularDist
+ TDist
+ TriangularDist
+ Triweight
+ Truncated
+ Uniform
+ VonMises
+ Weibull
+#+end_example
+
+#+REVEAL: split
+
+Too many
+
+Let's convert it into a =Matrix= and force Julia to show all columns
+
+#+begin_src julia
+show(
+    IOContext(stdout, :limit => false),
+    "text/plain",
+    reshape(filter(x -> x <: UnivariateDistribution, dist_types_from_distributions), 10, :)
+)
+#+end_src
+
+#+RESULTS:
+#+begin_example
+10×7 Matrix{Any}:
+ Arcsine         Chi                    Frechet                  KSDist       LogitNormal            PGeneralizedGaussian    Soliton
+ Bernoulli       Chisq                  Gamma                    KSOneSided   NegativeBinomial       Pareto                  StudentizedRange
+ BernoulliLogit  Cosine                 GeneralizedExtremeValue  Kolmogorov   NoncentralBeta         Poisson                 SymTriangularDist
+ Beta            Dirac                  GeneralizedPareto        Kumaraswamy  NoncentralChisq        PoissonBinomial         TDist
+ BetaBinomial    DiscreteNonParametric  Geometric                Laplace      NoncentralF            Rayleigh                TriangularDist
+ BetaPrime       DiscreteUniform        Gumbel                   Levy         NoncentralT            Rician                  Triweight
+ Binomial        Epanechnikov           Hypergeometric           Lindley      Normal                 Semicircle              Truncated
+ Biweight        Erlang                 InverseGamma             LogNormal    NormalCanon            Skellam                 Uniform
+ Cauchy          Exponential            InverseGaussian          LogUniform   NormalInverseGaussian  SkewNormal              VonMises
+ Chernoff        FDist                  JohnsonSU                Logistic     OrderStatistic         SkewedExponentialPower  Weibull
+#+end_example
+
+#+REVEAL: split
+
+Now for multivariate distributions
+
+#+begin_src julia
+filter(x -> x <: MultivariateDistribution, dist_types_from_distributions)
+#+end_src
+
+#+RESULTS:
+: 6-element Vector{Any}:
+:  Dirichlet
+:  DirichletMultinomial
+:  JointOrderStatistics
+:  Multinomial
+:  Product
+:  VonMisesFisher
+
+#+HTML: <div class="fragment (appear)>"
+And matrix distributions
+
+#+begin_src julia
+filter(x -> x <: MatrixDistribution, dist_types_from_distributions)
+#+end_src
+
+#+RESULTS:
+: 7-element Vector{Any}:
+:  InverseWishart
+:  LKJ
+:  MatrixBeta
+:  MatrixFDist
+:  MatrixNormal
+:  MatrixTDist
+:  Wishart
+#+HTML: </div>
 
 * DataFrames.jl
 
@@ -2318,7 +2497,287 @@ loss(SEIRProblem(N), [2.0, 0.6, 0.8])
 #+RESULTS:
 : 287325.105532706
 
+* GPU programming
+:PROPERTIES:
+:header-args:julia: :session /ssh:beastly:/home/tor/.local/share/jupyter/runtime/kernel-593c7303-cb3d-494a-946c-14b11112578e.json :kernel julia-4-threads-1.9 :async yes :tangle no :exports both
+:END:
 
+#+begin_src julia :exports none
+]activate --temp
+#+end_src
+
+#+RESULTS:
+:   Activating new project at `/tmp/jl_N7SPiz`
+
+#+begin_src julia :exports none
+]add CUDA
+#+end_src
+
+#+RESULTS:
+#+begin_example
+[32m[1m   Resolving[22m[39m package versions...
+[32m[1m   Installed[22m[39m CUDA_Runtime_Discovery ─ v0.2.2
+[32m[1m   Installed[22m[39m JuliaNVTXCallbacks_jll ─ v0.2.1+0
+[32m[1m   Installed[22m[39m BFloat16s ────────────── v0.4.2
+[32m[1m   Installed[22m[39m CUDA_Driver_jll ──────── v0.6.0+3
+[32m[1m   Installed[22m[39m NVTX_jll ─────────────── v3.1.0+2
+[32m[1m   Installed[22m[39m TimerOutputs ─────────── v0.5.23
+[32m[1m   Installed[22m[39m NVTX ─────────────────── v0.3.3
+[32m[1m   Installed[22m[39m GPUCompiler ──────────── v0.24.4
+[32m[1m   Installed[22m[39m CUDA_Runtime_jll ─────── v0.9.2+0
+[32m[1m   Installed[22m[39m CUDA ─────────────────── v5.0.0
+[32m[1m    Updating[22m[39m `/tmp/jl_N7SPiz/Project.toml`
+  [90m[052768ef] [39m[92m+ CUDA v5.0.0[39m
+[32m[1m    Updating[22m[39m `/tmp/jl_N7SPiz/Manifest.toml`
+ Downloading artifact: CUDA_Driver
+  [90m[621f4979] [39m[92m+ AbstractFFTs v1.5.0[39m
+  [90m[79e6a3ab] [39m[92m+ Adapt v3.6.2[39m
+  [90m[a9b6321e] [39m[92m+ Atomix v0.1.0[39m
+  [90m[ab4f0b2a] [39m[92m+ BFloat16s v0.4.2[39m
+  [90m[fa961155] [39m[92m+ CEnum v0.4.2[39m
+  [90m[052768ef] [39m[92m+ CUDA v5.0.0[39m
+  [90m[1af6417a] [39m[92m+ CUDA_Runtime_Discovery v0.2.2[39m
+  [90m[3da002f7] [39m[92m+ ColorTypes v0.11.4[39m
+  [90m[5ae59095] [39m[92m+ Colors v0.12.10[39m
+  [90m[34da2185] [39m[92m+ Compat v4.9.0[39m
+  [90m[a8cc5b0e] [39m[92m+ Crayons v4.1.1[39m
+  [90m[9a962f9c] [39m[92m+ DataAPI v1.15.0[39m
+  [90m[a93c6f00] [39m[92m+ DataFrames v1.6.1[39m
+  [90m[864edb3b] [39m[92m+ DataStructures v0.18.15[39m
+  [90m[e2d170a0] [39m[92m+ DataValueInterfaces v1.0.0[39m
+  [90m[e2ba6199] [39m[92m+ ExprTools v0.1.10[39m
+  [90m[53c48c17] [39m[92m+ FixedPointNumbers v0.8.4[39m
+  [90m[0c68f7d7] [39m[92m+ GPUArrays v9.0.0[39m
+  [90m[46192b85] [39m[92m+ GPUArraysCore v0.1.5[39m
+  [90m[61eb1bfa] [39m[92m+ GPUCompiler v0.24.4[39m
+  [90m[842dd82b] [39m[92m+ InlineStrings v1.4.0[39m
+  [90m[41ab1584] [39m[92m+ InvertedIndices v1.3.0[39m
+  [90m[82899510] [39m[92m+ IteratorInterfaceExtensions v1.0.0[39m
+  [90m[692b3bcd] [39m[92m+ JLLWrappers v1.5.0[39m
+  [90m[63c18a36] [39m[92m+ KernelAbstractions v0.9.8[39m
+  [90m[929cbde3] [39m[92m+ LLVM v6.2.1[39m
+  [90m[b964fa9f] [39m[92m+ LaTeXStrings v1.3.0[39m
+  [90m[1914dd2f] [39m[92m+ MacroTools v0.5.11[39m
+  [90m[e1d29d7a] [39m[92m+ Missings v1.1.0[39m
+  [90m[5da4648a] [39m[92m+ NVTX v0.3.3[39m
+  [90m[bac558e1] [39m[92m+ OrderedCollections v1.6.2[39m
+  [90m[69de0a69] [39m[92m+ Parsers v2.7.2[39m
+  [90m[2dfb63ee] [39m[92m+ PooledArrays v1.4.3[39m
+  [90m[aea7be01] [39m[92m+ PrecompileTools v1.2.0[39m
+  [90m[21216c6a] [39m[92m+ Preferences v1.4.1[39m
+  [90m[08abe8d2] [39m[92m+ PrettyTables v2.2.7[39m
+  [90m[74087812] [39m[92m+ Random123 v1.6.1[39m
+  [90m[e6cf234a] [39m[92m+ RandomNumbers v1.5.3[39m
+  [90m[189a3867] [39m[92m+ Reexport v1.2.2[39m
+  [90m[ae029012] [39m[92m+ Requires v1.3.0[39m
+  [90m[6c6a2e73] [39m[92m+ Scratch v1.2.0[39m
+  [90m[91c51154] [39m[92m+ SentinelArrays v1.4.0[39m
+  [90m[a2af1166] [39m[92m+ SortingAlgorithms v1.1.1[39m
+  [90m[90137ffa] [39m[92m+ StaticArrays v1.6.3[39m
+  [90m[1e83bf80] [39m[92m+ StaticArraysCore v1.4.2[39m
+  [90m[892a3eda] [39m[92m+ StringManipulation v0.3.4[39m
+  [90m[3783bdb8] [39m[92m+ TableTraits v1.0.1[39m
+  [90m[bd369af6] [39m[92m+ Tables v1.11.0[39m
+  [90m[a759f4b9] [39m[92m+ TimerOutputs v0.5.23[39m
+  [90m[013be700] [39m[92m+ UnsafeAtomics v0.2.1[39m
+  [90m[d80eeb9a] [39m[92m+ UnsafeAtomicsLLVM v0.1.3[39m
+  [90m[4ee394cb] [39m[92m+ CUDA_Driver_jll v0.6.0+3[39m
+[91m→[39m [90m[76a88914] [39m[92m+ CUDA_Runtime_jll v0.9.2+0[39m
+  [90m[9c1d0b0a] [39m[92m+ JuliaNVTXCallbacks_jll v0.2.1+0[39m
+  [90m[dad2f222] [39m[92m+ LLVMExtra_jll v0.0.25+0[39m
+  [90m[e98f9f5b] [39m[92m+ NVTX_jll v3.1.0+2[39m
+  [90m[0dad84c5] [39m[92m+ ArgTools v1.1.1[39m
+  [90m[56f22d72] [39m[92m+ Artifacts[39m
+  [90m[2a0f44e3] [39m[92m+ Base64[39m
+  [90m[ade2ca70] [39m[92m+ Dates[39m
+  [90m[f43a241f] [39m[92m+ Downloads v1.6.0[39m
+  [90m[7b1f6079] [39m[92m+ FileWatching[39m
+  [90m[9fa8497b] [39m[92m+ Future[39m
+  [90m[b77e0a4c] [39m[92m+ InteractiveUtils[39m
+  [90m[4af54fe1] [39m[92m+ LazyArtifacts[39m
+  [90m[b27032c2] [39m[92m+ LibCURL v0.6.3[39m
+  [90m[76f85450] [39m[92m+ LibGit2[39m
+  [90m[8f399da3] [39m[92m+ Libdl[39m
+  [90m[37e2e46d] [39m[92m+ LinearAlgebra[39m
+  [90m[56ddb016] [39m[92m+ Logging[39m
+  [90m[d6f4376e] [39m[92m+ Markdown[39m
+  [90m[ca575930] [39m[92m+ NetworkOptions v1.2.0[39m
+  [90m[44cfe95a] [39m[92m+ Pkg v1.9.2[39m
+  [90m[de0858da] [39m[92m+ Printf[39m
+  [90m[3fa0cd96] [39m[92m+ REPL[39m
+  [90m[9a3f8284] [39m[92m+ Random[39m
+  [90m[ea8e919c] [39m[92m+ SHA v0.7.0[39m
+  [90m[9e88b42a] [39m[92m+ Serialization[39m
+  [90m[6462fe0b] [39m[92m+ Sockets[39m
+  [90m[2f01184e] [39m[92m+ SparseArrays[39m
+  [90m[10745b16] [39m[92m+ Statistics v1.9.0[39m
+  [90m[fa267f1f] [39m[92m+ TOML v1.0.3[39m
+  [90m[a4e569a6] [39m[92m+ Tar v1.10.0[39m
+  [90m[8dfed614] [39m[92m+ Test[39m
+  [90m[cf7118a7] [39m[92m+ UUIDs[39m
+  [90m[4ec0a83e] [39m[92m+ Unicode[39m
+  [90m[e66e0078] [39m[92m+ CompilerSupportLibraries_jll v1.0.5+0[39m
+  [90m[deac9b47] [39m[92m+ LibCURL_jll v7.84.0+0[39m
+  [90m[29816b5a] [39m[92m+ LibSSH2_jll v1.10.2+0[39m
+  [90m[c8ffd9c3] [39m[92m+ MbedTLS_jll v2.28.2+0[39m
+  [90m[14a3606d] [39m[92m+ MozillaCACerts_jll v2022.10.11[39m
+  [90m[4536629a] [39m[92m+ OpenBLAS_jll v0.3.21+4[39m
+  [90m[bea87d4a] [39m[92m+ SuiteSparse_jll v5.10.1+6[39m
+  [90m[83775a58] [39m[92m+ Zlib_jll v1.2.13+0[39m
+  [90m[8e850b90] [39m[92m+ libblastrampoline_jll v5.8.0+0[39m
+  [90m[8e850ede] [39m[92m+ nghttp2_jll v1.48.0+0[39m
+  [90m[3f19e933] [39m[92m+ p7zip_jll v17.4.0+0[39m
+[36m[1m        Info[22m[39m Packages marked with [91m→[39m are not downloaded, use `instantiate` to download
+[32m[1mPrecompiling[22m[39m project...
+[32m  ✓ [39m[90mBFloat16s[39m
+[32m  ✓ [39m[90mNVTX_jll[39m
+[32m  ✓ [39m[90mJuliaNVTXCallbacks_jll[39m
+[32m  ✓ [39m[90mCUDA_Driver_jll[39m
+[32m  ✓ [39m[90mNVTX[39m
+[32m  ✓ [39m[90mCUDA_Runtime_Discovery[39m
+[32m  ✓ [39m[90mCUDA_Runtime_jll[39m
+[32m  ✓ [39m[90mTimerOutputs[39m
+[32m  ✓ [39m[90mGPUCompiler[39m
+[32m  ✓ [39mCUDA
+  10 dependencies successfully precompiled in 180 seconds. 56 already precompiled.
+#+end_example
+
+#+begin_src julia 
+using CUDA
+#+end_src
+
+#+RESULTS:
+
+https://juliagpu.org/
+
+#+REVEAL: split
+
+Because some of you might not have a GPU, we'll use
+
+#+begin_src julia 
+CUDA.has_cuda()
+#+end_src
+
+#+RESULTS:
+: true
+
+to avoid executing the GPU code in that case
+
+#+REVEAL: split
+
+#+begin_src julia 
+if CUDA.has_cuda()
+    CUDA.versioninfo()
+end
+#+end_src
+
+#+RESULTS:
+#+begin_example
+CUDA runtime 12.2, artifact installation
+CUDA driver 12.2
+NVIDIA driver 535.86.5
+
+CUDA libraries: 
+- CUBLAS: 12.2.5
+- CURAND: 10.3.3
+- CUFFT: 11.0.8
+- CUSOLVER: 11.5.2
+- CUSPARSE: 12.1.2
+- CUPTI: 20.0.0
+- NVML: 12.0.0+535.86.5
+
+Julia packages: 
+- CUDA: 5.0.0
+- CUDA_Driver_jll: 0.6.0+3
+- CUDA_Runtime_jll: 0.9.2+0
+
+Toolchain:
+- Julia: 1.9.3
+- LLVM: 14.0.6
+- PTX ISA support: 3.2, 4.0, 4.1, 4.2, 4.3, 5.0, 6.0, 6.1, 6.3, 6.4, 6.5, 7.0, 7.1, 7.2, 7.3, 7.4, 7.5
+- Device capability support: sm_37, sm_50, sm_52, sm_53, sm_60, sm_61, sm_62, sm_70, sm_72, sm_75, sm_80, sm_86
+
+1 device:
+  0: NVIDIA GeForce GTX 1080 Ti (sm_61, 10.047 GiB / 11.000 GiB available)
+#+end_example
+
+#+REVEAL: split
+
+#+begin_src julia
+# Array on CPU
+xs = rand(2)
+#+end_src
+
+#+RESULTS:
+: 2-element Vector{Float64}:
+:  0.9209503500993459
+:  0.8172019350381718
+
+#+begin_src julia
+if CUDA.has_cuda()
+    # Array on GPU
+    xs_cuda = cu(xs)
+end
+#+end_src
+
+#+RESULTS:
+: 2-element CuArray{Float32, 1, CUDA.Mem.DeviceBuffer}:
+:  0.92095035
+:  0.8172019
+
+And that's it!
+
+#+REVEAL: split
+
+#+begin_src julia
+if CUDA.has_cuda()
+    2 * xs_cuda
+end
+#+end_src
+
+#+RESULTS:
+: 2-element CuArray{Float32, 1, CUDA.Mem.DeviceBuffer}:
+:  1.8419007
+:  1.6344038
+
+#+begin_src julia
+if CUDA.has_cuda()
+    xs_cuda .+ xs_cuda
+end
+#+end_src
+
+#+RESULTS:
+: 2-element CuArray{Float32, 1, CUDA.Mem.DeviceBuffer}:
+:  1.8419007
+:  1.6344038
+
+#+REVEAL: split
+
+#+begin_src julia
+if CUDA.has_cuda()
+    X_cuda = xs_cuda * xs_cuda' + 1f-2 * I
+    cholesky(X_cuda)
+end
+#+end_src
+
+#+RESULTS:
+: Cholesky{Float32, CuArray{Float32, 2, CUDA.Mem.DeviceBuffer}}
+: U factor:
+: 2×2 UpperTriangular{Float32, CuArray{Float32, 2, CUDA.Mem.DeviceBuffer}}:
+:  0.926364  0.812427
+:   ⋅        0.133349
+
+#+REVEAL: split
+
+#+HTML: <div class="WARNING">
+*Important:* Turing.jl is _not_ completely GPU compatible
+#+HTML: </div>
+
+You can execute all the GPU code you want /inside/ the model
+
+But you can't (/at the moment/) use GPU for the entire computation
+
+Though some samplers are already GPU compatible
 
 * Turing.jl
 :PROPERTIES:
@@ -2455,6 +2914,8 @@ which, as we can see, results in a few =simple_demo= methods
 - One method is for evaluation of the model
 - The rest (one, here) are for constructing the =Model=
 
+#+HTML: <div class="fragment (appear)">
+
 #+begin_src julia 
 model = simple_demo(1.5, 2.0)
 #+end_src
@@ -2465,6 +2926,8 @@ model = simple_demo(1.5, 2.0)
 :   defaults = ()
 :   context = DynamicPPL.DefaultContext()
 : )
+
+#+HTML: </div>
 
 #+REVEAL: split
 
@@ -2868,12 +3331,13 @@ model_v1_failure() # `y` is treated as a random variable!!!
 #+RESULTS:
 : -1.262744522413113
 
-Turing.jl performs no analysis of the code, and thus cannot know that =y= is a constant
+Turing.jl performs no analysis of the code ⟹ don't know that =y= is constant
 
 #+REVEAL: split
 
 =decondition= can be used to "undo" the conditioning of a variable
 
+#+HTML: <div class="fragment (appear)"
 For _argument-based conditioning_, we need to replace it with =missing=
 
 #+begin_src julia 
@@ -2884,6 +3348,9 @@ model_v1_decondition()  # `y` is now a random variable
 #+RESULTS:
 : -0.2820674051533346
 
+#+HTML: </div>
+
+#+HTML: <div class="fragment (appear)"
 For _|-based conditioning_, we can just call =decondition=
 
 #+begin_src julia
@@ -2893,8 +3360,11 @@ model_v2_decondition()  # `y` is now a random variable!
 
 #+RESULTS:
 : -1.0537785826772716
+#+HTML: </div>
 
+#+HTML: <div class="fragment (appear)"
 For _literal-based conditioning_, =y= is hard-coded, so deconditioning is not possible
+#+HTML: </div>
 
 #+REVEAL: split
 
@@ -2911,37 +3381,46 @@ end
 model_v2 = simple_demo_v2() | (x = 1.5, y = 2.0)
 #+end_src
 
-But you will encounter the other two approaches in the wild
+But you will also encounter the other two approaches in the wild
 
 ** Other actions on a =Model=
 
+#+REVEAL: split
+
 *Computing probabilities*
 
+#+HTML: <div class="fragment (appear)">
 #+begin_src julia 
 logprior(model, (s = 1, m = 1))
 #+end_src
 
 #+RESULTS:
 : -2.221713955868453
+#+HTML: </div>
 
+#+HTML: <div class="fragment (appear)">
 #+begin_src julia
 loglikelihood(model, (s = 1, m = 1))
 #+end_src
 
 #+RESULTS:
 : -2.4628770664093453
+#+HTML: </div>
 
+#+HTML: <div class="fragment (appear)">
 #+begin_src julia
 logjoint(model, (s = 1, m = 1))
 #+end_src
 
 #+RESULTS:
 : -4.6845910222777984
+#+HTML: </div>
 
 #+REVEAL: split
 
 *Conditioning and fixing*
 
+#+HTML: <div class="fragment (appear)">
 #+begin_src julia :results scalar
 # Condition a variable to be a value
 model_with_condition = Turing.condition(model, s=1.0)  # equivalent to `|` operator
@@ -2950,7 +3429,9 @@ model_with_condition()
 
 #+RESULTS:
 : (s = 1.0, m = -0.7072604928423466, x = 1.5, y = 2.0, hello = 42)
+#+HTML: </div>
 
+#+HTML: <div class="fragment (appear)">
 #+begin_src julia :results scalar
 # Fix a variable to a value
 model_with_fixed = Turing.fix(model, s=1.0)
@@ -2959,7 +3440,9 @@ model_with_fixed()
 
 #+RESULTS:
 : (s = 1.0, m = -0.2580013604654765, x = 1.5, y = 2.0, hello = 42)
+#+HTML: </div>
 
+#+HTML: <div class="fragment (appear)">
 Difference between conditioning and fixing
 
 #+begin_src julia :results scalar
@@ -2969,7 +3452,8 @@ logjoint(model_with_condition, (m=1,)), logjoint(model_with_fixed, (m=1,))
 #+RESULTS:
 : (-4.6845910222777984, -3.881815599614018)
 
-A =fixed= variable is not included in the log joint
+A =fixed= variable is _not_ included in the log-probability
+#+HTML: </div>
 
 #+REVEAL: split
 
@@ -2988,6 +3472,8 @@ DynamicPPL.fixed(model_with_fixed)
 
 #+RESULTS:
 : (s = 1.0,)
+
+[[https://turinglang.org/library/DynamicPPL/stable/api/][And much more...]]
 
 ** Back to our working example: S(E)IR model
 
@@ -3025,7 +3511,7 @@ plot(
 
 =NegativeBinomial(r, p)= represents the number of trials to achieve $r$ successes, where each trial has a probability $p$ of success
 
-=NegativeBinomial2(μ, ϕ)= is parameterized by the mean $μ$ and /dispersion/ $\phi$
+=NegativeBinomial2(μ, ϕ)= is parameterized by mean $μ$ and /dispersion/ $\phi$
 
 #+begin_src julia
 # `NegativeBinomial` already exists, so let's just make an alternative constructor instead.
@@ -3263,7 +3749,6 @@ hline!([N], color="red")
 #+RESULTS:
 :RESULTS:
 [[file:assets/outputs/more-julia/f110b08ba2b09629fd9d3c498a45a8ab21e0915a.svg]]
-[[file:assets/outputs/more-julia/f110b08ba2b09629fd9d3c498a45a8ab21e0915a.svg]]
 :END:
 
 #+ATTR_REVEAL: :frag (appear)
@@ -3279,6 +3764,7 @@ Maybe more useful to inspect the (I)nfected state from the ODE solution?
 
 We can also look at the =generated_quantities=, i.e. the values from the =return= statement in our model
 
+#+HTML: <div class="fragment (appear)">
 Our =return= looked like this
 
 #+begin_src julia :eval no :tangle no
@@ -3286,6 +3772,9 @@ Our =return= looked like this
 return (R0 = β / γ, recovery_time = 1 / γ, infected = sol_for_observed)
 #+end_src
 
+#+HTML: </div>
+
+#+HTML: <div class="fragment (appear)">
 and so =generated_quantities= (conditioned on =chain_prior=) gives us
 
 #+begin_src julia
@@ -3295,6 +3784,8 @@ print(quantities_prior[1])
 
 #+RESULTS:
 : (R0 = 16.064158353916437, recovery_time = 4.5961550015651325, infected = [25.54664433192158, 341.2329870861155, 582.291266785026, 497.4517243568478, 402.4686620041788, 324.04672948494715, 260.73310729465913, 209.76289783753236, 168.75108612079157, 135.75620551517966, 109.21213227857037, 87.85804244192713, 70.67909288672027, 56.8592954645382])
+
+#+HTML: </div>
 
 #+REVEAL: split
 
@@ -3351,7 +3842,7 @@ Compare to our prior knowledge of $R_0 \in [1, 2]$ and $(1/\gamma) \approx 1$ fo
 
 Do we really need probability mass on $R_0 \ge 10$?
 
-** TASK What's wrong with the current prior?
+** TASK Can we improve the current prior?
 :PROPERTIES:
 :ID:       2023-01-29-16-57-28-What-s-wrong-with-the-current-prior
 :CUSTOM_ID: 2023-01-29-16-57-28-What-s-wrong-with-the-current-prior
@@ -4774,8 +5265,6 @@ Can inspect hyperparameters, e.g. target acceptance rate for =NUTS=
 
 First we need to set up our project.
 
-The simplest way to do this is to do
-
 #+begin_src julia
 pwd()
 #+end_src
@@ -4784,6 +5273,24 @@ pwd()
 : "/drive-2/Projects/public/Turing-Workshop/2023-MRC-BSU-and-UKHSA/TorsWorkshop"
 
 This will generate a folder that looks something like
+
+** What we're doing
+
+1. Create project.
+   - Look at the structure of the project.
+2. Add dependencies.
+   - Talk about Project.toml and Manifest.toml
+   - Dependencies we want:
+     - DrWatson.jl
+       - [ ] Do we set up the project using their structure?
+       - https://juliadynamics.github.io/DrWatson.jl/dev/project/#Default-Project-Setup-1
+       - [ ] Oooor maybe not talk about DrWatson.jl at all.
+     - Revise.jl
+     - Turing.jl
+     - DifferentialEquations.jl
+     - StatsPlots.jl
+     - DataDeps.jl
+3. 
 
 * Case study: ???
 
@@ -4807,12 +5314,39 @@ This will generate a folder that looks something like
   - ${\color{green} \checkmark}$ Can be extended to more complex models, e.g. they might want to try and implement their own stuff
   - ${\color{red} \times}$ We've already gone through most of this as we walk through the tutorial
 
+** Overview
+We have a few datasets you can choose from:
+1. Rats in residential buildings throughout New York
+   - Source: https://github.com/jgabry/stancon2018helsinki_intro/
+2. Lotka-Volterra model
+   - Source: https://turinglang.org/v0.29/tutorials/10-bayesian-differential-equations/
+3. Time-series model
+   - Source: https://turinglang.org/v0.29/tutorials/13-seasonal-time-series/
+4. S(?)IR modeling of influenza
+   - You already have the data; go knock yourself out!
+5. EpimapMini.jl
+   - Small version of Epimap.jl
+   - ${\color{red} \times}$ Code-base is /very/ complex
+   - ${\color{red} \times}$ Too slow to perform inference locally
+
+** Rats in New York
+
+#+HTML: <div class=x-small-text">
+
+#+begin_quote
+Imagine that you are a statistician or data scientist working as an independent contractor. One of your clients is a company that owns many residential buildings throughout New York City. The property manager explains that they are concerned about the number of cockroach complaints that they receive from their buildings. Previously the company has offered monthly visits from a pest inspector as a solution to this problem. While this is the default solution of many property managers in NYC, the tenants are rarely home when the inspector visits, and so the manager reasons that this is a relatively expensive solution that is currently not very effective.
+#+end_quote
+
+#+HTML: </div>
+
+** TODO EpimapMini
+
 ** Covid19: ImperialReport13
 
-** Epimap
-
 * [cite:@kxs052]
-
+:PROPERTIES:
+:header-args:julia: :session mrc-biostats-2023-particle-filter :tangle particle-filter.jl :exports both :kernel julia-4-threads-1.9 :async yes :file (f-join "assets" "outputs" "more-julia" (sha1 (plist-get (cadr (org-element-at-point)) :value)))
+:END:
 
 #+begin_src julia
 using DifferentialEquations, Turing, StatsPlots, LinearAlgebra
@@ -4974,23 +5508,34 @@ plot(0:δ:(length(xs) - 1) * δ, xs, legend=false)
 - `N`: number of particles (default: length(x₀))
 - `M`: number of discretization steps between each observation time (default: 1)
 """
-function particle_filter(x₀, V₀, y, θ, ts, prob, f, em; n = length(y), N = 10, m = 1, hinv=exp)
+function particle_filter(
+    x₀, V₀, y, θ, ts, prob, f, em;
+    n = length(y),
+    N = 10,
+    m = 1,
+    hinv=exp
+)
     # TODO: Change it all to work on log-scale as much as possible.
     # Buffer for the particles.
     V = Matrix{typeof(V₀)}(undef, N, n)
+    # Initialize the particles.
     for j = 1:N
         V[j, 1] = V₀
     end
+    # Buffer for the states.
     x = Matrix{typeof(x₀)}(undef, N, n)
     for j = 1:N
+        # Initialize the states.
         x[j, 1] = x₀
     end
 
+    # Other buffers.
     α = zeros(N, n)
     W = zeros(N, n)
     L = one(eltype(x₀))
 
-    δ = 1 / (m + 1)
+    # Step-size for SDE solve.
+    δ = 1 / m
     for i = 1:n - 1
         # Remake the problem to the next observation time.
         prob_t = remake(prob, tspan=(ts[i], ts[i + 1]))
@@ -5003,7 +5548,9 @@ function particle_filter(x₀, V₀, y, θ, ts, prob, f, em; n = length(y), N = 
             # Solve ODE between the two observation times.
             β = hinv(x_j)
             prob_t_j = remake(prob_t, p=[β,])
-            V_t = solve(prob_t_j)  # TODO: Disable storing of the intermediate steps.
+            # TODO: Disable storing of the intermediate steps.
+            # TODO: Check at that we have the correct `saveat`.
+            V_t = solve(prob_t_j)
             V[j, i + 1] = V_t[end]
 
             # Compute the likelihood of the observation at time i + 1.
@@ -5027,18 +5574,25 @@ end
 f(y, V) = pdf(Normal(V[end][3], 1), y)
 hinv = exp
 N = 10
-m = 1
-δ = 1 / (m + 1)
-tspan = (0, 10)
-ts = tspan[1]:δ:tspan[2]
-n = length(t)
+
+m = 4
+δ = 1 / m
+
+tspan = (0, 5)
+Δt = 0.1
+ts = tspan[1]:Δt:tspan[2]
+n = length(ts)
 
 θ = [0.1, 1.0]
 x₀ = rand(Normal())
 
 xs_true = Float64[x₀]
 for i = 1:n
+    # We take `m` steps of size `δ` to approximate a step of size `Δt`.
     x = ou(θ, xs_true[i], δ, m)
+    for _ = 1:m - 1
+        x = ou(θ, xs_true[i], δ, m)
+    end
     push!(xs_true, x)
 end
 xs_true
@@ -5046,29 +5600,33 @@ xs_true
 
 #+RESULTS:
 #+begin_example
-22-element Vector{Float64}:
- -1.12242819079607
- -1.2789181783083663
- -1.3371907554484166
- -2.0489365575431835
- -1.7646314016956766
- -1.4247881205691546
- -1.7357235770154544
- -2.342842274020485
- -1.9977452028674236
- -1.2514088596080764
- -0.6770661562948815
- -1.0418801776033924
-  0.09954442056688761
-  0.961889665495137
-  0.36146941984340397
- -0.6453352223026647
- -1.173442479212794
- -1.1894362974934403
- -0.6825406471715564
- -0.8078409525165806
- -0.9262782719934382
- -0.4064042872790363
+52-element Vector{Float64}:
+ -0.24878183911750845
+ -0.6612017363745032
+ -0.5771129755661678
+ -1.3998600910341077
+ -3.451824275216758
+ -1.9984112308388422
+ -1.9924864608629838
+ -3.5250896691556277
+ -2.9739944443243034
+ -2.9800035362896766
+ -4.17320936285544
+ -3.3632341699940276
+ -1.6339647999108249
+  ⋮
+ -0.12313561294713371
+  1.5450391910822283
+  0.5587443891018262
+  1.7891589771333165
+  1.872952639316824
+  1.5540947466863484
+ -0.2167465035797701
+ -1.526033137464444
+ -2.3638187290855757
+ -1.2625822265622242
+ -0.7982249206748514
+ -1.2116103413002468
 #+end_example
 
 #+begin_src julia
@@ -5077,29 +5635,33 @@ xs_true
 
 #+RESULTS:
 #+begin_example
-22-element Vector{Float64}:
- 0.32548848614158143
- 0.278338249993427
- 0.26258229129036514
- 0.12887187856955037
- 0.17124989727471235
- 0.2405594274035819
- 0.1762726073231259
- 0.09605423741097523
- 0.13564078113365008
- 0.28610143603048266
- 0.5081055099107689
- 0.35279074873372446
- 1.1046675396084433
- 2.616636372040736
- 1.4354371254210647
- 0.5244866929970244
- 0.30930034644041815
- 0.3043928026996435
- 0.5053314910310189
- 0.445819573507736
- 0.39602486789154107
- 0.6660408411465664
+52-element Vector{Float64}:
+ 0.7797500657927471
+ 0.5162305885040517
+ 0.5615171424285115
+ 0.24663146748144474
+ 0.031687776392698305
+ 0.1355504706573401
+ 0.13635595982888485
+ 0.029449166568809727
+ 0.051098790857907486
+ 0.050792654247042046
+ 0.015402747708387066
+ 0.03462310067973559
+ 0.19515429050669508
+ ⋮
+ 0.8841437530903199
+ 4.688155357303803
+ 1.7484757162671933
+ 5.984417317534419
+ 6.507482308931339
+ 4.730802011969568
+ 0.8051340420355165
+ 0.21739634049976952
+ 0.09406034551872539
+ 0.28292251241208627
+ 0.4501272669874618
+ 0.2977174664702004client_loop: send disconnect: Broken pipe
 #+end_example
 
 #+begin_src julia
@@ -5109,8 +5671,8 @@ prob = ODEProblem(probf, V₀, tspan, [0.2])
 #+end_src
 
 #+RESULTS:
-: ODEProblem with uType Vector{Float64} and tType Int64. In-place: true
-: timespan: (0, 10)
+: [38;2;86;182;194mODEProblem[0m with uType [38;2;86;182;194mVector{Float64}[0m and tType [38;2;86;182;194mInt64[0m. In-place: [38;2;86;182;194mtrue[0m
+: timespan: (0, 5)
 : u0: 4-element Vector{Float64}:
 :  999.0
 :    1.0
@@ -5127,10 +5689,10 @@ end
 
 #+RESULTS:
 : 4-element Vector{Float64}:
-:  993.3190416945545
-:    3.1728353938753147
-:    3.001339155384102
-:    0.5067837561861378
+:  998.999035805983
+:    0.976266101698541
+:    0.024636203279721925
+:    6.188903883306985e-5
 
 #+begin_src julia
 V_true = zeros(length(V₀), n)
@@ -5147,11 +5709,11 @@ end
 
 #+begin_src julia
 infected_true = V_true[3, :]
-plot(t, infected_true, label="true", size=(400, 200))
+plot(ts, infected_true, label="true", size=(400, 200))
 #+end_src
 
 #+RESULTS:
-[[file:assets/outputs/more-julia/563d73e92cd45919dee49e0194798f012bdc11ab.svg]]
+[[file:assets/outputs/more-julia/47fd6cb8c10828598540fa1f4c0111622d264e6d.svg]]
 
 
 #+begin_src julia
@@ -5159,11 +5721,11 @@ V_true
 #+end_src
 
 #+RESULTS:
-: 4×21 Matrix{Float64}:
-:  999.0  998.99        998.967       …  994.412     993.778     993.149
-:    1.0    0.891787      0.809146         2.84271     3.10543     3.33332
-:    0.0    0.11641       0.218253         2.37223     2.68042     3.01127
-:    0.0    0.00148933    0.00569941       0.372657    0.435763    0.506867
+: 4×51 Matrix{Float64}:
+:  999.0  998.999      998.997        …  982.474     982.437    982.317
+:    1.0    0.976266     0.954032         13.4865     13.19      12.9825
+:    0.0    0.0246362    0.0485779         3.83996     4.1534     4.459
+:    0.0    6.1889e-5    0.000245206       0.199733    0.21972    0.241254
 
 #+begin_src julia
 ys = map(eachcol(V_true)) do V
@@ -5173,28 +5735,33 @@ end
 
 #+RESULTS:
 #+begin_example
-21-element Vector{Float64}:
- -1.1070438506683415
-  1.1799188261497753
- -1.043698409644979
-  0.105700706540722
-  0.6392635684868881
- -1.4286126519516427
-  2.1778154972966166
- -1.2325746684740246
- -0.4309810726629638
-  2.571173341013002
-  0.26621712248891116
-  1.411363688579649
-  2.6835787566250566
-  2.316511901215801
-  3.3531217706386975
-  2.3118928273956763
-  3.531014987621324
-  0.7693504656586543
-  1.630892366540588
-  2.78467523776301
-  1.2175869897851939
+51-element Vector{Float64}:
+ -0.5576703894082115
+  0.31494731473497434
+ -0.782010760585272
+ -1.1253763909484469
+  0.3928993294327789
+ -0.8227802480874041
+  2.842180090129152
+  1.609855724089655
+  0.1217016398280302
+ -0.31360887101271573
+ -0.7839811314785547
+  1.042050553773855
+  0.09414142122994448
+  ⋮
+  0.05421057426064957
+  1.8792572903396607
+  1.0816613933578965
+  2.417860738671401
+  1.796002164551382
+  3.444541128186396
+  1.8289648762543378
+  3.4364109210785503
+  3.904061960770232
+  2.225333928943403
+  3.4349557674958855
+  5.037173311656346
 #+end_example
 
 #+begin_src julia
@@ -5202,14 +5769,14 @@ x₀
 #+end_src
 
 #+RESULTS:
-: -1.12242819079607
+: -0.24878183911750845
 
 #+begin_src julia
 res = particle_filter(x₀, V₀, ys, θ, ts, prob, f, ou)
 #+end_src
 
 #+RESULTS:
-: '(V = ((999.0  1.0  0.0  0.0) (992.567480127893  3.880315843173082  3.0450556277023084  0.5071484012317086) … (990.7133459949242  5.62655438672759  3.1520616790880354  0.5080379392601324) (988.7828600662668  7.445932393827948  3.2622579062239914  0.5089496336812359); (999.0  1.0  0.0  0.0) (992.6932636586903  3.7618956335496923  3.0377531670628914  0.5070875406970607) … (993.4976068653611  3.004773835095676  2.9909225368519397  0.5066967626913121) (993.5798386118314  2.92738310279547  2.9861216309794822  0.506656654393703); … ; (999.0  1.0  0.0  0.0) (993.3109644536562  3.1804377901343153  3.0018100682125457  0.5067876879969937) … (990.895217786711  5.455213675289441  3.141617237213093  0.5079513007864767) (990.9691384977791  5.385576460323743  3.1373689924565196  0.5079160494406713); (999.0  1.0  0.0  0.0) (993.5633231242866  2.9429261166225547  2.9870860469516614  0.5066647121392447) … (0.00023754632423463065  912.8347412092216  85.8805648161066  1.2844564283475757) (35.75193960300995  907.3788217484798  55.969048276002326  0.9001903725079801))  W = (0.0 0.09407181538492553 … 0.10976543229233554 0.0829141032162489; 0.0 0.09535930443048059 … 0.11495756722904851 0.1403707814524568; … ; 0.0 0.10187863779416834 … 0.11018141761988716 0.10620416009211028; 0.0 0.10463723320908247 … 0.0 0.0)  x = (-1.12242819079607 -0.15785259504279137 … 0.7593877728138361 1.2363086139719777; -1.12242819079607 -0.266738620394919 … -1.6135183799767705 -1.9595286365674185; … ; -1.12242819079607 -1.1050481706865976 … 0.6993247136681618 0.6738028035274951; -1.12242819079607 -1.879732948700301 … 6.80209962235263 5.881568012675738)  L = 1.6879074072754601e-31)
+: '(V = ((999.0  1.0  0.0  0.0) (981.6549825068294  13.636653304174525  4.467096587319281  0.24126760167636907) … (981.4516426950192  13.837503257224819  4.4695823185470775  0.24127172920838716) (979.0817567031715  16.1783921724427  4.498531338416847  0.24131978596839576); (999.0  1.0  0.0  0.0) (982.2631520721105  13.035932437032557  4.4596602382065775  0.241255252649868) … (982.2861196382858  13.01324622364836  4.459379351894491  0.24125478617088797) (982.0891142368577  13.207838431565234  4.461788544437223  0.24125878713941296); … ; (999.0  1.0  0.0  0.0) (981.7439049217614  13.548819821185612  4.4660094605939955  0.2412657964583884) … (663.334004658758  328.2287237478621  8.18992670303448  0.2473448903449323) (825.1828219702596  168.25388439497434  6.318987396914114  0.24430623785147454); (999.0  1.0  0.0  0.0) (982.2879321980549  13.01145586790656  4.459357184681115  0.24125474935682695) … (982.0983594909576  13.198706419818599  4.461675489831078  0.24125859939224795) (982.3116508758052  12.988027748370422  4.4590671082110065  0.24125426761286162))  W = (0.0 0.09988757372155688 … 0.11260922674838236 0.10429844379909534; 0.0 0.10301704630685216 … 0.11379833207901854 0.102185543421086; … ; 0.0 0.1003394173483243 … 2.367964404902901e-6 0.053026954224620594; 0.0 0.10314651947720654 … 0.11353066890134646 0.10202528124349138)  x = (-0.24878183911750845 0.6138855191582259 … 0.8449512024687492 2.0692792441000702; -0.24878183911750845 -0.8899954378772685 … -1.0317669857230851 -0.19608925850572068; … ; -0.24878183911750845 0.4931976536046899 … 6.566510698925604 5.871380391390189; -0.24878183911750845 -1.043860246823622 … -0.22302817403959607 -1.2172756503512303)  L = 1.013581747539015e-136)
 
 #+begin_src julia
 res.V[:, end]
@@ -5218,17 +5785,127 @@ res.V[:, end]
 #+RESULTS:
 #+begin_example
 10-element Vector{Vector{Float64}}:
- [988.7828600662668, 7.445932393827948, 3.2622579062239914, 0.5089496336812359]
- [993.5798386118314, 2.92738310279547, 2.9861216309794822, 0.506656654393703]
- [990.4009286899848, 5.920907505995813, 3.1699773437956957, 0.508186460223752]
- [992.9093549208264, 3.558467561713464, 3.0251946893293007, 0.5069828281308638]
- [989.8525665940492, 6.437641481392905, 3.201345700700277, 0.5084462238575093]
- [993.1155895165085, 3.364334306768634, 3.0131934705078325, 0.5068827062150829]
- [987.4089196152484, 8.741521136066499, 3.3399692713404945, 0.5095899773446905]
- [993.6841888244178, 2.829179631956875, 2.980025828214709, 0.5066057154106645]
- [990.9691384977791, 5.385576460323743, 3.1373689924565196, 0.5079160494406713]
- [35.75193960300995, 907.3788217484798, 55.969048276002326, 0.9001903725079801]
+ [979.0817567031715, 16.1783921724427, 4.498531338416847, 0.24131978596839576]
+ [982.0891142368577, 13.207838431565234, 4.461788544437223, 0.24125878713941296]
+ [979.8625656172379, 15.407132551714664, 4.488997868500401, 0.24130396254650277]
+ [980.436410636633, 14.840308410290579, 4.481988625921814, 0.2412923271540778]
+ [982.0356905978668, 13.26060771242806, 4.462441817696447, 0.24125987200809731]
+ [982.1798037070085, 13.118259816220359, 4.460679531359107, 0.24125694541145867]
+ [967.9235445503858, 27.20059731799279, 4.634313247988205, 0.24154488363263862]
+ [958.0934636878087, 36.91153279602659, 4.75326183935249, 0.2417416768116818]
+ [825.1828219702596, 168.25388439497434, 6.318987396914114, 0.24430623785147454]
+ [982.3116508758052, 12.988027748370422, 4.4590671082110065, 0.24125426761286162]
 #+end_example
+
+#+begin_src julia 
+res.V
+#+end_src
+
+#+RESULTS:
+#+begin_example
+10×51 Matrix{Vector{Float64}}:
+ [999.0, 1.0, 0.0, 0.0]  …  [979.082, 16.1784, 4.49853, 0.24132]
+ [999.0, 1.0, 0.0, 0.0]     [982.089, 13.2078, 4.46179, 0.241259]
+ [999.0, 1.0, 0.0, 0.0]     [979.863, 15.4071, 4.489, 0.241304]
+ [999.0, 1.0, 0.0, 0.0]     [980.436, 14.8403, 4.48199, 0.241292]
+ [999.0, 1.0, 0.0, 0.0]     [982.036, 13.2606, 4.46244, 0.24126]
+ [999.0, 1.0, 0.0, 0.0]  …  [982.18, 13.1183, 4.46068, 0.241257]
+ [999.0, 1.0, 0.0, 0.0]     [967.924, 27.2006, 4.63431, 0.241545]
+ [999.0, 1.0, 0.0, 0.0]     [958.093, 36.9115, 4.75326, 0.241742]
+ [999.0, 1.0, 0.0, 0.0]     [825.183, 168.254, 6.31899, 0.244306]
+ [999.0, 1.0, 0.0, 0.0]     [982.312, 12.988, 4.45907, 0.241254]
+#+end_example
+
+#+begin_src julia 
+map(Base.Fix2(getindex, 3), res.V[1, :])
+#+end_src
+
+#+RESULTS:
+#+begin_example
+51-element Vector{Float64}:
+ 0.0
+ 4.467096587319281
+ 4.463862526615373
+ 4.459656853523802
+ 4.466795106880251
+ 4.465373456614291
+ 4.4709067521561074
+ 4.483831870092793
+ 4.48709930090452
+ 4.488202856233156
+ 4.475931845249381
+ 4.49828765348811
+ 4.471014395310173
+ ⋮
+ 4.457669068409179
+ 4.457627261638725
+ 4.457618617597363
+ 4.4576794290840995
+ 4.458148242977677
+ 4.457862024612464
+ 4.458002377816298
+ 4.458960451540986
+ 4.462557706195554
+ 4.474477160405936
+ 4.4695823185470775
+ 4.498531338416847WARNING: redefinition of constant PATH. This may fail, cause incorrect answers, or produce other errors.
+WARNING: redefinition of constant LIBPATH. This may fail, cause incorrect answers, or produce other errors.
+WARNING: redefinition of constant PATH_list. This may fail, cause incorrect answers, or produce other errors.
+WARNING: redefinition of constant LIBPATH_list. This may fail, cause incorrect answers, or produce other errors.
+[91m[1m┌ [22m[39m[91m[1mError: [22m[39mError watching manifest
+[91m[1m│ [22m[39m  exception =
+[91m[1m│ [22m[39m   cannot set type for global best_wrapper. It already has a value or is already set to a different type.
+[91m[1m│ [22m[39m   Stacktrace:
+[91m[1m│ [22m[39m    [1] top-level scope
+[91m[1m│ [22m[39m   [90m   @[39m [90m~/.julia/packages/JLLWrappers/pG9bm/src/[39m[90m[4mtoplevel_generators.jl:119[24m[39m
+[91m[1m│ [22m[39m   Revise evaluation error at /home/tor/.julia/packages/JLLWrappers/pG9bm/src/toplevel_generators.jl:119
+[91m[1m│ [22m[39m   
+[91m[1m│ [22m[39m   Stacktrace:
+[91m[1m│ [22m[39m    [1] [0m[1mmethods_by_execution![22m[0m[1m([22m[90mrecurse[39m::[0mAny, [90mmethodinfo[39m::[0mRevise.CodeTrackingMethodInfo, [90mdocexprs[39m::[0mDict[90m{Module, Vector{Expr}}[39m, [90mmod[39m::[0mModule, [90mex[39m::[0mExpr; [90mmode[39m::[0mSymbol, [90mdisablebp[39m::[0mBool, [90malways_rethrow[39m::[0mBool, [90mkwargs[39m::[0mBase.Pairs[90m{Symbol, Union{}, Tuple{}, NamedTuple{(), Tuple{}}}[39m[0m[1m)[22m
+[91m[1m│ [22m[39m   [90m   @[39m [35mRevise[39m [90m~/.julia/packages/Revise/7HQ7u/src/[39m[90m[4mlowered.jl:227[24m[39m
+[91m[1m└ [22m[39m[90m@ Revise ~/.julia/packages/Revise/7HQ7u/src/pkgs.jl:477[39m[91m[1m┌ [22m[39m[91m[1mError: [22m[39mError watching manifest
+[91m[1m│ [22m[39m  exception =
+[91m[1m│ [22m[39m   [91mTOML Parser error:[39m
+[91m[1m│ [22m[39m   [0m[1m/drive-2/Projects/public/Turing-Workshop/2023-MRC-BSU-and-UKHSA/TorsWorkshop/Manifest.toml:854:77[22m[91m error: [39mstring literal ended unexpectedly
+[91m[1m│ [22m[39m     deps = ["AbstractTrees", "Colors", "FileIO", "FixedPointNumbers", "IndirectA
+[91m[1m│ [22m[39m                                                                                [92m^[39m 
+[91m[1m│ [22m[39m   Stacktrace:
+[91m[1m│ [22m[39m    [1] [0m[1mparse[22m
+[91m[1m│ [22m[39m   [90m   @[39m [90m./[39m[90m[4mtoml_parser.jl:445[24m[39m[90m [inlined][39m
+[91m[1m│ [22m[39m    [2] [0m[1mget_updated_dict[22m[0m[1m([22m[90mp[39m::[0mBase.TOML.Parser, [90mf[39m::[0mBase.CachedTOMLDict[0m[1m)[22m
+[91m[1m│ [22m[39m   [90m   @[39m [90mBase[39m [90m./[39m[90m[4mloading.jl:247[24m[39m
+[91m[1m│ [22m[39m    [3] [0m[1m(::Base.var"#938#939"{String, Base.TOMLCache})[22m[0m[1m([22m[0m[1m)[22m
+[91m[1m│ [22m[39m   [90m   @[39m [90mBase[39m [90m./[39m[90m[4mloading.jl:288[24m[39m
+[91m[1m│ [22m[39m    [4] [0m[1mlock[22m[0m[1m([22m[90mf[39m::[0mBase.var"#938#939"[90m{String, Base.TOMLCache}[39m, [90ml[39m::[0mReentrantLock[0m[1m)[22m
+[91m[1m│ [22m[39m   [90m   @[39m [90mBase[39m [90m./[39m[90m[4mlock.jl:229[24m[39m
+[91m[1m│ [22m[39m    [5] [0m[1mparsed_toml[22m
+[91m[1m│ [22m[39m   [90m   @[39m [90m./[39m[90m[4mloading.jl:275[24m[39m[90m [inlined][39m
+[91m[1m│ [22m[39m    [6] [0m[1mparsed_toml[22m
+[91m[1m│ [22m[39m   [90m   @[39m [90m./[39m[90m[4mloading.jl:273[24m[39m[90m [inlined][39m
+[91m[1m│ [22m[39m    [7] [0m[1mmanifest_paths![22m[0m[1m([22m[90mpkgpaths[39m::[0mDict[90m{Base.PkgId, String}[39m, [90mmanifest_file[39m::[0mString[0m[1m)[22m
+[91m[1m│ [22m[39m   [90m   @[39m [35mRevise[39m [90m~/.julia/packages/Revise/7HQ7u/src/[39m[90m[4mpkgs.jl:390[24m[39m
+[91m[1m└ [22m[39m[90m@ Revise ~/.julia/packages/Revise/7HQ7u/src/pkgs.jl:477[39m
+#+end_example
+
+#+begin_src julia
+state_idx = 3
+
+p = plot(size=(400, 200))
+for particle_idx = 1:N
+    scatter!(
+        p,
+        ts,
+        map(Base.Fix2(getindex, state_idx), res.V[particle_idx, :]),
+        label="",
+        markerstrokewidth=0.1,
+        markersize=2,
+    )
+end
+p
+#+end_src
+
+#+RESULTS:
+[[file:assets/outputs/more-julia/f87dcb0a320c0a8b9559fd1d70d587bb40de4cdc.svg]]
 
 * Julia: The Good, the Bad, and the Ugly
 :PROPERTIES:
@@ -6081,6 +6758,10 @@ Godspeed to you
 * Fin
 
 * Going fast                                                       :noexport:
+:PROPERTIES:
+:header-args:julia: :tangle no
+:END:
+
 #+begin_src julia :exports none
 using TorsWorkshop, Turing, StatsPlots
 #+end_src
@@ -6971,7 +7652,4 @@ BenchmarkTools.Profile.clear()
 #+RESULTS:
 : "profile.pb.gz"
 
-
-* Automatic Differentiation                                        :noexport:
-* Conventions                                                      :noexport:
 
