@@ -2586,7 +2586,7 @@ plot(chain)
 #+REVEAL: split
 
 
-#+begin_src julia :display text/plain :eval no
+#+begin_src julia :display text/plain :eval no :tangle no
 # 1. Define the model
 @model function simple_demo(x, y)
     s ~ InverseGamma(2, 3)
@@ -2658,7 +2658,7 @@ model()
 
 It returns =2.0= because the last line was
 
-#+begin_src julia :eval no
+#+begin_src julia :eval no :tangle no
 y ~ Normal(m, sqrt(s))
 #+end_src
 
@@ -2828,7 +2828,7 @@ It works!
 
 But let's get back to our =simple_demo= example
 
-#+begin_src julia :eval no
+#+begin_src julia :eval no :tangle no
 @model function simple_demo(x, y)
     s ~ InverseGamma(2, 3)
     m ~ Normal(0, sqrt(s))
@@ -2842,7 +2842,7 @@ end
 #+HTML: <div class="fragment (appear)"
 We've seen a =function= before, so that part isn't new
 
-#+begin_src julia :eval no
+#+begin_src julia :eval no :tangle no
 @model function simple_demo(x)
     ...
 end
@@ -2857,7 +2857,7 @@ Roughly, =@model= "transforms" the function =simple_demo= in a "certain way"
 
 If you /really/ want to have a look, you can execute the following code block
 
-#+begin_src julia :exports code :eval no
+#+begin_src julia :exports code :eval no :tangle no
 @macroexpand @model function demo()
     x ~ Normal()
     return nothing
@@ -2931,7 +2931,7 @@ to see the actual code being generated
 
 Then we have the "tilde-statements"
 
-#+begin_src julia :eval no
+#+begin_src julia :eval no :tangle no
 s ~ InverseGamma(2, 3)
 m ~ Normal(0, sqrt(s))
 
@@ -3086,7 +3086,7 @@ For _literal-based conditioning_, =y= is hard-coded, so deconditioning is not po
 
 Overall, |-based conditioning is preferred, i.e.
 
-#+begin_src julia :eval no
+#+begin_src julia :eval no :tangle no
 @model function simple_demo_v2()
     s ~ InverseGamma(2, 3)
     m ~ Normal(0, sqrt(s))
@@ -5168,10 +5168,6 @@ DataFrame(CSV.File(joinpath("data", "pest_data.csv")))
 #+end_example
 
 ** 3. Synthetic time-series
-:PROPERTIES:
-:header-args:julia: :session timeseries :kernel julia-4-threads-1.9 :async yes :tangle no :exports none
-:END:
-
 Or you can have a go at this synthetic time-series example
 
 #+HTML: <div class="side-by-side small-text">
@@ -5226,6 +5222,9 @@ DataFrame(CSV.File(
 #+HTML: </div>
 
 *** Data generation                                                :noexport:
+:PROPERTIES:
+:header-args:julia: :session timeseries :kernel julia-4-threads-1.9 :async yes :eval no :tangle no :exports none
+:END:
 
 #+begin_src julia 
 ]activate --temp
@@ -5238,11 +5237,11 @@ DataFrame(CSV.File(
 ]add Turing FillArrays LinearAlgebra StatsPlots Random Statistics DataFrames CSV
 #+end_src
 
-#+begin_src julia
+#+begin_src julia :eval no :tangle no
 using Turing, FillArrays, StatsPlots, LinearAlgebra, Random, Statistics, DataFrames, CSV
 #+end_src
 
-#+begin_src julia
+#+begin_src julia :eval no :tangle no
 Random.seed!(12345)
 
 true_sin_freq = 2
@@ -5272,7 +5271,7 @@ plot!(
 [[file:./.ob-jupyter/0b26b4ffdbb5a6d6692d6439bbcca36ca293e4a5.svg]]
 
 
-#+begin_src julia :exports output
+#+begin_src julia :exports output :eval no :tangle no
 σ_true = 0.35
 t = collect(tt[begin:3:end])
 t_min, t_max = extrema(t)
@@ -5287,7 +5286,7 @@ p
 #+RESULTS:
 [[file:./.ob-jupyter/901b0ff0c5838163d8c7b76abe4158c02d07125b.svg]]
 
-#+begin_src julia :display text/plain :eval no
+#+begin_src julia :display text/plain :eval no :tangle no
 CSV.write(joinpath("data", "time-series.csv"), DataFrame(t = x, y = yf))
 #+end_src
 
