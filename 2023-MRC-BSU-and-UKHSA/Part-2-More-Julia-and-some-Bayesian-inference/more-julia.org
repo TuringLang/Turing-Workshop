@@ -5,8 +5,8 @@
 #+EXCLUDE_TAGS: noexport
 #+TODO: TODO(t) TASK(q) WARNING(w) | DONE(d) SOLUTION(s)
 
-#+REVEAL_ROOT: assets/reveal.js-4.1.0/
-#+REVEAL_MATHJAX_URL: assets/MathJax-2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML
+#+REVEAL_ROOT: https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.1.0/
+#+REVEAL_MATHJAX_URL: https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML
 #+REVEAL_TITLE_SLIDE: <div><div style="margin: -200px auto; opacity: 0.2;"><p><object data="assets/images/turing-logo-wide.svg"></object></p></div><h1>More Julia and some Bayesian Inference</h1><h2>with the TuringLang ecosystem</h2><p><a href="https://github.com/TuringLang">https://github.com/TuringLang</a></p><p><a href="https://github.com/TuringLang/Turing-Workshop/tree/main/2023-Geilo-Winter-School/Part-2-Turing-and-other-things">The workshop is found here</a></p></div>
 #+REVEAL_EXTRA_CSS: assets/css/custom.css
 #+REVEAL_THEME: white
@@ -1420,7 +1420,7 @@ gif(anim, outputdir("lorenz.gif"));
 #+end_src
 
 #+RESULTS:
-: [ Info: Saved animation to /drive-2/Projects/public/Turing-Workshop/2023-MRC-BSU-and-UKHSA/Part2/assets/outputs/more-julia/lorenz.gif
+: [36m[1m[ [22m[39m[36m[1mInfo: [22m[39mSaved animation to /drive-2/Projects/public/Turing-Workshop/2023-MRC-BSU-and-UKHSA/Part-2-More-Julia-and-some-Bayesian-inference/assets/outputs/more-julia/lorenz.gif
 
 #+REVEAL: split
 
