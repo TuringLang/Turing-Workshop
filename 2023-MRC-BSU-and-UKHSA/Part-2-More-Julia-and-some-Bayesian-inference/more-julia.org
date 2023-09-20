@@ -17,50 +17,6 @@
 #+AUTHOR: Tor Erlend Fjelde
 #+TITLE: More Julia and some Bayesian Inference
 
-* Notes                                                            :noexport:
-
-- [X] Problem: estimate pi
-- [X] distriubtions.jl
-  - Show a table of distrubiotns
-  - Show a table of API
-- [X] turing
-  - use product dist
-  - debugging
-    - broken simple model
-      - Explicitly running the model
-  - quick slide demonstrating TuringCallbacks.jl + TensorBoard
-- [X] Pidgeon and MCMCTempering
-- [X] TuringGLM example
-- [ ] Starting a project from scratch
-  - +Maybe use the rats example from https://github.com/kskyten/BayesWorkshop2021/tree/generated/notebooks/Turing+
-  - [ ] Use infectious disease example instead
-- [X] Case studies
-  - Rats example
-    - Simple to get started
-    - Can progressively make more and more complicated models
-    - Project will have relatively simple models, and so will focus more on analysis of results and comparisons of models.
-  - Lotka-Volterra
-    - https://mc-stan.org/users/documentation/case-studies/lotka-volterra-predator-prey.html
-    - https://turinglang.org/v0.29/tutorials/10-bayesian-differential-equations/
-    - Involves ODEs
-    - Not many different models
-  - ImperialReport13
-    - The model itself is quite complex
-  - S(?)IR model for influenza dataset
-    - We've already gone through this partially
-    - Maybe they want to try to implement something else?
-- [ ] Implement Adaptive MH from [cite:@journal.pcbi.1011088]
-  - Adaptive MH and PMMH methods are more explicitly talked about here: [cite:@kxs052]
-- [X] Add some more stuff to TuringCallbacks.jl sectione
-- [X] For condtioning:
-  - [X] Maybe =missing=
-  - [X] Example of failure to do constnat prop
-- [X] Regarding case-studies
-  - [X] Can we make MiniEpimap.jl work?
-    - [X] +Can we give them a =chain= and let them work with this?+
-      - Nah.
-  - [X] Make some minor notes on the different case studies
-- [X] Quick slide on GPUs
 * Aim of these two days
 
 /Ideally/, you walk away from this workshop with the ability to _solve whatever research problem you have with Julia and Turing.jl_
