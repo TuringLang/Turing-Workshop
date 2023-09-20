@@ -5295,117 +5295,30 @@ This will generate a folder that looks something like
      - DataDeps.jl
 3. 
 
-* Case study: ???
+* Case study
 
-- Covid19: ImperialReport13
-  - ${\color{red} \times}$ Complicated model
-  - ${\color{red} \times}$ Slow (2-3hrs with 6 cores)
-  - ${\color{red} \times}$ Only works with ForwardDiff.jl
-    - Has potential of being vectorized, but not that's what we want to spend our time doing
-- MiniEpimap
-  - Epimap but with much less data
-  - ${\color{red} \times}$ Still proper slow + very complicated model
-  - ${\color{green} \checkmark}$ nicely demonstrates
-    1. Going from working prototype to something we can actually use
-    2. Strenghts of =@submodel=
-- Cockroaches
-  - ${\color{green} \checkmark}$ Problem and model is easy to understand
-    - A sequence of slightly more complex models, but they're still very simple
-  - ${\color{red} \times}$ Worried it's too simple
-- Continue with our S(?)IR models for influenza
-  - ${\color{green} \checkmark}$ Simple model + involves ODEs
-  - ${\color{green} \checkmark}$ Can be extended to more complex models, e.g. they might want to try and implement their own stuff
-  - ${\color{red} \times}$ We've already gone through most of this as we walk through the tutorial
+It's time to do a case study!
 
-** Overview
-We have a few datasets you can choose from:
-1. Cockroaches in residential buildings throughout New York
-   - Source: https://github.com/jgabry/stancon2018helsinki_intro/
-2. Lotka-Volterra model
-   - Source: https://turinglang.org/v0.29/tutorials/10-bayesian-differential-equations/
-3. Time-series model
-   - Source: https://turinglang.org/v0.29/tutorials/13-seasonal-time-series/
+But on which dataset?
+
+*You're own!*
+
+#+REVEAL: split
+
+But if you don't have one, here are some alternatives:
+1. Lotka-Volterra model for snowhoe hares and Canadian lynxes
+   - A classic example of predator-prey dynamics
+2. Cockroaches in residential buildings throughout New York
+   - Become your landlord's favorite tenant by minimizing cockroach complaints in residential buildings while keeping costs low
+3. Synthetic time-series model
+   - A syncthetic time-series with periodic behavior
 4. S(?)IR modeling of influenza
    - You already have the data; go knock yourself out!
-5. EpimapMini.jl
-   - Small version of Epimap.jl
-   - ${\color{red} \times}$ Code-base is /very/ complex
-   - ${\color{red} \times}$ Too slow to perform inference locally
+5. Pick one from RDatasets.jl
 
-** 1. Cockroaches in New York
+Go to the next slides for more details
 
-#+HTML: <div class="x-small-text">
-
-#+begin_quote
-Imagine that you are a statistician or data scientist working as an independent contractor. One of your clients is a company that owns many residential buildings throughout New York City. The property manager explains that they are concerned about the number of cockroach complaints that they receive from their buildings. Previously the company has offered monthly visits from a pest inspector as a solution to this problem. While this is the default solution of many property managers in NYC, the tenants are rarely home when the inspector visits, and so the manager reasons that this is a relatively expensive solution that is currently not very effective.
-
-One alternative to this problem is to deploy long term bait stations. In this alternative, child and pet safe bait stations are installed throughout the apartment building. Cockroaches obtain quick acting poison from these stations and distribute it throughout the colony. The manufacturer of these bait stations provides some indication of the space-to-bait efficacy, but the manager suspects that this guidance was not calculated with NYC roaches in mind. NYC roaches, the manager rationalizes, have more hustle than traditional roaches; and NYC buildings are built differently than other common residential buildings in the US. This is particularly important as the unit cost for each bait station per year is quite high.
-#+end_quote
-
-[[https://github.com/jgabry/stancon2018helsinki_intro][Source #1]] and [[https://github.com/jgabry/stancon2018helsinki_intro][Source #2]]  _(but don't look!)_
-
-#+HTML: </div>
-
-#+REVEAL: split
-
-#+HTML: <div class="x-small-text">
-
-The manager wishes to employ your services to help them to find the optimal number of roach bait stations they should place in each of their buildings in order to minimize the number of cockroach complaints while also keeping expenditure on pest control affordable.
-
-A subset of the company's buildings have been randomly selected for an experiment:
-- At the beginning of each month, a pest inspector randomly places a number of bait stations throughout the building, without knowledge of the current cockroach levels in the building
-- At the end of the month, the manager records the total number of cockroach complaints in that building.
-- The manager would like to determine the optimal number of traps (=traps=) that balances the lost revenue (=R=) such that complaints (=complaints=) generate with the all-in cost of maintaining the traps (=TC=).
-
-Formally, we are interested in finding
-\begin{equation*}
-\arg \max_{\mathrm{traps} \in \mathbb{N}} \mathbb{E}_{\mathrm{complaints}} \big[ R \big( \mathrm{complaints}(\mathrm{traps}) \big) - \mathrm{TC}(\mathrm{traps}) \big]
-\end{equation*}
-
-The property manager would also, if possible, like to learn how these results generalize to buildings they haven't treated so they can understand the potential costs of pest control at buildings they are acquiring as well as for the rest of their building portfolio.
-
-As the property manager has complete control over the number of traps set, the random variable contributing to this expectation is the number of complaints given the number of traps. We will model the number of complaints as a function of the number of traps.
-
-#+HTML: </div>
-
-#+REVEAL: split
-
-#+begin_src julia :display text/plain
-DataFrame(CSV.File(joinpath("data", "pest_data.csv")))
-#+end_src
-
-#+RESULTS:
-#+begin_example
-[1m120×14 DataFrame[0m
-[1m Row [0m│[1m mus       [0m[1m building_id [0m[1m wk_ind [0m[1m date       [0m[1m traps   [0m[1m floors  [0m[1m sq_footag[0m ⋯
-     │[90m Float64   [0m[90m Int64       [0m[90m Int64  [0m[90m Date       [0m[90m Float64 [0m[90m Float64 [0m[90m Float64  [0m ⋯
-─────┼──────────────────────────────────────────────────────────────────────────
-   1 │ 0.369134            37       1  2017-01-15      8.0      8.0            ⋯
-   2 │ 0.359355            37       2  2017-02-14      8.0      8.0
-   3 │ 0.281783            37       3  2017-03-16      9.0      8.0
-   4 │ 0.129254            37       4  2017-04-15     10.0      8.0
-   5 │ 0.452041            37       5  2017-05-15     11.0      8.0            ⋯
-   6 │ 0.44213             37       6  2017-06-14     11.0      8.0
-   7 │ 0.990865            37       7  2017-07-14     10.0      8.0
-   8 │ 0.785977            37       8  2017-08-13     10.0      8.0
-   9 │ 0.691797            37       9  2017-09-12      9.0      8.0            ⋯
-  10 │ 0.480696            37      10  2017-10-12      9.0      8.0
-  11 │ 0.562431            37      11  2017-11-11      8.0      8.0
-  ⋮  │     ⋮           ⋮         ⋮         ⋮          ⋮        ⋮             ⋮ ⋱
- 111 │ 0.542095            98       3  2017-03-16      7.0     13.0
- 112 │ 0.866334            98       4  2017-04-15      6.0     13.0            ⋯
- 113 │ 1.40571             98       5  2017-05-15      6.0     13.0
- 114 │ 1.65598             98       6  2017-06-14      5.0     13.0
- 115 │ 2.2483              98       7  2017-07-14      4.0     13.0
- 116 │ 2.30359             98       8  2017-08-13      3.0     13.0            ⋯
- 117 │ 2.253               98       9  2017-09-12      2.0     13.0
- 118 │ 2.0419              98      10  2017-10-12      2.0     13.0
- 119 │ 1.90705             98      11  2017-11-11      2.0     13.0
- 120 │ 2.10317             98      12  2017-12-11      1.0     13.0            ⋯
-[36m                                                   8 columns and 99 rows omitted[0m
-#+end_example
-
-** 2. Lotka-Volterra Predator-Prey model
+** 1. Lotka-Volterra Predator-Prey model
 
 #+HTML: <div class="small-text">
 
@@ -5504,6 +5417,79 @@ df = DataFrame(
 #+end_example
 
 #+HTML: </div>
+
+** 2. Cockroaches in New York
+
+#+HTML: <div class="x-small-text">
+
+#+begin_quote
+Imagine that you are a statistician or data scientist working as an independent contractor. One of your clients is a company that owns many residential buildings throughout New York City. The property manager explains that they are concerned about the number of cockroach complaints that they receive from their buildings. Previously the company has offered monthly visits from a pest inspector as a solution to this problem. While this is the default solution of many property managers in NYC, the tenants are rarely home when the inspector visits, and so the manager reasons that this is a relatively expensive solution that is currently not very effective.
+
+One alternative to this problem is to deploy long term bait stations. In this alternative, child and pet safe bait stations are installed throughout the apartment building. Cockroaches obtain quick acting poison from these stations and distribute it throughout the colony. The manufacturer of these bait stations provides some indication of the space-to-bait efficacy, but the manager suspects that this guidance was not calculated with NYC roaches in mind. NYC roaches, the manager rationalizes, have more hustle than traditional roaches; and NYC buildings are built differently than other common residential buildings in the US. This is particularly important as the unit cost for each bait station per year is quite high.
+#+end_quote
+
+[[https://github.com/jgabry/stancon2018helsinki_intro][Source #1]] and [[https://github.com/jgabry/stancon2018helsinki_intro][Source #2]]  _(but don't look!)_
+
+#+HTML: </div>
+
+#+REVEAL: split
+
+#+HTML: <div class="x-small-text">
+
+The manager wishes to employ your services to help them to find the optimal number of roach bait stations they should place in each of their buildings in order to minimize the number of cockroach complaints while also keeping expenditure on pest control affordable.
+
+A subset of the company's buildings have been randomly selected for an experiment:
+- At the beginning of each month, a pest inspector randomly places a number of bait stations throughout the building, without knowledge of the current cockroach levels in the building
+- At the end of the month, the manager records the total number of cockroach complaints in that building.
+- The manager would like to determine the optimal number of traps (=traps=) that balances the lost revenue (=R=) such that complaints (=complaints=) generate with the all-in cost of maintaining the traps (=TC=).
+
+Formally, we are interested in finding
+\begin{equation*}
+\arg \max_{\mathrm{traps} \in \mathbb{N}} \mathbb{E}_{\mathrm{complaints}} \big[ R \big( \mathrm{complaints}(\mathrm{traps}) \big) - \mathrm{TC}(\mathrm{traps}) \big]
+\end{equation*}
+
+The property manager would also, if possible, like to learn how these results generalize to buildings they haven't treated so they can understand the potential costs of pest control at buildings they are acquiring as well as for the rest of their building portfolio.
+
+As the property manager has complete control over the number of traps set, the random variable contributing to this expectation is the number of complaints given the number of traps. We will model the number of complaints as a function of the number of traps.
+
+#+HTML: </div>
+
+#+REVEAL: split
+
+#+begin_src julia :display text/plain
+DataFrame(CSV.File(joinpath("data", "pest_data.csv")))
+#+end_src
+
+#+RESULTS:
+#+begin_example
+[1m120×14 DataFrame[0m
+[1m Row [0m│[1m mus       [0m[1m building_id [0m[1m wk_ind [0m[1m date       [0m[1m traps   [0m[1m floors  [0m[1m sq_footag[0m ⋯
+     │[90m Float64   [0m[90m Int64       [0m[90m Int64  [0m[90m Date       [0m[90m Float64 [0m[90m Float64 [0m[90m Float64  [0m ⋯
+─────┼──────────────────────────────────────────────────────────────────────────
+   1 │ 0.369134            37       1  2017-01-15      8.0      8.0            ⋯
+   2 │ 0.359355            37       2  2017-02-14      8.0      8.0
+   3 │ 0.281783            37       3  2017-03-16      9.0      8.0
+   4 │ 0.129254            37       4  2017-04-15     10.0      8.0
+   5 │ 0.452041            37       5  2017-05-15     11.0      8.0            ⋯
+   6 │ 0.44213             37       6  2017-06-14     11.0      8.0
+   7 │ 0.990865            37       7  2017-07-14     10.0      8.0
+   8 │ 0.785977            37       8  2017-08-13     10.0      8.0
+   9 │ 0.691797            37       9  2017-09-12      9.0      8.0            ⋯
+  10 │ 0.480696            37      10  2017-10-12      9.0      8.0
+  11 │ 0.562431            37      11  2017-11-11      8.0      8.0
+  ⋮  │     ⋮           ⋮         ⋮         ⋮          ⋮        ⋮             ⋮ ⋱
+ 111 │ 0.542095            98       3  2017-03-16      7.0     13.0
+ 112 │ 0.866334            98       4  2017-04-15      6.0     13.0            ⋯
+ 113 │ 1.40571             98       5  2017-05-15      6.0     13.0
+ 114 │ 1.65598             98       6  2017-06-14      5.0     13.0
+ 115 │ 2.2483              98       7  2017-07-14      4.0     13.0
+ 116 │ 2.30359             98       8  2017-08-13      3.0     13.0            ⋯
+ 117 │ 2.253               98       9  2017-09-12      2.0     13.0
+ 118 │ 2.0419              98      10  2017-10-12      2.0     13.0
+ 119 │ 1.90705             98      11  2017-11-11      2.0     13.0
+ 120 │ 2.10317             98      12  2017-12-11      1.0     13.0            ⋯
+[36m                                                   8 columns and 99 rows omitted[0m
+#+end_example
 
 ** 3. Synthetic time-series
 :PROPERTIES:
