@@ -16,14 +16,14 @@ paginate: true
 - The first Probabilistic Programming Language
 - Software for Bayesian analysis of statistical model
   - Originally with Gibbs
-  - Now HMC/NUTS with JuliaBUGS
+  - Now HMC/NUTS with JuliaBUGS, and more algorithms coming
 
 ---
 
 ## **Why Choose `JuliaBUGS`?**
 
 - Compatible with existing `BUGS` syntax
-- User-friendly modeling language
+- User-friendly modelling language
 - Generates the Directed Acyclic Graph (DAG)
 - Works seamlessly with other Julia packages
 - Supports distributed, parallel, and GPU computations*
@@ -32,7 +32,7 @@ paginate: true
 
 ## **A Simple Example - Rats**
 
-Weights of 30 young rats measured weekly for five weeks
+The weights of 30 young rats were measured weekly for five weeks
 
 Rat | $x_j = 8$ | $x_j = 15$ | $x_j = 22$ | $x_j = 29$ | $x_j = 36$ |
 --- | --- | --- | --- | --- | --- |
@@ -87,7 +87,7 @@ model_def = @bugs("""model{
 
 ## **Workflow in `JuliaBUGS`**
 
-Step 1: Write model in Julia-flavored or the original `BUGS` syntax, then use `@bugs` macro to transform into Julia AST
+Step 1: Write the model in Julia-flavored or the original `BUGS` syntax, then use `@bugs` macro to transform it into Julia AST
 
 ```julia
 quote
@@ -205,8 +205,8 @@ samples_and_stats = AbstractMCMC.sample(
 
 ### Here we
 
-- Use the `AbstractMMC` interface to sample
-- A `MCMCChains.Chain` object is returned
+- Use the `AbstractMCMC` interface to sample
+- An `MCMCChains.Chain` object is returned
 
 ---
 
@@ -302,11 +302,11 @@ JuliaBUGS.register_primitive(myfunc)
 ## **Current Status and Caveats**
 
 - `JuliaBUGS` is still in its early stage
-- Although we have tested on most of the Volume I examples from OpenBUGS, there will still be some bugs
+- Although we have tested on most of the Volume I examples from OpenBUGS, there will still be some rough edges
   - Please report any bugs you find to the GitHub repo
-- We haven't optimize the compiler to be able to handle very large models
+- We haven't optimised the compiler to handle very large models
 - The first time you run the `compile` function, it may take a while to see the result, but following calls will be much faster
-- Inference are supported by implementing the `LogDensityProblem` interface
+- Inference is supported by implementing the `LogDensityProblem` interface
   - HMC/NUTS from `AdvancedHMC.jl` is supported
   - MH algorithms from `AdcanvedMH.jl` is supported
   - We are working on implementing algorithms so that the graphical structure can be exploited
@@ -316,4 +316,4 @@ JuliaBUGS.register_primitive(myfunc)
 ## **Future Plans**
 
 
-call for collaboration
+Call for Collaboration
