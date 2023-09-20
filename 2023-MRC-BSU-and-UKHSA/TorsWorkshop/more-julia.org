@@ -871,15 +871,226 @@ gif(anim, outputdir("pi.gif"));
 #+HTML: </div>
 
 And more, of course
+
 * Running example
 
-We'll work with an outbreak of influenza A (H1N1) in 1978 at a British boarding school
+An outbreak of influenza A (H1N1) in 1978 at a British boarding school
 
 - 763 male students -> 512 of which became ill
 - Reported that one infected boy started the epidemic
 - Observations are number of boys in bed over 14 days
 
 Data are freely available in the R package =outbreaks=, maintained as part of the [[http://www.repidemicsconsortium.org/][R Epidemics Consortium]]
+
+* DataFrames.jl
+
+#+begin_src julia :display text/plain
+using DataFrames
+#+end_src
+
+#+RESULTS:
+
+In Julia, the go-to for working with datasets is =DataFrames.jl=
+
+#+HTML: <div class="small-text">
+
+If you don't want to let go of the =tidyverse= and you don't mind a bunch of magic, you can use https://github.com/TidierOrg/Tidier.jl
+
+#+HTML: </div>
+
+#+REVEAL: split
+
+If you're already familiar with equivalents in R or Python, the following is a great reference: https://dataframes.juliadata.org/stable/man/comparisons/
+
+#+DOWNLOADED: file:///tmp/Spectacle.paVgAL/Screenshot_20230915_114925.png @ 2023-09-15 11:49:35
+#+attr_org: :width 600px
+[[file:.more-julia/attachments/2023-09-15_11-49-35_Screenshot_20230915_114925.png]]
+
+#+REVEAL: split
+
+There are many different ways to construct a =DataFrame=
+
+#+begin_src julia :display text/plain
+df = DataFrame(A=1:3, B=5:7, fixed=1)
+#+end_src
+
+#+RESULTS:
+: [1m3×3 DataFrame[0m
+: [1m Row [0m│[1m A     [0m[1m B     [0m[1m fixed [0m
+:      │[90m Int64 [0m[90m Int64 [0m[90m Int64 [0m
+: ─────┼─────────────────────
+:    1 │     1      5      1
+:    2 │     2      6      1
+:    3 │     3      7      1
+
+#+begin_src julia :display text/plain
+DataFrame(Dict("A" => 1:3, "B" => 5:7, "fixed" => 1))
+#+end_src
+
+#+RESULTS:
+: [1m3×3 DataFrame[0m
+: [1m Row [0m│[1m A     [0m[1m B     [0m[1m fixed [0m
+:      │[90m Int64 [0m[90m Int64 [0m[90m Int64 [0m
+: ─────┼─────────────────────
+:    1 │     1      5      1
+:    2 │     2      6      1
+:    3 │     3      7      1
+
+Notice that columns are typed
+
+#+REVEAL: split
+
+Then we can interact with the =DataFrame= in a variety of ways
+
+** Indexing
+
+#+begin_src julia 
+df.A
+#+end_src
+
+#+RESULTS:
+: 3-element Vector{Int64}:
+:  1
+:  2
+:  3
+
+#+begin_src julia
+df."A"  # useful when column-names aren't valid Julia symbols
+#+end_src
+
+#+RESULTS:
+: 3-element Vector{Int64}:
+:  1
+:  2
+:  3
+
+#+begin_src julia
+df[:, "A"]
+#+end_src
+
+#+RESULTS:
+: 3-element Vector{Int64}:
+:  1
+:  2
+:  3
+
+#+REVEAL: split
+
+#+begin_src julia :display text/plain
+df[:, [:A, :B]]
+#+end_src
+
+#+RESULTS:
+: [1m3×2 DataFrame[0m
+: [1m Row [0m│[1m A     [0m[1m B     [0m
+:      │[90m Int64 [0m[90m Int64 [0m
+: ─────┼──────────────
+:    1 │     1      5
+:    2 │     2      6
+:    3 │     3      7
+
+#+begin_src julia :display text/plain
+df[:, Not(:fixed)]
+#+end_src
+
+#+RESULTS:
+: [1m3×2 DataFrame[0m
+: [1m Row [0m│[1m A     [0m[1m B     [0m
+:      │[90m Int64 [0m[90m Int64 [0m
+: ─────┼──────────────
+:    1 │     1      5
+:    2 │     2      6
+:    3 │     3      7
+
+#+REVEAL: split
+
+*TODO: Just add a list of methods*
+
+#+begin_src julia
+names(df)
+#+end_src
+
+#+RESULTS:
+: 3-element Vector{String}:
+:  "A"
+:  "B"
+:  "fixed"
+
+** Actual data
+
+Let's load the actual data
+
+Our data is a CSV file
+
+#+begin_src julia 
+readdir("data")
+#+end_src
+
+#+RESULTS:
+: 3-element Vector{String}:
+:  "influenza_england_1978_school.csv"
+:  "pest_data.csv"
+:  "time-series.csv"
+
+Functionality for different file formats is usually provided by separate packages:
+- [[https://github.com/JuliaData/CSV.jl][CSV.jl]]
+- [[https://github.com/JuliaData/Arrow.jl][Arrow.jl]] (Apache Arrow)
+- [[https://github.com/JuliaData/RData.jl][RData.jl]] (R data files)
+- [[https://felipenoris.github.io/XLSX.jl/stable/][XLSX.jl]] (Excel files)
+- And more.
+
+#+REVEAL: split
+
+In our case, we're working with a CSV file, so we'll use =CSV.jl=:
+
+#+begin_src julia :display text/plain
+using CSV
+datafile = CSV.File(joinpath("data", "influenza_england_1978_school.csv"));
+#+end_src
+
+#+RESULTS:
+
+And then we can convert this =CSV.File= into a =DataFrame=
+
+#+begin_src julia :display text/plain
+data = DataFrame(datafile)
+#+end_src
+
+#+RESULTS:
+#+begin_example
+[1m14×4 DataFrame[0m
+[1m Row [0m│[1m Column1 [0m[1m date       [0m[1m in_bed [0m[1m convalescent [0m
+     │[90m Int64   [0m[90m Date       [0m[90m Int64  [0m[90m Int64        [0m
+─────┼───────────────────────────────────────────
+   1 │       1  1978-01-22       3             0
+   2 │       2  1978-01-23       8             0
+   3 │       3  1978-01-24      26             0
+   4 │       4  1978-01-25      76             0
+   5 │       5  1978-01-26     225             9
+   6 │       6  1978-01-27     298            17
+   7 │       7  1978-01-28     258           105
+   8 │       8  1978-01-29     233           162
+   9 │       9  1978-01-30     189           176
+  10 │      10  1978-01-31     128           166
+  11 │      11  1978-02-01      68           150
+  12 │      12  1978-02-02      29            85
+  13 │      13  1978-02-03      14            47
+  14 │      14  1978-02-04       4            20
+#+end_example
+
+#+REVEAL: split
+
+#+begin_quote
+Woah, how does this work? We just passed a =CSV.File= to =DataFrames.DataFrame=, and _it just works_?!
+#+end_quote
+
+Aye, that's right
+
+This is thanks to [[https://tables.juliadata.org/stable/][Tables.jl]], a simple interface for tabular data
+
+Such light-weight interface packages allow modules to seemlessly interact with each other without explicit dependencies
+
+This is a very typical pattern in Julia
 
 * Distributions.jl
 
@@ -1107,214 +1318,6 @@ filter(x -> x <: MatrixDistribution, dist_types_from_distributions)
 :  MatrixTDist
 :  Wishart
 #+HTML: </div>
-
-* DataFrames.jl
-
-#+begin_src julia :display text/plain
-using DataFrames
-#+end_src
-
-#+RESULTS:
-
-In Julia, the go-to for working with datasets is =DataFrames.jl=
-
-#+HTML: <div class="small-text">
-
-If you don't want to let go of the =tidyverse= and you don't mind a bunch of magic, you can use https://github.com/TidierOrg/Tidier.jl
-
-#+HTML: </div>
-
-#+REVEAL: split
-
-If you're already familiar with equivalents in R or Python, the following is a great reference: https://dataframes.juliadata.org/stable/man/comparisons/
-
-#+DOWNLOADED: file:///tmp/Spectacle.paVgAL/Screenshot_20230915_114925.png @ 2023-09-15 11:49:35
-#+attr_org: :width 600px
-[[file:.more-julia/attachments/2023-09-15_11-49-35_Screenshot_20230915_114925.png]]
-
-#+REVEAL: split
-
-There are many different ways to construct a =DataFrame=
-
-#+begin_src julia :display text/plain
-df = DataFrame(A=1:3, B=5:7, fixed=1)
-#+end_src
-
-#+RESULTS:
-: [1m3×3 DataFrame[0m
-: [1m Row [0m│[1m A     [0m[1m B     [0m[1m fixed [0m
-:      │[90m Int64 [0m[90m Int64 [0m[90m Int64 [0m
-: ─────┼─────────────────────
-:    1 │     1      5      1
-:    2 │     2      6      1
-:    3 │     3      7      1
-
-#+begin_src julia :display text/plain
-DataFrame(Dict("A" => 1:3, "B" => 5:7, "fixed" => 1))
-#+end_src
-
-#+RESULTS:
-: [1m3×3 DataFrame[0m
-: [1m Row [0m│[1m A     [0m[1m B     [0m[1m fixed [0m
-:      │[90m Int64 [0m[90m Int64 [0m[90m Int64 [0m
-: ─────┼─────────────────────
-:    1 │     1      5      1
-:    2 │     2      6      1
-:    3 │     3      7      1
-
-Notice that columns are typed
-
-#+REVEAL: split
-
-Then we can interact with the =DataFrame= in a variety of ways
-
-** Indexing
-
-#+begin_src julia 
-df.A
-#+end_src
-
-#+RESULTS:
-: 3-element Vector{Int64}:
-:  1
-:  2
-:  3
-
-#+begin_src julia
-df."A"  # useful when column-names aren't valid Julia symbols
-#+end_src
-
-#+RESULTS:
-: 3-element Vector{Int64}:
-:  1
-:  2
-:  3
-
-#+begin_src julia
-df[:, "A"]
-#+end_src
-
-#+RESULTS:
-: 3-element Vector{Int64}:
-:  1
-:  2
-:  3
-
-#+REVEAL: split
-
-#+begin_src julia :display text/plain
-df[:, [:A, :B]]
-#+end_src
-
-#+RESULTS:
-: [1m3×2 DataFrame[0m
-: [1m Row [0m│[1m A     [0m[1m B     [0m
-:      │[90m Int64 [0m[90m Int64 [0m
-: ─────┼──────────────
-:    1 │     1      5
-:    2 │     2      6
-:    3 │     3      7
-
-#+begin_src julia :display text/plain
-df[:, Not(:fixed)]
-#+end_src
-
-#+RESULTS:
-: [1m3×2 DataFrame[0m
-: [1m Row [0m│[1m A     [0m[1m B     [0m
-:      │[90m Int64 [0m[90m Int64 [0m
-: ─────┼──────────────
-:    1 │     1      5
-:    2 │     2      6
-:    3 │     3      7
-
-#+REVEAL: split
-
-*TODO: Just add a list of methods*
-
-#+begin_src julia
-names(df)
-#+end_src
-
-#+RESULTS:
-: 3-element Vector{String}:
-:  "A"
-:  "B"
-:  "fixed"
-
-** Actual data
-
-Let's load the actual data
-
-Our data is a CSV file
-
-#+begin_src julia 
-readdir("data")
-#+end_src
-
-#+RESULTS:
-: 1-element Vector{String}:
-:  "influenza_england_1978_school.csv"
-
-Functionality for different file formats is usually provided by separate packages:
-- [[https://github.com/JuliaData/CSV.jl][CSV.jl]]
-- [[https://github.com/JuliaData/Arrow.jl][Arrow.jl]] (Apache Arrow)
-- [[https://github.com/JuliaData/RData.jl][RData.jl]] (R data files)
-- [[https://felipenoris.github.io/XLSX.jl/stable/][XLSX.jl]] (Excel files)
-- And more.
-
-#+REVEAL: split
-
-In our case, we're working with a CSV file, so we'll use =CSV.jl=:
-
-#+begin_src julia :display text/plain
-using CSV
-datafile = CSV.File(joinpath("data", "influenza_england_1978_school.csv"));
-#+end_src
-
-#+RESULTS:
-
-And then we can convert this =CSV.File= into a =DataFrame=
-
-#+begin_src julia :display text/plain
-data = DataFrame(datafile)
-#+end_src
-
-#+RESULTS:
-#+begin_example
-[1m14×4 DataFrame[0m
-[1m Row [0m│[1m Column1 [0m[1m date       [0m[1m in_bed [0m[1m convalescent [0m
-     │[90m Int64   [0m[90m Date       [0m[90m Int64  [0m[90m Int64        [0m
-─────┼───────────────────────────────────────────
-   1 │       1  1978-01-22       3             0
-   2 │       2  1978-01-23       8             0
-   3 │       3  1978-01-24      26             0
-   4 │       4  1978-01-25      76             0
-   5 │       5  1978-01-26     225             9
-   6 │       6  1978-01-27     298            17
-   7 │       7  1978-01-28     258           105
-   8 │       8  1978-01-29     233           162
-   9 │       9  1978-01-30     189           176
-  10 │      10  1978-01-31     128           166
-  11 │      11  1978-02-01      68           150
-  12 │      12  1978-02-02      29            85
-  13 │      13  1978-02-03      14            47
-  14 │      14  1978-02-04       4            20
-#+end_example
-
-#+REVEAL: split
-
-#+begin_quote
-Woah, how does this work? We just passed a =CSV.File= to =DataFrames.DataFrame=, and _it just works_?!
-#+end_quote
-
-Aye, that's right
-
-This is thanks to [[https://tables.juliadata.org/stable/][Tables.jl]], a simple interface for tabular data
-
-Such light-weight interface packages allow modules to seemlessly interact with each other without explicit dependencies
-
-This is a very typical pattern in Julia
 
 * Plots.jl
 
@@ -5305,7 +5308,7 @@ This will generate a folder that looks something like
   - ${\color{green} \checkmark}$ nicely demonstrates
     1. Going from working prototype to something we can actually use
     2. Strenghts of =@submodel=
-- Rats
+- Cockroaches
   - ${\color{green} \checkmark}$ Problem and model is easy to understand
     - A sequence of slightly more complex models, but they're still very simple
   - ${\color{red} \times}$ Worried it's too simple
@@ -5316,7 +5319,7 @@ This will generate a folder that looks something like
 
 ** Overview
 We have a few datasets you can choose from:
-1. Rats in residential buildings throughout New York
+1. Cockroaches in residential buildings throughout New York
    - Source: https://github.com/jgabry/stancon2018helsinki_intro/
 2. Lotka-Volterra model
    - Source: https://turinglang.org/v0.29/tutorials/10-bayesian-differential-equations/
@@ -5329,21 +5332,354 @@ We have a few datasets you can choose from:
    - ${\color{red} \times}$ Code-base is /very/ complex
    - ${\color{red} \times}$ Too slow to perform inference locally
 
-** Rats in New York
+** 1. Cockroaches in New York
 
-#+HTML: <div class=x-small-text">
+#+HTML: <div class="x-small-text">
 
 #+begin_quote
 Imagine that you are a statistician or data scientist working as an independent contractor. One of your clients is a company that owns many residential buildings throughout New York City. The property manager explains that they are concerned about the number of cockroach complaints that they receive from their buildings. Previously the company has offered monthly visits from a pest inspector as a solution to this problem. While this is the default solution of many property managers in NYC, the tenants are rarely home when the inspector visits, and so the manager reasons that this is a relatively expensive solution that is currently not very effective.
+
+One alternative to this problem is to deploy long term bait stations. In this alternative, child and pet safe bait stations are installed throughout the apartment building. Cockroaches obtain quick acting poison from these stations and distribute it throughout the colony. The manufacturer of these bait stations provides some indication of the space-to-bait efficacy, but the manager suspects that this guidance was not calculated with NYC roaches in mind. NYC roaches, the manager rationalizes, have more hustle than traditional roaches; and NYC buildings are built differently than other common residential buildings in the US. This is particularly important as the unit cost for each bait station per year is quite high.
 #+end_quote
+
+[[https://github.com/jgabry/stancon2018helsinki_intro][Source #1]] and [[https://github.com/jgabry/stancon2018helsinki_intro][Source #2]]  _(but don't look!)_
 
 #+HTML: </div>
 
-** TODO EpimapMini
+#+REVEAL: split
 
-** Covid19: ImperialReport13
+#+HTML: <div class="x-small-text">
 
-* [cite:@kxs052]
+The manager wishes to employ your services to help them to find the optimal number of roach bait stations they should place in each of their buildings in order to minimize the number of cockroach complaints while also keeping expenditure on pest control affordable.
+
+A subset of the company's buildings have been randomly selected for an experiment:
+- At the beginning of each month, a pest inspector randomly places a number of bait stations throughout the building, without knowledge of the current cockroach levels in the building
+- At the end of the month, the manager records the total number of cockroach complaints in that building.
+- The manager would like to determine the optimal number of traps (=traps=) that balances the lost revenue (=R=) such that complaints (=complaints=) generate with the all-in cost of maintaining the traps (=TC=).
+
+Formally, we are interested in finding
+\begin{equation*}
+\arg \max_{\mathrm{traps} \in \mathbb{N}} \mathbb{E}_{\mathrm{complaints}} \big[ R \big( \mathrm{complaints}(\mathrm{traps}) \big) - \mathrm{TC}(\mathrm{traps}) \big]
+\end{equation*}
+
+The property manager would also, if possible, like to learn how these results generalize to buildings they haven't treated so they can understand the potential costs of pest control at buildings they are acquiring as well as for the rest of their building portfolio.
+
+As the property manager has complete control over the number of traps set, the random variable contributing to this expectation is the number of complaints given the number of traps. We will model the number of complaints as a function of the number of traps.
+
+#+HTML: </div>
+
+#+REVEAL: split
+
+#+begin_src julia :display text/plain
+DataFrame(CSV.File(joinpath("data", "pest_data.csv")))
+#+end_src
+
+#+RESULTS:
+#+begin_example
+[1m120×14 DataFrame[0m
+[1m Row [0m│[1m mus       [0m[1m building_id [0m[1m wk_ind [0m[1m date       [0m[1m traps   [0m[1m floors  [0m[1m sq_footag[0m ⋯
+     │[90m Float64   [0m[90m Int64       [0m[90m Int64  [0m[90m Date       [0m[90m Float64 [0m[90m Float64 [0m[90m Float64  [0m ⋯
+─────┼──────────────────────────────────────────────────────────────────────────
+   1 │ 0.369134            37       1  2017-01-15      8.0      8.0            ⋯
+   2 │ 0.359355            37       2  2017-02-14      8.0      8.0
+   3 │ 0.281783            37       3  2017-03-16      9.0      8.0
+   4 │ 0.129254            37       4  2017-04-15     10.0      8.0
+   5 │ 0.452041            37       5  2017-05-15     11.0      8.0            ⋯
+   6 │ 0.44213             37       6  2017-06-14     11.0      8.0
+   7 │ 0.990865            37       7  2017-07-14     10.0      8.0
+   8 │ 0.785977            37       8  2017-08-13     10.0      8.0
+   9 │ 0.691797            37       9  2017-09-12      9.0      8.0            ⋯
+  10 │ 0.480696            37      10  2017-10-12      9.0      8.0
+  11 │ 0.562431            37      11  2017-11-11      8.0      8.0
+  ⋮  │     ⋮           ⋮         ⋮         ⋮          ⋮        ⋮             ⋮ ⋱
+ 111 │ 0.542095            98       3  2017-03-16      7.0     13.0
+ 112 │ 0.866334            98       4  2017-04-15      6.0     13.0            ⋯
+ 113 │ 1.40571             98       5  2017-05-15      6.0     13.0
+ 114 │ 1.65598             98       6  2017-06-14      5.0     13.0
+ 115 │ 2.2483              98       7  2017-07-14      4.0     13.0
+ 116 │ 2.30359             98       8  2017-08-13      3.0     13.0            ⋯
+ 117 │ 2.253               98       9  2017-09-12      2.0     13.0
+ 118 │ 2.0419              98      10  2017-10-12      2.0     13.0
+ 119 │ 1.90705             98      11  2017-11-11      2.0     13.0
+ 120 │ 2.10317             98      12  2017-12-11      1.0     13.0            ⋯
+[36m                                                   8 columns and 99 rows omitted[0m
+#+end_example
+
+** 2. Lotka-Volterra Predator-Prey model
+
+#+HTML: <div class="small-text">
+
+#+HTML: <div class="side-by-side">
+
+#+HTML: <div>
+The species of interest in this case study are:
+- Snowshoe hares, an hervivorous cousin of rabbits
+- Canadian lynxes, a feline predator whose diet consists largely of snowshoe hares
+#+HTML: </div>
+
+#+HTML: <div>
+Use Lotka-Volterra equations to model the population dynamics
+\begin{equation*}
+\begin{aligned}
+\frac{dH}{dt} &= \alpha H - \beta H L \\
+\frac{dL}{dt} &= \delta H L - \gamma L
+\end{aligned}
+\end{equation*}
+
+#+HTML: </div>
+
+#+HTML: </div>
+
+Use Turing.jl to infer the parameters
+- $\alpha$: growth rate of the prey population
+- $\beta$: rate of shrinkage of the prey population
+- $\delta$: rate of growth of the predator population
+- $\gamma$: rate of shrinkage of the predator population
+
+[[https://mc-stan.org/users/documentation/case-studies/lotka-volterra-predator-prey.html][Source (but don't look!)]]
+
+#+RESULTS:
+
+#+HTML: </div>
+
+#+REVEAL: split
+
+#+HTML: <div class="small-text">
+
+#+begin_src julia :exports none
+using DataFrames, CSV, DataDeps
+#+end_src
+
+#+begin_src julia :display text/plain :exports code
+register(DataDep(
+    "hares-and-lynxes",
+    "Numerical data for the number of pelts collected by the Hudson’s Bay Company in the years 1900-1920.",
+    "https://raw.githubusercontent.com/stan-dev/example-models/master/knitr/lotka-volterra/hudson-bay-lynx-hare.csv",
+))
+#+end_src
+
+#+RESULTS:
+: DataDep("hares-and-lynxes", "https://raw.githubusercontent.com/stan-dev/example-models/master/knitr/lotka-volterra/hudson-bay-lynx-hare.csv", nothing, DataDeps.fetch_default, identity, "Numerical data for the number of pelts collected by the Hudson’s Bay Company in the years 1900-1920.")
+
+
+And then we can load it
+
+#+begin_src julia :display text/plain
+df = DataFrame(
+    CSV.File(
+        joinpath(datadep"hares-and-lynxes", "hudson-bay-lynx-hare.csv"),
+        skipto=4,
+        header=3
+    )
+)
+#+end_src
+
+#+RESULTS:
+#+begin_example
+[1m21×3 DataFrame[0m
+[1m Row [0m│[1m Year  [0m[1m  Lynx   [0m[1m  Hare   [0m
+     │[90m Int64 [0m[90m Float64 [0m[90m Float64 [0m
+─────┼─────────────────────────
+   1 │  1900      4.0     30.0
+   2 │  1901      6.1     47.2
+   3 │  1902      9.8     70.2
+   4 │  1903     35.2     77.4
+   5 │  1904     59.4     36.3
+   6 │  1905     41.7     20.6
+   7 │  1906     19.0     18.1
+   8 │  1907     13.0     21.4
+   9 │  1908      8.3     22.0
+  10 │  1909      9.1     25.4
+  11 │  1910      7.4     27.1
+  12 │  1911      8.0     40.3
+  13 │  1912     12.3     57.0
+  14 │  1913     19.5     76.6
+  15 │  1914     45.7     52.3
+  16 │  1915     51.1     19.5
+  17 │  1916     29.7     11.2
+  18 │  1917     15.8      7.6
+  19 │  1918      9.7     14.6
+  20 │  1919     10.1     16.2
+  21 │  1920      8.6     24.7
+#+end_example
+
+#+HTML: </div>
+
+** 3. Synthetic time-series
+:PROPERTIES:
+:header-args:julia: :session timeseries :kernel julia-4-threads-1.9 :async yes :tangle no :exports none
+:END:
+
+Or you can have a go at this synthetic time-series example
+
+#+HTML: <div class="side-by-side small-text">
+
+#+HTML: <div>
+
+#+begin_src julia :exports both :display text/plain
+DataFrame(CSV.File(
+    joinpath("data", "time-series.csv")
+))
+#+end_src
+
+#+RESULTS:
+#+begin_example
+[1m67×2 DataFrame[0m
+[1m Row [0m│[1m t         [0m[1m y         [0m
+     │[90m Float64   [0m[90m Float64   [0m
+─────┼──────────────────────
+   1 │ 0.0        -19.3009
+   2 │ 0.0151515  -18.2195
+   3 │ 0.030303   -17.931
+   4 │ 0.0454545  -18.5562
+   5 │ 0.0606061  -19.2006
+   6 │ 0.0757576  -18.7376
+   7 │ 0.0909091  -16.4586
+   8 │ 0.106061   -15.0723
+   9 │ 0.121212   -12.6583
+  10 │ 0.136364   -11.1347
+  11 │ 0.151515   -10.9626
+  ⋮  │     ⋮          ⋮
+  58 │ 0.863636    -6.70737
+  59 │ 0.878788    -6.59501
+  60 │ 0.893939    -7.91087
+  61 │ 0.909091    -8.78053
+  62 │ 0.924242    -9.81755
+  63 │ 0.939394    -9.06206
+  64 │ 0.954545    -7.48517
+  65 │ 0.969697    -4.72118
+  66 │ 0.984848    -1.85908
+  67 │ 1.0          0.0
+[36m             46 rows omitted[0m
+#+end_example
+
+#+HTML: </div>
+
+#+HTML: <div class="center">
+
+[[./assets/attachments/synthetic-timeseries-data.png]]
+
+#+HTML: </div>
+
+#+HTML: </div>
+
+*** Data generation                                                :noexport:
+
+#+begin_src julia 
+]activate --temp
+#+end_src
+
+#+RESULTS:
+: [32m[1m  Activating[22m[39m new project at `/tmp/jl_SaDhi8`
+
+#+begin_src julia :results silent
+]add Turing FillArrays LinearAlgebra StatsPlots Random Statistics DataFrames CSV
+#+end_src
+
+#+begin_src julia
+using Turing, FillArrays, StatsPlots, LinearAlgebra, Random, Statistics, DataFrames, CSV
+#+end_src
+
+#+begin_src julia
+Random.seed!(12345)
+
+true_sin_freq = 2
+true_sin_amp = 5
+true_cos_freq = 7
+true_cos_amp = 2.5
+tmax = 10
+β_true = 2
+α_true = -1
+tt = 0:0.05:tmax
+f₁(t) = α_true + β_true * t
+f₂(t) = true_sin_amp * sinpi(2 * t * true_sin_freq / tmax)
+f₃(t) = true_cos_amp * cospi(2 * t * true_cos_freq / tmax)
+f(t) = f₁(t) + f₂(t) + f₃(t)
+
+plot(f, tt; label="f(t)", title="Observed time series", legend=:topleft, linewidth=3)
+plot!(
+    [f₁, f₂, f₃],
+    tt;
+    label=["f₁(t)" "f₂(t)" "f₃(t)"],
+    style=[:dot :dash :dashdot],
+    linewidth=1,
+)
+#+end_src
+
+#+RESULTS:
+[[file:./.ob-jupyter/0b26b4ffdbb5a6d6692d6439bbcca36ca293e4a5.svg]]
+
+
+#+begin_src julia :exports output
+σ_true = 0.35
+t = collect(tt[begin:3:end])
+t_min, t_max = extrema(t)
+x = (t .- t_min) ./ (t_max - t_min)
+yf = f.(t) .+ σ_true .* randn(size(t))
+
+p = scatter(x, yf; title="Standardised data", legend=false)
+savefig("assets/attachments/synthetic-timeseries-data.png")
+p
+#+end_src
+
+#+RESULTS:
+[[file:./.ob-jupyter/901b0ff0c5838163d8c7b76abe4158c02d07125b.svg]]
+
+#+begin_src julia :display text/plain :eval no
+CSV.write(joinpath("data", "time-series.csv"), DataFrame(t = x, y = yf))
+#+end_src
+
+#+RESULTS:
+: "data/time-series.csv"
+
+** 4. Influenza at British boarding school (same as before)
+An outbreak of influenza A (H1N1) in 1978 at a British boarding school
+
+- 763 male students -> 512 of which became ill
+- Reported that one infected boy started the epidemic
+- Observations are number of boys in bed over 14 days
+
+Data are freely available in the R package =outbreaks=, maintained as part of the [[http://www.repidemicsconsortium.org/][R Epidemics Consortium]]
+
+#+REVEAL: split
+
+#+begin_src julia :display text/plain
+DataFrame(CSV.File(joinpath("data", "influenza_england_1978_school.csv")))
+#+end_src
+
+#+RESULTS:
+#+begin_example
+[1m14×4 DataFrame[0m
+[1m Row [0m│[1m Column1 [0m[1m date       [0m[1m in_bed [0m[1m convalescent [0m
+     │[90m Int64   [0m[90m Date       [0m[90m Int64  [0m[90m Int64        [0m
+─────┼───────────────────────────────────────────
+   1 │       1  1978-01-22       3             0
+   2 │       2  1978-01-23       8             0
+   3 │       3  1978-01-24      26             0
+   4 │       4  1978-01-25      76             0
+   5 │       5  1978-01-26     225             9
+   6 │       6  1978-01-27     298            17
+   7 │       7  1978-01-28     258           105
+   8 │       8  1978-01-29     233           162
+   9 │       9  1978-01-30     189           176
+  10 │      10  1978-01-31     128           166
+  11 │      11  1978-02-01      68           150
+  12 │      12  1978-02-02      29            85
+  13 │      13  1978-02-03      14            47
+  14 │      14  1978-02-04       4            20
+#+end_example
+
+** 5. Anything from =RDatasets.jl=
+
+Or you can just do =]add RDatasets= and knock yourself out
+
+https://github.com/JuliaStats/RDatasets.jl
+
+** TODO EpimapMini                                                 :noexport:
+
+** Covid19: ImperialReport13                                       :noexport:
+
+* [cite:@kxs052]                                                   :noexport:
 :PROPERTIES:
 :header-args:julia: :session mrc-biostats-2023-particle-filter :tangle particle-filter.jl :exports both :kernel julia-4-threads-1.9 :async yes :file (f-join "assets" "outputs" "more-julia" (sha1 (plist-get (cadr (org-element-at-point)) :value)))
 :END:
