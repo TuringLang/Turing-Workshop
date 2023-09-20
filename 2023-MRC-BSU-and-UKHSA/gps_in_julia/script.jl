@@ -75,7 +75,3 @@ function putting_example()
     # # Sample using ESS + HMC.
     # chn_ess = sample(Xoshiro(123456), m_post, Gibbs(ESS(:f_latent), HMC(0.1, 3, :v, :l)), 1_000)
 end
-
-# Notes:
-# 5. Motivate GPs - chat with Tor / other examples from outside infectious diseases
-# 11. check out time series example in the docs
