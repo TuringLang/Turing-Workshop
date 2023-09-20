@@ -63,6 +63,7 @@ function putting_example()
     savefig(p, "putting_success_probs.png")
 
     # Generate some replications of y to get a sense for the remaining marginal uncertainty.
+    rng = Xoshiro(123456)
     ys = [x.y for x in generated_quantities(m, predict(rng, m, chn))[1:10:end]]
     post_hists = map(1:20) do j
         xticks = j > 15 ? :auto : nothing
