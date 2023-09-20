@@ -1,6 +1,8 @@
 using AbstractGPs, CSV, DataDeps, DataFrames, KernelFunctions, LinearAlgebra,
     LogExpFunctions, MCMCChains, Plots, Random, ReverseDiff, Turing
 
+ENV["DATADEPS_ALWAYS_ACCEPT"] = true
+
 # We're going to use ReverseDiff to perform AD.
 Turing.setadbackend(:reversediff)
 Turing.setrdcache(true)
