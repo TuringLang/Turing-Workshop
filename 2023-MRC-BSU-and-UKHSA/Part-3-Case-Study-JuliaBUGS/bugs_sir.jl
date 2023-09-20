@@ -11,7 +11,7 @@ using MCMCChains
 using ReverseDiff
 using ForwardDiff
 
-using GLMakie, GraphMakie
+using GraphPlot
 
 # Demo 1: classic examples: rats
 rats_model = JuliaBUGS.BUGSExamples.rats.model_def;
@@ -32,7 +32,7 @@ demo_inits = begin
     NamedTuple(demo_inits)
 end
 demo_model = compile(rats_model, demo_data, demo_inits)
-graphplot(demo_model)
+gplot(demo_model)
 
 # Inference
 ad_model = ADgradient(:ReverseDiff, model; compile = Val(true))
@@ -78,9 +78,6 @@ JuliaBUGS.@register_primitive function NegativeBinomial2(μ, ϕ)
     r = ϕ
     return NegativeBinomial(r, p)
 end
-
-using Bijectors
-inverse(bijector(Exponential(1 / 5)))(0.2)
 
 # another way to register a primitive
 function solve_ode(u0, p)
