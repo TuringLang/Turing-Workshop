@@ -52,13 +52,13 @@ div.definition::before {
   text-decoration: underline;
 }
 
-pre {
+.reveal pre {
   /* background-color: #002b36; */
+  padding: 0.5em;
 }
 
 pre.example {
   /* line-height: 1.3em; */
-  padding: 0.5em;
   /* background-color: #002f3c; */
   /* color: #9c9c9c; */
   overflow: auto;
@@ -82,7 +82,6 @@ pre.src {
 
 .reveal pre code {
   display: block;
-  padding: 0.5em;
   overflow: auto;
   max-height: 600px;
   word-wrap: normal;
