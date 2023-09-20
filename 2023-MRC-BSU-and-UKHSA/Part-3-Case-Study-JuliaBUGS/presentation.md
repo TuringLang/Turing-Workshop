@@ -160,6 +160,14 @@ julia> LogDensityProblems.logdensity(model, rand(65)) # log-density of the model
 
 ---
 
+## **Visualizing the `BUGSModel` as a DAG**
+
+To visualize the Directed Acyclic Graph (DAG) underlying the `BUGSModel`, we can utilize standard plotting libraries. In this example, we employ [`Makie.jl`](https://github.com/MakieOrg/GraphMakie.jl) and illustrate the DAG using only the first two rows of the rats' weights data.
+
+![width:800](./rats_plot.png)
+
+---
+
 ## **Workflow in `JuliaBUGS` (cont.)**
 
 **Step 4** *Transform the model to be AD-ready (only necessary for HMC/NUTS)*

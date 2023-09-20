@@ -466,9 +466,9 @@ version = "0.6.8"
 
 [[deps.DynamicPPL]]
 deps = ["AbstractMCMC", "AbstractPPL", "BangBang", "Bijectors", "ChainRulesCore", "ConstructionBase", "Distributions", "DocStringExtensions", "LinearAlgebra", "LogDensityProblems", "MacroTools", "OrderedCollections", "Random", "Requires", "Setfield", "Test", "ZygoteRules"]
-git-tree-sha1 = "c60859c9bb51353a6f4a9769a0fb771cc4de94bc"
+git-tree-sha1 = "e18dc6b49a5cfabe26aa018cf44c52b7ecd16cf1"
 uuid = "366bfd00-2699-11ea-058f-f148b4cae6d8"
-version = "0.23.17"
+version = "0.23.18"
 weakdeps = ["MCMCChains"]
 
     [deps.DynamicPPL.extensions]
@@ -698,9 +698,9 @@ version = "1.0.0"
 
 [[deps.JLD2]]
 deps = ["FileIO", "MacroTools", "Mmap", "OrderedCollections", "Pkg", "Printf", "Reexport", "Requires", "TranscodingStreams", "UUIDs"]
-git-tree-sha1 = "aa6ffef1fd85657f4999030c52eaeec22a279738"
+git-tree-sha1 = "773125c999b4ebfe31e679593c8af7f43f401f1c"
 uuid = "033835bb-8acc-5ee8-8aae-3f567f8a3819"
-version = "0.4.33"
+version = "0.4.34"
 
 [[deps.JLLWrappers]]
 deps = ["Artifacts", "Preferences"]
