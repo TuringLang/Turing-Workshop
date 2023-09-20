@@ -197,6 +197,11 @@ div.figure p:last-child {
 
 /* GENERAL CUSTOMIZATION */
 
+.center {
+  margin: auto;
+  text-align: center;
+}
+
 .side-by-side {
   display: inline-flex;
 }
