@@ -11,33 +11,17 @@ using MCMCChains
 using ReverseDiff
 using ForwardDiff
 
-using GraphPlot
-
 # Demo 1: classic examples: rats
 rats_model = JuliaBUGS.BUGSExamples.rats.model_def;
 data = JuliaBUGS.BUGSExamples.rats.data;
 inits = JuliaBUGS.BUGSExamples.rats.inits[1];
 model = compile(rats_model, data, inits);
 
-# use a smaller model to demonstrate plotting
-demo_data = begin 
-   data_dict = Dict(pairs(data))
-   data_dict[:Y] = data_dict[:Y][1:3, :]
-   NamedTuple(data_dict)
-end
-demo_inits = begin
-    inits_dict = Dict(pairs(inits))
-    inits_dict[:alpha] = ones(Integer, 3) .* 250
-    inits_dict[:beta] = ones(Integer, 3) .* 6
-    NamedTuple(demo_inits)
-end
-demo_model = compile(rats_model, demo_data, demo_inits)
-gplot(demo_model)
-
 # Inference
 ad_model = ADgradient(:ReverseDiff, model; compile = Val(true))
 
-n_samples = 3000; n_adapts = 1000
+n_samples = 3000;
+n_adapts = 1000;
 
 initial_θ = rand(LogDensityProblems.dimension(model))
 
@@ -111,6 +95,12 @@ end
 data = Dict(:I_data => I_data, :u0 => [762.0, 1.0, 0.0])
 inits = (; β = 2, γ = 0.5, ϕ⁻¹ = 0.2)
 model = compile(sir_bugs_model, data, inits);
+
+# Plot with Makie
+# Makie is a large package, so we didn't include it in the Project.toml
+# you can install it with `] add Makie, GraphMakie`
+# using GLMakie, GraphMakie
+# graphplot(model)
 
 # use `ForwardDiff` this time
 ad_model = ADgradient(:ForwardDiff, model)
