@@ -7,7 +7,7 @@
 
 #+REVEAL_ROOT: assets/reveal.js-4.1.0/
 #+REVEAL_MATHJAX_URL: assets/MathJax-2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML
-#+REVEAL_TITLE_SLIDE: <div><div style="margin: -200px auto; opacity: 0.2;"><p><object data="assets/images/turing-logo-wide.svg"></object></p></div><h1>Bayesian inference and other things</h1><h2>with the TuringLang ecosystem</h2><p><a href="https://github.com/TuringLang">https://github.com/TuringLang</a></p><p><a href="https://github.com/TuringLang/Turing-Workshop/tree/main/2023-Geilo-Winter-School/Part-2-Turing-and-other-things">The workshop is found here</a></p></div>
+#+REVEAL_TITLE_SLIDE: <div><div style="margin: -200px auto; opacity: 0.2;"><p><object data="assets/images/turing-logo-wide.svg"></object></p></div><h1>More Julia and some Bayesian Inference</h1><h2>with the TuringLang ecosystem</h2><p><a href="https://github.com/TuringLang">https://github.com/TuringLang</a></p><p><a href="https://github.com/TuringLang/Turing-Workshop/tree/main/2023-Geilo-Winter-School/Part-2-Turing-and-other-things">The workshop is found here</a></p></div>
 #+REVEAL_EXTRA_CSS: assets/css/custom.css
 #+REVEAL_THEME: white
 #+REVEAL_PLUGINS: (markdown zoom)
@@ -15,7 +15,7 @@
 #+HTML_HEAD: <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
 
 #+AUTHOR: Tor Erlend Fjelde
-#+TITLE: More Julia
+#+TITLE: More Julia and some Bayesian Inference
 
 * Notes                                                            :noexport:
 
@@ -240,7 +240,7 @@ pwd()
 #+end_src
 
 #+RESULTS:
-: "/drive-2/Projects/public/Turing-Workshop/2023-MRC-BSU-and-UKHSA/TorsWorkshop"
+: "/drive-2/Projects/public/Turing-Workshop/2023-MRC-BSU-and-UKHSA/Part2"
 
 #+begin_src julia :exports none
 outputdir(args...) = joinpath("assets", "outputs", "more-julia", args...)
@@ -262,7 +262,7 @@ or if you're already in a REPL, do
 #+end_src
 
 #+RESULTS:
-: [32m[1m  Activating[22m[39m project at `/drive-2/Projects/public/Turing-Workshop/2023-MRC-BSU-and-UKHSA/TorsWorkshop`
+: [32m[1m  Activating[22m[39m project at `/drive-2/Projects/public/Turing-Workshop/2023-MRC-BSU-and-UKHSA/Part2`
 
 to activate the project
 
@@ -276,8 +276,8 @@ And just to check that you're in the correct one
 
 #+RESULTS:
 #+begin_example
-[36m[1mProject[22m[39m TorsWorkshop v0.1.0
-[32m[1mStatus[22m[39m `/drive-2/Projects/public/Turing-Workshop/2023-MRC-BSU-and-UKHSA/TorsWorkshop/Project.toml`
+[36m[1mProject[22m[39m Part2 v0.1.0
+[32m[1mStatus[22m[39m `/drive-2/Projects/public/Turing-Workshop/2023-MRC-BSU-and-UKHSA/Part2/Project.toml`
   [90m[336ed68f] [39mCSV v0.10.11
   [90m[124859b0] [39mDataDeps v0.7.11
   [90m[a93c6f00] [39mDataFrames v1.6.1
@@ -313,7 +313,7 @@ Download and install dependencies
 And finally, do
 
 #+begin_src julia 
-using TorsWorkshop
+using Part2
 #+end_src
 
 #+RESULTS:
@@ -354,7 +354,7 @@ pwd()  # current working directory
 #+end_src
 
 #+RESULTS:
-: "/drive-2/Projects/public/Turing-Workshop/2023-MRC-BSU-and-UKHSA/TorsWorkshop"
+: "/drive-2/Projects/public/Turing-Workshop/2023-MRC-BSU-and-UKHSA/Part2"
 
 #+begin_src julia
 @which pwd
@@ -851,7 +851,7 @@ gif(anim, outputdir("pi.gif"));
 #+end_src
 
 #+RESULTS:
-: [36m[1m[ [22m[39m[36m[1mInfo: [22m[39mSaved animation to /drive-2/Projects/public/Turing-Workshop/2023-MRC-BSU-and-UKHSA/TorsWorkshop/assets/outputs/more-julia/pi.gif
+: [36m[1m[ [22m[39m[36m[1mInfo: [22m[39mSaved animation to /drive-2/Projects/public/Turing-Workshop/2023-MRC-BSU-and-UKHSA/Part2/assets/outputs/more-julia/pi.gif
 
 [[./assets/outputs/more-julia/pi.gif]]
 
@@ -1438,7 +1438,7 @@ gif(anim, outputdir("lorenz.gif"));
 #+end_src
 
 #+RESULTS:
-: [ Info: Saved animation to /drive-2/Projects/public/Turing-Workshop/2023-MRC-BSU-and-UKHSA/TorsWorkshop/assets/outputs/more-julia/lorenz.gif
+: [ Info: Saved animation to /drive-2/Projects/public/Turing-Workshop/2023-MRC-BSU-and-UKHSA/Part2/assets/outputs/more-julia/lorenz.gif
 
 #+REVEAL: split
 
@@ -5273,7 +5273,7 @@ pwd()
 #+end_src
 
 #+RESULTS:
-: "/drive-2/Projects/public/Turing-Workshop/2023-MRC-BSU-and-UKHSA/TorsWorkshop"
+: "/drive-2/Projects/public/Turing-Workshop/2023-MRC-BSU-and-UKHSA/Part2"
 
 This will generate a folder that looks something like
 
@@ -5664,570 +5664,6 @@ https://github.com/JuliaStats/RDatasets.jl
 ** TODO EpimapMini                                                 :noexport:
 
 ** Covid19: ImperialReport13                                       :noexport:
-
-* [cite:@kxs052]                                                   :noexport:
-:PROPERTIES:
-:header-args:julia: :session mrc-biostats-2023-particle-filter :tangle particle-filter.jl :exports both :kernel julia-4-threads-1.9 :async yes :file (f-join "assets" "outputs" "more-julia" (sha1 (plist-get (cadr (org-element-at-point)) :value)))
-:END:
-
-#+begin_src julia
-using DifferentialEquations, Turing, StatsPlots, LinearAlgebra
-#+end_src
-
-#+RESULTS:
-
-#+begin_src julia 
-struct SEIR{T1,T2}
-    k::T1
-    γ::T2
-    N::Int
-end
-
-function (seir::SEIR)(du, u, p, t)
-    S, E, I, R = u
-    k, γ, N = seir.k, seir.γ, seir.N
-    β = only(p)
-
-    du[1] = -β * S * I / N
-    du[2] = β * S * I / N - k * E
-    du[3] = k * E - γ * I
-    du[4] = γ * I
-
-    return nothing
-end
-#+end_src
-
-#+RESULTS:
-
-#+begin_src julia
-tspan = (0.0, 100.0)
-u0 = [999.0, 1, 0, 0]
-probf = SEIR(0.25, 0.05, 1000)
-prob = ODEProblem(probf, u0, tspan, [0.2])
-solve(prob)
-#+end_src
-
-#+RESULTS:
-#+begin_example
-retcode: Success
-Interpolation: specialized 4th order "free" interpolation, specialized 2nd order "free" stiffness-aware interpolation
-t: 28-element Vector{Float64}:
-   0.0
-   0.0056540236999814706
-   0.062194260699796174
-   0.30072981111184066
-   0.6950381565675945
-   1.2203000465133529
-   1.9420478964976093
-   2.875425767640001
-   4.059411303485391
-   5.5012350028501915
-   7.231365280264414
-   9.310611835029093
-  11.822720603708422
-   ⋮
-  29.994131638154776
-  36.38399041740069
-  43.15031946908468
-  49.925654813444986
-  56.64173164949659
-  63.21608779006091
-  69.68044151998856
-  76.04965890277947
-  82.24922997649685
-  88.32704521258971
-  94.43532129748762
- 100.0
-u: 28-element Vector{Vector{Float64}}:
- [999.0, 1.0, 0.0, 0.0]
- [998.9999992020507, 0.9985882901773383, 0.0014123080849147874, 1.9968700047033795e-7]
- [998.999903990443, 0.9846672028102782, 0.015404780329859823, 2.402641680625783e-5]
- [998.9978071088109, 0.9297127930516831, 0.0719313259662255, 0.0005487721711357369]
- [998.988715035506, 0.8511476794063842, 0.15731320394797277, 0.002824081139604212]
- [998.9668112144358, 0.767041034463036, 0.25784211124172, 0.008305639859413096]
- [998.9208316832985, 0.6827118072407354, 0.3766438333267149, 0.01981267613405121]
- [998.8381486559025, 0.6147899451473634, 0.5065547781759926, 0.04050662077415447]
- [998.7012919960837, 0.5764444949375392, 0.6475005783296947, 0.07476293064911178]
- [998.4923402920977, 0.5785427877223749, 0.8020426609011208, 0.12707425927887211]
- [998.1839760718743, 0.6275609878677972, 0.9841692988996603, 0.20429364135823094]
- [997.7273588313809, 0.7325590501006006, 1.2214003176662998, 0.318681800852206]
- [997.0331285904066, 0.9130060315711355, 1.5611701374154396, 0.49269524060683106]
- ⋮
- [982.0702623929466, 4.978328695298856, 8.678429708473596, 4.272979203280957]
- [967.3040268930682, 8.929117975760578, 15.706379061376614, 8.060476069794523]
- [939.2612602725887, 16.244165918604498, 29.079324826448026, 15.415248982358625]
- [889.935318260028, 28.490110433785002, 52.673150775667786, 28.90142053051913]
- [809.536141204184, 46.627383515369715, 91.26328180674686, 52.57319347369934]
- [693.548729931949, 68.30245900142862, 146.9156269837328, 91.23318408288952]
- [549.4058252982588, 86.32392859844263, 214.79100213149258, 149.47924397180583]
- [400.5060115349084, 91.46932009526371, 279.51869582345205, 228.50597254637566]
- [275.14644582873996, 81.21206493893693, 321.279498493012, 322.36199073931095]
- [184.50529783539324, 62.256830342268195, 330.969490819117, 422.2683810032214]
- [124.27616729855168, 42.68631251399805, 311.97675224228794, 521.0607679451622]
- [89.37978460338655, 28.53709293175161, 278.6199759741896, 603.4631464906721]
-#+end_example
-
-#+begin_src julia
-using Random: Random
-
-struct EulerMaruyama{F, G}
-    μ::F
-    σ::G
-end
-
-EulerMaruyama() = EulerMaruyama((θ, x) -> 0, (θ, x) -> 1)
-
-(em::EulerMaruyama)(θ, x, δ, m=1) = em(Random.default_rng(), θ, x, δ, m)
-function (em::EulerMaruyama)(rng::Random.AbstractRNG, θ, x, δ, m=1)
-    # TODO: Do we need to adjust the size in our `randn` call?
-    for _ = 1:m
-        μ = em.μ(θ, x)
-        σ = em.σ(θ, x)
-        x = @. x + δ * μ + sqrt(δ) * σ * randn(rng)
-    end
-
-    return x
-end
-#+end_src
-
-#+RESULTS:
-
-#+begin_src julia
-# Simple OU process.
-ou = EulerMaruyama((θ, x) -> -θ[1] * x, (θ, x) -> θ[2])
-
-θ = 1.0; σ = sqrt(2); δ = 0.05;
-t = 12
-xs = let
-    x = 10.0
-    xs = [x]
-    for _ = 1:ceil(Int, t / δ)
-        x = ou([θ, σ], x, δ)
-        push!(xs, x)
-    end
-    xs
-end
-
-plot(0:δ:(length(xs) - 1) * δ, xs, legend=false)
-#+end_src
-
-#+RESULTS:
-[[file:assets/outputs/more-julia/7c3945985ca929a14b309bb0a74f6a7a934b07c7.svg]]
-
-
-#+begin_src julia 
-# Algorithm 1: Particle Filter Algorithm
-"""
-    particle_filter(y, x₀, ode; n, N)
-
-# Arguments
-- `y`: observations
-- `x₀`: initial states
-- `ode`: ODE model
-
-# Keyword Arguments
-- `n`: number of observations (default: length(y))
-- `N`: number of particles (default: length(x₀))
-- `M`: number of discretization steps between each observation time (default: 1)
-"""
-function particle_filter(
-    x₀, V₀, y, θ, ts, prob, f, em;
-    n = length(y),
-    N = 10,
-    m = 1,
-    hinv=exp
-)
-    # TODO: Change it all to work on log-scale as much as possible.
-    # Buffer for the particles.
-    V = Matrix{typeof(V₀)}(undef, N, n)
-    # Initialize the particles.
-    for j = 1:N
-        V[j, 1] = V₀
-    end
-    # Buffer for the states.
-    x = Matrix{typeof(x₀)}(undef, N, n)
-    for j = 1:N
-        # Initialize the states.
-        x[j, 1] = x₀
-    end
-
-    # Other buffers.
-    α = zeros(N, n)
-    W = zeros(N, n)
-    L = one(eltype(x₀))
-
-    # Step-size for SDE solve.
-    δ = 1 / m
-    for i = 1:n - 1
-        # Remake the problem to the next observation time.
-        prob_t = remake(prob, tspan=(ts[i], ts[i + 1]))
-        # For each particle.
-        for j = 1:N
-            # Sample x[i + 1] given x[i].
-            x_j = em(θ, x[j, i], δ, m)
-            x[j, i + 1] = x_j
-
-            # Solve ODE between the two observation times.
-            β = hinv(x_j)
-            prob_t_j = remake(prob_t, p=[β,])
-            # TODO: Disable storing of the intermediate steps.
-            # TODO: Check at that we have the correct `saveat`.
-            V_t = solve(prob_t_j)
-            V[j, i + 1] = V_t[end]
-
-            # Compute the likelihood of the observation at time i + 1.
-            # TODO: Should this be a Turing.jl model?
-            α[j, i + 1] = f(y[i + 1], V[j, 1:i + 1])
-        end
-
-        W[:, i + 1] = normalize(α[:, i + 1], 1); L = L * mean(α);
-        # TODO: Resample
-        # resample(V[1:i + 1, :], x[1:i + 1, :])
-    end
-
-    return (; V, W, x, L)
-end
-#+end_src
-
-#+RESULTS:
-: particle_filter
-
-#+begin_src julia
-f(y, V) = pdf(Normal(V[end][3], 1), y)
-hinv = exp
-N = 10
-
-m = 4
-δ = 1 / m
-
-tspan = (0, 5)
-Δt = 0.1
-ts = tspan[1]:Δt:tspan[2]
-n = length(ts)
-
-θ = [0.1, 1.0]
-x₀ = rand(Normal())
-
-xs_true = Float64[x₀]
-for i = 1:n
-    # We take `m` steps of size `δ` to approximate a step of size `Δt`.
-    x = ou(θ, xs_true[i], δ, m)
-    for _ = 1:m - 1
-        x = ou(θ, xs_true[i], δ, m)
-    end
-    push!(xs_true, x)
-end
-xs_true
-#+end_src
-
-#+RESULTS:
-#+begin_example
-52-element Vector{Float64}:
- -0.24878183911750845
- -0.6612017363745032
- -0.5771129755661678
- -1.3998600910341077
- -3.451824275216758
- -1.9984112308388422
- -1.9924864608629838
- -3.5250896691556277
- -2.9739944443243034
- -2.9800035362896766
- -4.17320936285544
- -3.3632341699940276
- -1.6339647999108249
-  ⋮
- -0.12313561294713371
-  1.5450391910822283
-  0.5587443891018262
-  1.7891589771333165
-  1.872952639316824
-  1.5540947466863484
- -0.2167465035797701
- -1.526033137464444
- -2.3638187290855757
- -1.2625822265622242
- -0.7982249206748514
- -1.2116103413002468
-#+end_example
-
-#+begin_src julia
-βs = hinv.(xs_true)
-#+end_src
-
-#+RESULTS:
-#+begin_example
-52-element Vector{Float64}:
- 0.7797500657927471
- 0.5162305885040517
- 0.5615171424285115
- 0.24663146748144474
- 0.031687776392698305
- 0.1355504706573401
- 0.13635595982888485
- 0.029449166568809727
- 0.051098790857907486
- 0.050792654247042046
- 0.015402747708387066
- 0.03462310067973559
- 0.19515429050669508
- ⋮
- 0.8841437530903199
- 4.688155357303803
- 1.7484757162671933
- 5.984417317534419
- 6.507482308931339
- 4.730802011969568
- 0.8051340420355165
- 0.21739634049976952
- 0.09406034551872539
- 0.28292251241208627
- 0.4501272669874618
- 0.2977174664702004client_loop: send disconnect: Broken pipe
-#+end_example
-
-#+begin_src julia
-V₀ = [999.0, 1, 0, 0]
-probf = SEIR(0.25, 0.05, 1000)
-prob = ODEProblem(probf, V₀, tspan, [0.2])
-#+end_src
-
-#+RESULTS:
-: [38;2;86;182;194mODEProblem[0m with uType [38;2;86;182;194mVector{Float64}[0m and tType [38;2;86;182;194mInt64[0m. In-place: [38;2;86;182;194mtrue[0m
-: timespan: (0, 5)
-: u0: 4-element Vector{Float64}:
-:  999.0
-:    1.0
-:    0.0
-:    0.0
-
-#+begin_src julia
-let i = 1, prob = prob
-    β = βs[i]
-    prob = remake(prob, p=[β,], tspan=(ts[i], ts[i + 1]))
-    V_t = solve(prob)[end]
-end
-#+end_src
-
-#+RESULTS:
-: 4-element Vector{Float64}:
-:  998.999035805983
-:    0.976266101698541
-:    0.024636203279721925
-:    6.188903883306985e-5
-
-#+begin_src julia
-V_true = zeros(length(V₀), n)
-V_true[:, 1] = V₀
-for i = 1:n - 1
-    β = βs[i]
-    prob = remake(prob, u0=V_true[:, i], p=[β,], tspan=(ts[i], ts[i + 1]))
-    V_t = solve(prob)
-    V_true[:, i + 1] = V_t[end]
-end
-#+end_src
-
-#+RESULTS:
-
-#+begin_src julia
-infected_true = V_true[3, :]
-plot(ts, infected_true, label="true", size=(400, 200))
-#+end_src
-
-#+RESULTS:
-[[file:assets/outputs/more-julia/47fd6cb8c10828598540fa1f4c0111622d264e6d.svg]]
-
-
-#+begin_src julia
-V_true
-#+end_src
-
-#+RESULTS:
-: 4×51 Matrix{Float64}:
-:  999.0  998.999      998.997        …  982.474     982.437    982.317
-:    1.0    0.976266     0.954032         13.4865     13.19      12.9825
-:    0.0    0.0246362    0.0485779         3.83996     4.1534     4.459
-:    0.0    6.1889e-5    0.000245206       0.199733    0.21972    0.241254
-
-#+begin_src julia
-ys = map(eachcol(V_true)) do V
-    V[3] + rand(Normal())
-end
-#+end_src
-
-#+RESULTS:
-#+begin_example
-51-element Vector{Float64}:
- -0.5576703894082115
-  0.31494731473497434
- -0.782010760585272
- -1.1253763909484469
-  0.3928993294327789
- -0.8227802480874041
-  2.842180090129152
-  1.609855724089655
-  0.1217016398280302
- -0.31360887101271573
- -0.7839811314785547
-  1.042050553773855
-  0.09414142122994448
-  ⋮
-  0.05421057426064957
-  1.8792572903396607
-  1.0816613933578965
-  2.417860738671401
-  1.796002164551382
-  3.444541128186396
-  1.8289648762543378
-  3.4364109210785503
-  3.904061960770232
-  2.225333928943403
-  3.4349557674958855
-  5.037173311656346
-#+end_example
-
-#+begin_src julia
-x₀
-#+end_src
-
-#+RESULTS:
-: -0.24878183911750845
-
-#+begin_src julia
-res = particle_filter(x₀, V₀, ys, θ, ts, prob, f, ou)
-#+end_src
-
-#+RESULTS:
-: '(V = ((999.0  1.0  0.0  0.0) (981.6549825068294  13.636653304174525  4.467096587319281  0.24126760167636907) … (981.4516426950192  13.837503257224819  4.4695823185470775  0.24127172920838716) (979.0817567031715  16.1783921724427  4.498531338416847  0.24131978596839576); (999.0  1.0  0.0  0.0) (982.2631520721105  13.035932437032557  4.4596602382065775  0.241255252649868) … (982.2861196382858  13.01324622364836  4.459379351894491  0.24125478617088797) (982.0891142368577  13.207838431565234  4.461788544437223  0.24125878713941296); … ; (999.0  1.0  0.0  0.0) (981.7439049217614  13.548819821185612  4.4660094605939955  0.2412657964583884) … (663.334004658758  328.2287237478621  8.18992670303448  0.2473448903449323) (825.1828219702596  168.25388439497434  6.318987396914114  0.24430623785147454); (999.0  1.0  0.0  0.0) (982.2879321980549  13.01145586790656  4.459357184681115  0.24125474935682695) … (982.0983594909576  13.198706419818599  4.461675489831078  0.24125859939224795) (982.3116508758052  12.988027748370422  4.4590671082110065  0.24125426761286162))  W = (0.0 0.09988757372155688 … 0.11260922674838236 0.10429844379909534; 0.0 0.10301704630685216 … 0.11379833207901854 0.102185543421086; … ; 0.0 0.1003394173483243 … 2.367964404902901e-6 0.053026954224620594; 0.0 0.10314651947720654 … 0.11353066890134646 0.10202528124349138)  x = (-0.24878183911750845 0.6138855191582259 … 0.8449512024687492 2.0692792441000702; -0.24878183911750845 -0.8899954378772685 … -1.0317669857230851 -0.19608925850572068; … ; -0.24878183911750845 0.4931976536046899 … 6.566510698925604 5.871380391390189; -0.24878183911750845 -1.043860246823622 … -0.22302817403959607 -1.2172756503512303)  L = 1.013581747539015e-136)
-
-#+begin_src julia
-res.V[:, end]
-#+end_src
-
-#+RESULTS:
-#+begin_example
-10-element Vector{Vector{Float64}}:
- [979.0817567031715, 16.1783921724427, 4.498531338416847, 0.24131978596839576]
- [982.0891142368577, 13.207838431565234, 4.461788544437223, 0.24125878713941296]
- [979.8625656172379, 15.407132551714664, 4.488997868500401, 0.24130396254650277]
- [980.436410636633, 14.840308410290579, 4.481988625921814, 0.2412923271540778]
- [982.0356905978668, 13.26060771242806, 4.462441817696447, 0.24125987200809731]
- [982.1798037070085, 13.118259816220359, 4.460679531359107, 0.24125694541145867]
- [967.9235445503858, 27.20059731799279, 4.634313247988205, 0.24154488363263862]
- [958.0934636878087, 36.91153279602659, 4.75326183935249, 0.2417416768116818]
- [825.1828219702596, 168.25388439497434, 6.318987396914114, 0.24430623785147454]
- [982.3116508758052, 12.988027748370422, 4.4590671082110065, 0.24125426761286162]
-#+end_example
-
-#+begin_src julia 
-res.V
-#+end_src
-
-#+RESULTS:
-#+begin_example
-10×51 Matrix{Vector{Float64}}:
- [999.0, 1.0, 0.0, 0.0]  …  [979.082, 16.1784, 4.49853, 0.24132]
- [999.0, 1.0, 0.0, 0.0]     [982.089, 13.2078, 4.46179, 0.241259]
- [999.0, 1.0, 0.0, 0.0]     [979.863, 15.4071, 4.489, 0.241304]
- [999.0, 1.0, 0.0, 0.0]     [980.436, 14.8403, 4.48199, 0.241292]
- [999.0, 1.0, 0.0, 0.0]     [982.036, 13.2606, 4.46244, 0.24126]
- [999.0, 1.0, 0.0, 0.0]  …  [982.18, 13.1183, 4.46068, 0.241257]
- [999.0, 1.0, 0.0, 0.0]     [967.924, 27.2006, 4.63431, 0.241545]
- [999.0, 1.0, 0.0, 0.0]     [958.093, 36.9115, 4.75326, 0.241742]
- [999.0, 1.0, 0.0, 0.0]     [825.183, 168.254, 6.31899, 0.244306]
- [999.0, 1.0, 0.0, 0.0]     [982.312, 12.988, 4.45907, 0.241254]
-#+end_example
-
-#+begin_src julia 
-map(Base.Fix2(getindex, 3), res.V[1, :])
-#+end_src
-
-#+RESULTS:
-#+begin_example
-51-element Vector{Float64}:
- 0.0
- 4.467096587319281
- 4.463862526615373
- 4.459656853523802
- 4.466795106880251
- 4.465373456614291
- 4.4709067521561074
- 4.483831870092793
- 4.48709930090452
- 4.488202856233156
- 4.475931845249381
- 4.49828765348811
- 4.471014395310173
- ⋮
- 4.457669068409179
- 4.457627261638725
- 4.457618617597363
- 4.4576794290840995
- 4.458148242977677
- 4.457862024612464
- 4.458002377816298
- 4.458960451540986
- 4.462557706195554
- 4.474477160405936
- 4.4695823185470775
- 4.498531338416847WARNING: redefinition of constant PATH. This may fail, cause incorrect answers, or produce other errors.
-WARNING: redefinition of constant LIBPATH. This may fail, cause incorrect answers, or produce other errors.
-WARNING: redefinition of constant PATH_list. This may fail, cause incorrect answers, or produce other errors.
-WARNING: redefinition of constant LIBPATH_list. This may fail, cause incorrect answers, or produce other errors.
-[91m[1m┌ [22m[39m[91m[1mError: [22m[39mError watching manifest
-[91m[1m│ [22m[39m  exception =
-[91m[1m│ [22m[39m   cannot set type for global best_wrapper. It already has a value or is already set to a different type.
-[91m[1m│ [22m[39m   Stacktrace:
-[91m[1m│ [22m[39m    [1] top-level scope
-[91m[1m│ [22m[39m   [90m   @[39m [90m~/.julia/packages/JLLWrappers/pG9bm/src/[39m[90m[4mtoplevel_generators.jl:119[24m[39m
-[91m[1m│ [22m[39m   Revise evaluation error at /home/tor/.julia/packages/JLLWrappers/pG9bm/src/toplevel_generators.jl:119
-[91m[1m│ [22m[39m   
-[91m[1m│ [22m[39m   Stacktrace:
-[91m[1m│ [22m[39m    [1] [0m[1mmethods_by_execution![22m[0m[1m([22m[90mrecurse[39m::[0mAny, [90mmethodinfo[39m::[0mRevise.CodeTrackingMethodInfo, [90mdocexprs[39m::[0mDict[90m{Module, Vector{Expr}}[39m, [90mmod[39m::[0mModule, [90mex[39m::[0mExpr; [90mmode[39m::[0mSymbol, [90mdisablebp[39m::[0mBool, [90malways_rethrow[39m::[0mBool, [90mkwargs[39m::[0mBase.Pairs[90m{Symbol, Union{}, Tuple{}, NamedTuple{(), Tuple{}}}[39m[0m[1m)[22m
-[91m[1m│ [22m[39m   [90m   @[39m [35mRevise[39m [90m~/.julia/packages/Revise/7HQ7u/src/[39m[90m[4mlowered.jl:227[24m[39m
-[91m[1m└ [22m[39m[90m@ Revise ~/.julia/packages/Revise/7HQ7u/src/pkgs.jl:477[39m[91m[1m┌ [22m[39m[91m[1mError: [22m[39mError watching manifest
-[91m[1m│ [22m[39m  exception =
-[91m[1m│ [22m[39m   [91mTOML Parser error:[39m
-[91m[1m│ [22m[39m   [0m[1m/drive-2/Projects/public/Turing-Workshop/2023-MRC-BSU-and-UKHSA/TorsWorkshop/Manifest.toml:854:77[22m[91m error: [39mstring literal ended unexpectedly
-[91m[1m│ [22m[39m     deps = ["AbstractTrees", "Colors", "FileIO", "FixedPointNumbers", "IndirectA
-[91m[1m│ [22m[39m                                                                                [92m^[39m 
-[91m[1m│ [22m[39m   Stacktrace:
-[91m[1m│ [22m[39m    [1] [0m[1mparse[22m
-[91m[1m│ [22m[39m   [90m   @[39m [90m./[39m[90m[4mtoml_parser.jl:445[24m[39m[90m [inlined][39m
-[91m[1m│ [22m[39m    [2] [0m[1mget_updated_dict[22m[0m[1m([22m[90mp[39m::[0mBase.TOML.Parser, [90mf[39m::[0mBase.CachedTOMLDict[0m[1m)[22m
-[91m[1m│ [22m[39m   [90m   @[39m [90mBase[39m [90m./[39m[90m[4mloading.jl:247[24m[39m
-[91m[1m│ [22m[39m    [3] [0m[1m(::Base.var"#938#939"{String, Base.TOMLCache})[22m[0m[1m([22m[0m[1m)[22m
-[91m[1m│ [22m[39m   [90m   @[39m [90mBase[39m [90m./[39m[90m[4mloading.jl:288[24m[39m
-[91m[1m│ [22m[39m    [4] [0m[1mlock[22m[0m[1m([22m[90mf[39m::[0mBase.var"#938#939"[90m{String, Base.TOMLCache}[39m, [90ml[39m::[0mReentrantLock[0m[1m)[22m
-[91m[1m│ [22m[39m   [90m   @[39m [90mBase[39m [90m./[39m[90m[4mlock.jl:229[24m[39m
-[91m[1m│ [22m[39m    [5] [0m[1mparsed_toml[22m
-[91m[1m│ [22m[39m   [90m   @[39m [90m./[39m[90m[4mloading.jl:275[24m[39m[90m [inlined][39m
-[91m[1m│ [22m[39m    [6] [0m[1mparsed_toml[22m
-[91m[1m│ [22m[39m   [90m   @[39m [90m./[39m[90m[4mloading.jl:273[24m[39m[90m [inlined][39m
-[91m[1m│ [22m[39m    [7] [0m[1mmanifest_paths![22m[0m[1m([22m[90mpkgpaths[39m::[0mDict[90m{Base.PkgId, String}[39m, [90mmanifest_file[39m::[0mString[0m[1m)[22m
-[91m[1m│ [22m[39m   [90m   @[39m [35mRevise[39m [90m~/.julia/packages/Revise/7HQ7u/src/[39m[90m[4mpkgs.jl:390[24m[39m
-[91m[1m└ [22m[39m[90m@ Revise ~/.julia/packages/Revise/7HQ7u/src/pkgs.jl:477[39m
-#+end_example
-
-#+begin_src julia
-state_idx = 3
-
-p = plot(size=(400, 200))
-for particle_idx = 1:N
-    scatter!(
-        p,
-        ts,
-        map(Base.Fix2(getindex, state_idx), res.V[particle_idx, :]),
-        label="",
-        markerstrokewidth=0.1,
-        markersize=2,
-    )
-end
-p
-#+end_src
-
-#+RESULTS:
-[[file:assets/outputs/more-julia/f87dcb0a320c0a8b9559fd1d70d587bb40de4cdc.svg]]
 
 * Julia: The Good, the Bad, and the Ugly
 :PROPERTIES:
@@ -7079,13 +6515,577 @@ Godspeed to you
 
 * Fin
 
+* [cite:@kxs052]                                                   :noexport:
+:PROPERTIES:
+:header-args:julia: :session mrc-biostats-2023-particle-filter :tangle particle-filter.jl :exports both :kernel julia-4-threads-1.9 :async yes :file (f-join "assets" "outputs" "more-julia" (sha1 (plist-get (cadr (org-element-at-point)) :value)))
+:END:
+
+#+begin_src julia
+using DifferentialEquations, Turing, StatsPlots, LinearAlgebra
+#+end_src
+
+#+RESULTS:
+
+#+begin_src julia 
+struct SEIR{T1,T2}
+    k::T1
+    γ::T2
+    N::Int
+end
+
+function (seir::SEIR)(du, u, p, t)
+    S, E, I, R = u
+    k, γ, N = seir.k, seir.γ, seir.N
+    β = only(p)
+
+    du[1] = -β * S * I / N
+    du[2] = β * S * I / N - k * E
+    du[3] = k * E - γ * I
+    du[4] = γ * I
+
+    return nothing
+end
+#+end_src
+
+#+RESULTS:
+
+#+begin_src julia
+tspan = (0.0, 100.0)
+u0 = [999.0, 1, 0, 0]
+probf = SEIR(0.25, 0.05, 1000)
+prob = ODEProblem(probf, u0, tspan, [0.2])
+solve(prob)
+#+end_src
+
+#+RESULTS:
+#+begin_example
+retcode: Success
+Interpolation: specialized 4th order "free" interpolation, specialized 2nd order "free" stiffness-aware interpolation
+t: 28-element Vector{Float64}:
+   0.0
+   0.0056540236999814706
+   0.062194260699796174
+   0.30072981111184066
+   0.6950381565675945
+   1.2203000465133529
+   1.9420478964976093
+   2.875425767640001
+   4.059411303485391
+   5.5012350028501915
+   7.231365280264414
+   9.310611835029093
+  11.822720603708422
+   ⋮
+  29.994131638154776
+  36.38399041740069
+  43.15031946908468
+  49.925654813444986
+  56.64173164949659
+  63.21608779006091
+  69.68044151998856
+  76.04965890277947
+  82.24922997649685
+  88.32704521258971
+  94.43532129748762
+ 100.0
+u: 28-element Vector{Vector{Float64}}:
+ [999.0, 1.0, 0.0, 0.0]
+ [998.9999992020507, 0.9985882901773383, 0.0014123080849147874, 1.9968700047033795e-7]
+ [998.999903990443, 0.9846672028102782, 0.015404780329859823, 2.402641680625783e-5]
+ [998.9978071088109, 0.9297127930516831, 0.0719313259662255, 0.0005487721711357369]
+ [998.988715035506, 0.8511476794063842, 0.15731320394797277, 0.002824081139604212]
+ [998.9668112144358, 0.767041034463036, 0.25784211124172, 0.008305639859413096]
+ [998.9208316832985, 0.6827118072407354, 0.3766438333267149, 0.01981267613405121]
+ [998.8381486559025, 0.6147899451473634, 0.5065547781759926, 0.04050662077415447]
+ [998.7012919960837, 0.5764444949375392, 0.6475005783296947, 0.07476293064911178]
+ [998.4923402920977, 0.5785427877223749, 0.8020426609011208, 0.12707425927887211]
+ [998.1839760718743, 0.6275609878677972, 0.9841692988996603, 0.20429364135823094]
+ [997.7273588313809, 0.7325590501006006, 1.2214003176662998, 0.318681800852206]
+ [997.0331285904066, 0.9130060315711355, 1.5611701374154396, 0.49269524060683106]
+ ⋮
+ [982.0702623929466, 4.978328695298856, 8.678429708473596, 4.272979203280957]
+ [967.3040268930682, 8.929117975760578, 15.706379061376614, 8.060476069794523]
+ [939.2612602725887, 16.244165918604498, 29.079324826448026, 15.415248982358625]
+ [889.935318260028, 28.490110433785002, 52.673150775667786, 28.90142053051913]
+ [809.536141204184, 46.627383515369715, 91.26328180674686, 52.57319347369934]
+ [693.548729931949, 68.30245900142862, 146.9156269837328, 91.23318408288952]
+ [549.4058252982588, 86.32392859844263, 214.79100213149258, 149.47924397180583]
+ [400.5060115349084, 91.46932009526371, 279.51869582345205, 228.50597254637566]
+ [275.14644582873996, 81.21206493893693, 321.279498493012, 322.36199073931095]
+ [184.50529783539324, 62.256830342268195, 330.969490819117, 422.2683810032214]
+ [124.27616729855168, 42.68631251399805, 311.97675224228794, 521.0607679451622]
+ [89.37978460338655, 28.53709293175161, 278.6199759741896, 603.4631464906721]
+#+end_example
+
+#+begin_src julia
+using Random: Random
+
+struct EulerMaruyama{F, G}
+    μ::F
+    σ::G
+end
+
+EulerMaruyama() = EulerMaruyama((θ, x) -> 0, (θ, x) -> 1)
+
+(em::EulerMaruyama)(θ, x, δ, m=1) = em(Random.default_rng(), θ, x, δ, m)
+function (em::EulerMaruyama)(rng::Random.AbstractRNG, θ, x, δ, m=1)
+    # TODO: Do we need to adjust the size in our `randn` call?
+    for _ = 1:m
+        μ = em.μ(θ, x)
+        σ = em.σ(θ, x)
+        x = @. x + δ * μ + sqrt(δ) * σ * randn(rng)
+    end
+
+    return x
+end
+#+end_src
+
+#+RESULTS:
+
+#+begin_src julia
+# Simple OU process.
+ou = EulerMaruyama((θ, x) -> -θ[1] * x, (θ, x) -> θ[2])
+
+θ = 1.0; σ = sqrt(2); δ = 0.05;
+t = 12
+xs = let
+    x = 10.0
+    xs = [x]
+    for _ = 1:ceil(Int, t / δ)
+        x = ou([θ, σ], x, δ)
+        push!(xs, x)
+    end
+    xs
+end
+
+plot(0:δ:(length(xs) - 1) * δ, xs, legend=false)
+#+end_src
+
+#+RESULTS:
+[[file:assets/outputs/more-julia/7c3945985ca929a14b309bb0a74f6a7a934b07c7.svg]]
+
+
+#+begin_src julia 
+# Algorithm 1: Particle Filter Algorithm
+"""
+    particle_filter(y, x₀, ode; n, N)
+
+# Arguments
+- `y`: observations
+- `x₀`: initial states
+- `ode`: ODE model
+
+# Keyword Arguments
+- `n`: number of observations (default: length(y))
+- `N`: number of particles (default: length(x₀))
+- `M`: number of discretization steps between each observation time (default: 1)
+"""
+function particle_filter(
+    x₀, V₀, y, θ, ts, prob, f, em;
+    n = length(y),
+    N = 10,
+    m = 1,
+    hinv=exp
+)
+    # TODO: Change it all to work on log-scale as much as possible.
+    # Buffer for the particles.
+    V = Matrix{typeof(V₀)}(undef, N, n)
+    # Initialize the particles.
+    for j = 1:N
+        V[j, 1] = V₀
+    end
+    # Buffer for the states.
+    x = Matrix{typeof(x₀)}(undef, N, n)
+    for j = 1:N
+        # Initialize the states.
+        x[j, 1] = x₀
+    end
+
+    # Other buffers.
+    α = zeros(N, n)
+    W = zeros(N, n)
+    L = one(eltype(x₀))
+
+    # Step-size for SDE solve.
+    δ = 1 / m
+    for i = 1:n - 1
+        # Remake the problem to the next observation time.
+        prob_t = remake(prob, tspan=(ts[i], ts[i + 1]))
+        # For each particle.
+        for j = 1:N
+            # Sample x[i + 1] given x[i].
+            x_j = em(θ, x[j, i], δ, m)
+            x[j, i + 1] = x_j
+
+            # Solve ODE between the two observation times.
+            β = hinv(x_j)
+            prob_t_j = remake(prob_t, p=[β,])
+            # TODO: Disable storing of the intermediate steps.
+            # TODO: Check at that we have the correct `saveat`.
+            V_t = solve(prob_t_j)
+            V[j, i + 1] = V_t[end]
+
+            # Compute the likelihood of the observation at time i + 1.
+            # TODO: Should this be a Turing.jl model?
+            α[j, i + 1] = f(y[i + 1], V[j, 1:i + 1])
+        end
+
+        W[:, i + 1] = normalize(α[:, i + 1], 1); L = L * mean(α);
+        # TODO: Resample
+        # resample(V[1:i + 1, :], x[1:i + 1, :])
+    end
+
+    return (; V, W, x, L)
+end
+#+end_src
+
+#+RESULTS:
+: particle_filter
+
+#+begin_src julia
+f(y, V) = pdf(Normal(V[end][3], 1), y)
+hinv = exp
+N = 10
+
+m = 4
+δ = 1 / m
+
+tspan = (0, 5)
+Δt = 0.1
+ts = tspan[1]:Δt:tspan[2]
+n = length(ts)
+
+θ = [0.1, 1.0]
+x₀ = rand(Normal())
+
+xs_true = Float64[x₀]
+for i = 1:n
+    # We take `m` steps of size `δ` to approximate a step of size `Δt`.
+    x = ou(θ, xs_true[i], δ, m)
+    for _ = 1:m - 1
+        x = ou(θ, xs_true[i], δ, m)
+    end
+    push!(xs_true, x)
+end
+xs_true
+#+end_src
+
+#+RESULTS:
+#+begin_example
+52-element Vector{Float64}:
+ -0.24878183911750845
+ -0.6612017363745032
+ -0.5771129755661678
+ -1.3998600910341077
+ -3.451824275216758
+ -1.9984112308388422
+ -1.9924864608629838
+ -3.5250896691556277
+ -2.9739944443243034
+ -2.9800035362896766
+ -4.17320936285544
+ -3.3632341699940276
+ -1.6339647999108249
+  ⋮
+ -0.12313561294713371
+  1.5450391910822283
+  0.5587443891018262
+  1.7891589771333165
+  1.872952639316824
+  1.5540947466863484
+ -0.2167465035797701
+ -1.526033137464444
+ -2.3638187290855757
+ -1.2625822265622242
+ -0.7982249206748514
+ -1.2116103413002468
+#+end_example
+
+#+begin_src julia
+βs = hinv.(xs_true)
+#+end_src
+
+#+RESULTS:
+#+begin_example
+52-element Vector{Float64}:
+ 0.7797500657927471
+ 0.5162305885040517
+ 0.5615171424285115
+ 0.24663146748144474
+ 0.031687776392698305
+ 0.1355504706573401
+ 0.13635595982888485
+ 0.029449166568809727
+ 0.051098790857907486
+ 0.050792654247042046
+ 0.015402747708387066
+ 0.03462310067973559
+ 0.19515429050669508
+ ⋮
+ 0.8841437530903199
+ 4.688155357303803
+ 1.7484757162671933
+ 5.984417317534419
+ 6.507482308931339
+ 4.730802011969568
+ 0.8051340420355165
+ 0.21739634049976952
+ 0.09406034551872539
+ 0.28292251241208627
+ 0.4501272669874618
+ 0.2977174664702004client_loop: send disconnect: Broken pipe
+#+end_example
+
+#+begin_src julia
+V₀ = [999.0, 1, 0, 0]
+probf = SEIR(0.25, 0.05, 1000)
+prob = ODEProblem(probf, V₀, tspan, [0.2])
+#+end_src
+
+#+RESULTS:
+: [38;2;86;182;194mODEProblem[0m with uType [38;2;86;182;194mVector{Float64}[0m and tType [38;2;86;182;194mInt64[0m. In-place: [38;2;86;182;194mtrue[0m
+: timespan: (0, 5)
+: u0: 4-element Vector{Float64}:
+:  999.0
+:    1.0
+:    0.0
+:    0.0
+
+#+begin_src julia
+let i = 1, prob = prob
+    β = βs[i]
+    prob = remake(prob, p=[β,], tspan=(ts[i], ts[i + 1]))
+    V_t = solve(prob)[end]
+end
+#+end_src
+
+#+RESULTS:
+: 4-element Vector{Float64}:
+:  998.999035805983
+:    0.976266101698541
+:    0.024636203279721925
+:    6.188903883306985e-5
+
+#+begin_src julia
+V_true = zeros(length(V₀), n)
+V_true[:, 1] = V₀
+for i = 1:n - 1
+    β = βs[i]
+    prob = remake(prob, u0=V_true[:, i], p=[β,], tspan=(ts[i], ts[i + 1]))
+    V_t = solve(prob)
+    V_true[:, i + 1] = V_t[end]
+end
+#+end_src
+
+#+RESULTS:
+
+#+begin_src julia
+infected_true = V_true[3, :]
+plot(ts, infected_true, label="true", size=(400, 200))
+#+end_src
+
+#+RESULTS:
+[[file:assets/outputs/more-julia/47fd6cb8c10828598540fa1f4c0111622d264e6d.svg]]
+
+
+#+begin_src julia
+V_true
+#+end_src
+
+#+RESULTS:
+: 4×51 Matrix{Float64}:
+:  999.0  998.999      998.997        …  982.474     982.437    982.317
+:    1.0    0.976266     0.954032         13.4865     13.19      12.9825
+:    0.0    0.0246362    0.0485779         3.83996     4.1534     4.459
+:    0.0    6.1889e-5    0.000245206       0.199733    0.21972    0.241254
+
+#+begin_src julia
+ys = map(eachcol(V_true)) do V
+    V[3] + rand(Normal())
+end
+#+end_src
+
+#+RESULTS:
+#+begin_example
+51-element Vector{Float64}:
+ -0.5576703894082115
+  0.31494731473497434
+ -0.782010760585272
+ -1.1253763909484469
+  0.3928993294327789
+ -0.8227802480874041
+  2.842180090129152
+  1.609855724089655
+  0.1217016398280302
+ -0.31360887101271573
+ -0.7839811314785547
+  1.042050553773855
+  0.09414142122994448
+  ⋮
+  0.05421057426064957
+  1.8792572903396607
+  1.0816613933578965
+  2.417860738671401
+  1.796002164551382
+  3.444541128186396
+  1.8289648762543378
+  3.4364109210785503
+  3.904061960770232
+  2.225333928943403
+  3.4349557674958855
+  5.037173311656346
+#+end_example
+
+#+begin_src julia
+x₀
+#+end_src
+
+#+RESULTS:
+: -0.24878183911750845
+
+#+begin_src julia
+res = particle_filter(x₀, V₀, ys, θ, ts, prob, f, ou)
+#+end_src
+
+#+RESULTS:
+: '(V = ((999.0  1.0  0.0  0.0) (981.6549825068294  13.636653304174525  4.467096587319281  0.24126760167636907) … (981.4516426950192  13.837503257224819  4.4695823185470775  0.24127172920838716) (979.0817567031715  16.1783921724427  4.498531338416847  0.24131978596839576); (999.0  1.0  0.0  0.0) (982.2631520721105  13.035932437032557  4.4596602382065775  0.241255252649868) … (982.2861196382858  13.01324622364836  4.459379351894491  0.24125478617088797) (982.0891142368577  13.207838431565234  4.461788544437223  0.24125878713941296); … ; (999.0  1.0  0.0  0.0) (981.7439049217614  13.548819821185612  4.4660094605939955  0.2412657964583884) … (663.334004658758  328.2287237478621  8.18992670303448  0.2473448903449323) (825.1828219702596  168.25388439497434  6.318987396914114  0.24430623785147454); (999.0  1.0  0.0  0.0) (982.2879321980549  13.01145586790656  4.459357184681115  0.24125474935682695) … (982.0983594909576  13.198706419818599  4.461675489831078  0.24125859939224795) (982.3116508758052  12.988027748370422  4.4590671082110065  0.24125426761286162))  W = (0.0 0.09988757372155688 … 0.11260922674838236 0.10429844379909534; 0.0 0.10301704630685216 … 0.11379833207901854 0.102185543421086; … ; 0.0 0.1003394173483243 … 2.367964404902901e-6 0.053026954224620594; 0.0 0.10314651947720654 … 0.11353066890134646 0.10202528124349138)  x = (-0.24878183911750845 0.6138855191582259 … 0.8449512024687492 2.0692792441000702; -0.24878183911750845 -0.8899954378772685 … -1.0317669857230851 -0.19608925850572068; … ; -0.24878183911750845 0.4931976536046899 … 6.566510698925604 5.871380391390189; -0.24878183911750845 -1.043860246823622 … -0.22302817403959607 -1.2172756503512303)  L = 1.013581747539015e-136)
+
+#+begin_src julia
+res.V[:, end]
+#+end_src
+
+#+RESULTS:
+#+begin_example
+10-element Vector{Vector{Float64}}:
+ [979.0817567031715, 16.1783921724427, 4.498531338416847, 0.24131978596839576]
+ [982.0891142368577, 13.207838431565234, 4.461788544437223, 0.24125878713941296]
+ [979.8625656172379, 15.407132551714664, 4.488997868500401, 0.24130396254650277]
+ [980.436410636633, 14.840308410290579, 4.481988625921814, 0.2412923271540778]
+ [982.0356905978668, 13.26060771242806, 4.462441817696447, 0.24125987200809731]
+ [982.1798037070085, 13.118259816220359, 4.460679531359107, 0.24125694541145867]
+ [967.9235445503858, 27.20059731799279, 4.634313247988205, 0.24154488363263862]
+ [958.0934636878087, 36.91153279602659, 4.75326183935249, 0.2417416768116818]
+ [825.1828219702596, 168.25388439497434, 6.318987396914114, 0.24430623785147454]
+ [982.3116508758052, 12.988027748370422, 4.4590671082110065, 0.24125426761286162]
+#+end_example
+
+#+begin_src julia 
+res.V
+#+end_src
+
+#+RESULTS:
+#+begin_example
+10×51 Matrix{Vector{Float64}}:
+ [999.0, 1.0, 0.0, 0.0]  …  [979.082, 16.1784, 4.49853, 0.24132]
+ [999.0, 1.0, 0.0, 0.0]     [982.089, 13.2078, 4.46179, 0.241259]
+ [999.0, 1.0, 0.0, 0.0]     [979.863, 15.4071, 4.489, 0.241304]
+ [999.0, 1.0, 0.0, 0.0]     [980.436, 14.8403, 4.48199, 0.241292]
+ [999.0, 1.0, 0.0, 0.0]     [982.036, 13.2606, 4.46244, 0.24126]
+ [999.0, 1.0, 0.0, 0.0]  …  [982.18, 13.1183, 4.46068, 0.241257]
+ [999.0, 1.0, 0.0, 0.0]     [967.924, 27.2006, 4.63431, 0.241545]
+ [999.0, 1.0, 0.0, 0.0]     [958.093, 36.9115, 4.75326, 0.241742]
+ [999.0, 1.0, 0.0, 0.0]     [825.183, 168.254, 6.31899, 0.244306]
+ [999.0, 1.0, 0.0, 0.0]     [982.312, 12.988, 4.45907, 0.241254]
+#+end_example
+
+#+begin_src julia 
+map(Base.Fix2(getindex, 3), res.V[1, :])
+#+end_src
+
+#+RESULTS:
+#+begin_example
+51-element Vector{Float64}:
+ 0.0
+ 4.467096587319281
+ 4.463862526615373
+ 4.459656853523802
+ 4.466795106880251
+ 4.465373456614291
+ 4.4709067521561074
+ 4.483831870092793
+ 4.48709930090452
+ 4.488202856233156
+ 4.475931845249381
+ 4.49828765348811
+ 4.471014395310173
+ ⋮
+ 4.457669068409179
+ 4.457627261638725
+ 4.457618617597363
+ 4.4576794290840995
+ 4.458148242977677
+ 4.457862024612464
+ 4.458002377816298
+ 4.458960451540986
+ 4.462557706195554
+ 4.474477160405936
+ 4.4695823185470775
+ 4.498531338416847WARNING: redefinition of constant PATH. This may fail, cause incorrect answers, or produce other errors.
+WARNING: redefinition of constant LIBPATH. This may fail, cause incorrect answers, or produce other errors.
+WARNING: redefinition of constant PATH_list. This may fail, cause incorrect answers, or produce other errors.
+WARNING: redefinition of constant LIBPATH_list. This may fail, cause incorrect answers, or produce other errors.
+[91m[1m┌ [22m[39m[91m[1mError: [22m[39mError watching manifest
+[91m[1m│ [22m[39m  exception =
+[91m[1m│ [22m[39m   cannot set type for global best_wrapper. It already has a value or is already set to a different type.
+[91m[1m│ [22m[39m   Stacktrace:
+[91m[1m│ [22m[39m    [1] top-level scope
+[91m[1m│ [22m[39m   [90m   @[39m [90m~/.julia/packages/JLLWrappers/pG9bm/src/[39m[90m[4mtoplevel_generators.jl:119[24m[39m
+[91m[1m│ [22m[39m   Revise evaluation error at /home/tor/.julia/packages/JLLWrappers/pG9bm/src/toplevel_generators.jl:119
+[91m[1m│ [22m[39m   
+[91m[1m│ [22m[39m   Stacktrace:
+[91m[1m│ [22m[39m    [1] [0m[1mmethods_by_execution![22m[0m[1m([22m[90mrecurse[39m::[0mAny, [90mmethodinfo[39m::[0mRevise.CodeTrackingMethodInfo, [90mdocexprs[39m::[0mDict[90m{Module, Vector{Expr}}[39m, [90mmod[39m::[0mModule, [90mex[39m::[0mExpr; [90mmode[39m::[0mSymbol, [90mdisablebp[39m::[0mBool, [90malways_rethrow[39m::[0mBool, [90mkwargs[39m::[0mBase.Pairs[90m{Symbol, Union{}, Tuple{}, NamedTuple{(), Tuple{}}}[39m[0m[1m)[22m
+[91m[1m│ [22m[39m   [90m   @[39m [35mRevise[39m [90m~/.julia/packages/Revise/7HQ7u/src/[39m[90m[4mlowered.jl:227[24m[39m
+[91m[1m└ [22m[39m[90m@ Revise ~/.julia/packages/Revise/7HQ7u/src/pkgs.jl:477[39m[91m[1m┌ [22m[39m[91m[1mError: [22m[39mError watching manifest
+[91m[1m│ [22m[39m  exception =
+[91m[1m│ [22m[39m   [91mTOML Parser error:[39m
+[91m[1m│ [22m[39m   [0m[1m/drive-2/Projects/public/Turing-Workshop/2023-MRC-BSU-and-UKHSA/Part2/Manifest.toml:854:77[22m[91m error: [39mstring literal ended unexpectedly
+[91m[1m│ [22m[39m     deps = ["AbstractTrees", "Colors", "FileIO", "FixedPointNumbers", "IndirectA
+[91m[1m│ [22m[39m                                                                                [92m^[39m 
+[91m[1m│ [22m[39m   Stacktrace:
+[91m[1m│ [22m[39m    [1] [0m[1mparse[22m
+[91m[1m│ [22m[39m   [90m   @[39m [90m./[39m[90m[4mtoml_parser.jl:445[24m[39m[90m [inlined][39m
+[91m[1m│ [22m[39m    [2] [0m[1mget_updated_dict[22m[0m[1m([22m[90mp[39m::[0mBase.TOML.Parser, [90mf[39m::[0mBase.CachedTOMLDict[0m[1m)[22m
+[91m[1m│ [22m[39m   [90m   @[39m [90mBase[39m [90m./[39m[90m[4mloading.jl:247[24m[39m
+[91m[1m│ [22m[39m    [3] [0m[1m(::Base.var"#938#939"{String, Base.TOMLCache})[22m[0m[1m([22m[0m[1m)[22m
+[91m[1m│ [22m[39m   [90m   @[39m [90mBase[39m [90m./[39m[90m[4mloading.jl:288[24m[39m
+[91m[1m│ [22m[39m    [4] [0m[1mlock[22m[0m[1m([22m[90mf[39m::[0mBase.var"#938#939"[90m{String, Base.TOMLCache}[39m, [90ml[39m::[0mReentrantLock[0m[1m)[22m
+[91m[1m│ [22m[39m   [90m   @[39m [90mBase[39m [90m./[39m[90m[4mlock.jl:229[24m[39m
+[91m[1m│ [22m[39m    [5] [0m[1mparsed_toml[22m
+[91m[1m│ [22m[39m   [90m   @[39m [90m./[39m[90m[4mloading.jl:275[24m[39m[90m [inlined][39m
+[91m[1m│ [22m[39m    [6] [0m[1mparsed_toml[22m
+[91m[1m│ [22m[39m   [90m   @[39m [90m./[39m[90m[4mloading.jl:273[24m[39m[90m [inlined][39m
+[91m[1m│ [22m[39m    [7] [0m[1mmanifest_paths![22m[0m[1m([22m[90mpkgpaths[39m::[0mDict[90m{Base.PkgId, String}[39m, [90mmanifest_file[39m::[0mString[0m[1m)[22m
+[91m[1m│ [22m[39m   [90m   @[39m [35mRevise[39m [90m~/.julia/packages/Revise/7HQ7u/src/[39m[90m[4mpkgs.jl:390[24m[39m
+[91m[1m└ [22m[39m[90m@ Revise ~/.julia/packages/Revise/7HQ7u/src/pkgs.jl:477[39m
+#+end_example
+
+#+begin_src julia
+state_idx = 3
+
+p = plot(size=(400, 200))
+for particle_idx = 1:N
+    scatter!(
+        p,
+        ts,
+        map(Base.Fix2(getindex, state_idx), res.V[particle_idx, :]),
+        label="",
+        markerstrokewidth=0.1,
+        markersize=2,
+    )
+end
+p
+#+end_src
+
+#+RESULTS:
+[[file:assets/outputs/more-julia/f87dcb0a320c0a8b9559fd1d70d587bb40de4cdc.svg]]
+
 * Going fast                                                       :noexport:
 :PROPERTIES:
 :header-args:julia: :tangle no
 :END:
 
 #+begin_src julia :exports none
-using TorsWorkshop, Turing, StatsPlots
+using Part2, Turing, StatsPlots
 #+end_src
 
 #+RESULTS:

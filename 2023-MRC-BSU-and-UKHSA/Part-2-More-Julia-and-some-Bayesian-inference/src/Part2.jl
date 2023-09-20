@@ -1,4 +1,4 @@
-module TorsWorkshop
+module Part2
 
 using Turing
 using StatsPlots
@@ -183,4 +183,4 @@ function issuccess(sol)
     return (sol_unwrapped.retcode === ReturnCode.Success) || (sol_unwrapped.retcode === ReturnCode.Terminated)
 end
 
-end # module TorsWorkshop
+end # module Part2
