@@ -12,7 +12,7 @@ paginate: true
 
 ## **What is `BUGS`?**
 
-- Start in 1989, right here
+- Influential project that began in 1989, right here
 - The first Probabilistic Programming Language
 - Software for Bayesian analysis of statistical model
   - Originally with Gibbs
@@ -87,7 +87,7 @@ model_def = @bugs("""model{
 
 ## **Workflow in `JuliaBUGS`**
 
-Step 1: Write the model in Julia-flavored or the original `BUGS` syntax, then use `@bugs` macro to transform it into Julia AST
+**Step 1** *Write the model in Julia-flavored or the original `BUGS` syntax, then use `@bugs` macro to transform it into Julia AST*
 
 ```julia
 quote
@@ -113,7 +113,7 @@ end
 
 ## **Workflow in `JuliaBUGS` (cont.)**
 
-Step 2: Prepare data and initial values
+**Step 2** *Prepare data and initial values*
 
 ```julia
 data=(
@@ -138,7 +138,7 @@ inits=(
 
 ## **Workflow in `JuliaBUGS` (cont.)**
 
-Step 3: Compile the model
+**Step 3** *Compile the model*
 
 ```julia
 model = compile(model_def, data, inits)
@@ -162,7 +162,7 @@ julia> LogDensityProblems.logdensity(model, rand(65)) # log-density of the model
 
 ## **Workflow in `JuliaBUGS` (cont.)**
 
-Step 4: Transform the model to be AD-ready (only necessary for HMC/NUTS)
+**Step 4** *Transform the model to be AD-ready (only necessary for HMC/NUTS)*
 
 ```julia
 ad_model = ADgradient(:ReverseDiff, model; compile = Val(true)) # if using ReverseDiff
@@ -187,7 +187,7 @@ julia> gradients
 
 ## **Workflow in `JuliaBUGS` (cont.)**
 
-Step 4: Ready to sample!
+**Step 5** *Ready to sample!*
 
 ```julia
 n_samples = 3000; n_adapts = 1000 # number of samples and adaptation steps
@@ -206,7 +206,7 @@ samples_and_stats = AbstractMCMC.sample(
 ### Here we
 
 - Use the `AbstractMCMC` interface to sample
-- An `MCMCChains.Chain` object is returned
+- An `MCMCChains.Chain` object is returned (see next slide)
 
 ---
 
@@ -234,14 +234,15 @@ Quantiles
       alpha0    99.8404   104.1624   106.6278   108.9566   113.6170
 ```
 
-`MCMCChains.Chain` contains all the sample values and statistics
+which contains all the sample values and statistics
 
 ---
 
 ## **Registering Functions and Distributions**
 
-- `JuliaBUGS` implemented most of the distributions and functions in `BUGS`
-- Users can also register their own functions and distributions by
+`JuliaBUGS` has implemented most of the distributions and functions in `BUGS`
+
+Users can also register their own functions and distributions by
 
 ```julia
 JuliaBUGS.@register_primitive function myfunc(x::Float64, y::Float64)
@@ -249,9 +250,7 @@ JuliaBUGS.@register_primitive function myfunc(x::Float64, y::Float64)
 end
 ```
 
-then `myfunc` is ready to use in a `JuliaBUGS` model
-
-Alternatively, users can also register a function by
+alternatively,
 
 ```julia
 function myfunc(x::Float64, y::Float64)
@@ -259,6 +258,8 @@ function myfunc(x::Float64, y::Float64)
 end
 JuliaBUGS.register_primitive(myfunc)
 ```
+
+then `myfunc` is ready to use in a `JuliaBUGS` model
 
 ---
 
@@ -301,19 +302,18 @@ JuliaBUGS.register_primitive(myfunc)
 
 ## **Current Status and Caveats**
 
-- `JuliaBUGS` is still in its early stage
-- Although we have tested on most of the Volume I examples from OpenBUGS, there will still be some rough edges
-  - Please report any bugs you find to the GitHub repo
-- We haven't optimised the compiler to handle very large models
-- The first time you run the `compile` function, it may take a while to see the result, but following calls will be much faster
-- Inference is supported by implementing the `LogDensityProblem` interface
-  - HMC/NUTS from `AdvancedHMC.jl` is supported
-  - MH algorithms from `AdcanvedMH.jl` is supported
-  - We are working on implementing algorithms so that the graphical structure can be exploited
+- `JuliaBUGS` is in early development. Bugs and discrepancies with `BUGS` may exist.
+- The compiler is not optimized for large models.
+- Initial `compile` function calls may be slow, but subsequent calls will be faster.
+- Inference is supported via the `LogDensityProblem` interface with HMC/NUTS from `AdvancedHMC.jl` and MH algorithms from `AdvancedMH.jl`.
+- We are working on exploiting the graphical structure for implementing algorithms.
 
 ---
 
 ## **Future Plans**
 
+- Optimize the compiler to handle larger models efficiently
+- Extend inference support with more algorithms and more efficient implementations
+- Continue testing and debugging
 
-Call for Collaboration
+# **Collaborate with us!**
