@@ -4428,7 +4428,7 @@ For large enough (n), the "combination" of the posteriors should recover the pri
 
 #+ATTR_HTML: :width 800px
 #+ATTR_ORG: :width 400
-[[file:assets/attachments/2023-01-22_12-09-24_Screenshot_20230122_120848.png]]
+[[file:.more-julia/attachments/2023-01-22_12-09-24_Screenshot_20230122_120848.png]]
 
 #+REVEAL: split
 
