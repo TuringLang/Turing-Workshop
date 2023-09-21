@@ -195,6 +195,7 @@ pwd()
 Then run something like (depending on which OS you are on)
 
 #+begin_src sh :eval no
+# Add `-t N` to start Julia with N threads
 julia --project
 #+end_src
 

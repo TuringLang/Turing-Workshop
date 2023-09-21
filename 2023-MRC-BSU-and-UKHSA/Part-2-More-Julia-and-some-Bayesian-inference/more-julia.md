@@ -133,6 +133,7 @@ pwd()
 Then run something like (depending on which OS you are on)  
 
 ```sh
+# Add `-t N` to start Julia with N threads
 julia --project
 ```
 
@@ -1226,7 +1227,7 @@ end every 10
 gif(anim, outputdir("lorenz.gif"));
 ```
 
-    [ Info: Saved animation to /drive-2/Projects/public/Turing-Workshop/2023-MRC-BSU-and-UKHSA/Part2/assets/outputs/more-julia/lorenz.gif
+    [ Info: Saved animation to /drive-2/Projects/public/Turing-Workshop/2023-MRC-BSU-and-UKHSA/Part-2-More-Julia-and-some-Bayesian-inference/assets/outputs/more-julia/lorenz.gif
 
 ![img](./assets/outputs/more-julia/lorenz.gif)  
 
@@ -3806,7 +3807,7 @@ For large enough (n), the "combination" of the posteriors should recover the pri
 
 "Combination" here usually means computing some statistic and comparing against what it should be  
 
-![img](assets/attachments/2023-01-22_12-09-24_Screenshot_20230122_120848.png)  
+![img](.more-julia/attachments/2023-01-22_12-09-24_Screenshot_20230122_120848.png)  
 
 That's very expensive → in practice we just do this once or twice  
 
