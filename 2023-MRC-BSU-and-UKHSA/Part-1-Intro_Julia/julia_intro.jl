@@ -1,3 +1,5 @@
+# Julia Cheat Sheet: https://cheatsheet.juliadocs.org/
+
 ###
 ### Basic Data Types in Julia
 ###
@@ -12,11 +14,12 @@ y = 2.0
 α = 1
 β = 2
 γ = 3
-x₁ = 1
+x₁ = 1 # x\_1<TAB>
 x⁵ = 5 # don't do this
-🐘 = "elephant"
-🦓 = "zebra"
-🦁 = "lion" # definitely don't do this
+🐘 = "elephant" # \:elephant:
+🦓 = "zebra" # \:zebra_face:
+🦁 = "lion" # \:lion_face: # definitely don't do this
+🦁 * ": ROAR!!"
 
 # Boolean
 b = true
