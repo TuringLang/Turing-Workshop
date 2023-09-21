@@ -1,0 +1,1241 @@
+#+SETUPFILE: ~/org-blog/setup.org
+#+OPTIONS: tex:t toc:nil date:nil
+#+PROPERTY: header-args:R :session :exports both :eval no
+#+PROPERTY: header-args:julia :session mrc-biostats-2023-more-julia :tangle more-julia.jl :exports both :kernel julia-4-threads-1.9 :async yes :file (f-join "assets" "outputs" "more-julia" (sha1 (plist-get (cadr (org-element-at-point)) :value)))
+#+EXCLUDE_TAGS: noexport
+#+TODO: TODO(t) TASK(q) WARNING(w) | DONE(d) SOLUTION(s)
+
+#+REVEAL_ROOT: assets/reveal.js-4.1.0/
+#+REVEAL_MATHJAX_URL: assets/MathJax-2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML
+#+REVEAL_TITLE_SLIDE: <div><div style="margin: -200px auto; opacity: 0.2;"><p><object data="assets/images/turing-logo-wide.svg"></object></p></div><h1>Case studies and other things</h1><h2>with the TuringLang ecosystem</h2><p><a href="https://github.com/TuringLang">https://github.com/TuringLang</a></p><p><a href="https://github.com/TuringLang/Turing-Workshop/tree/main/2023-Geilo-Winter-School/Part-2-Turing-and-other-things">The workshop is found here</a></p></div>
+#+REVEAL_EXTRA_CSS: assets/css/custom.css
+#+REVEAL_THEME: white
+#+REVEAL_PLUGINS: (markdown zoom)
+#+REVEAL_INIT_OPTIONS: slideNumber:true
+#+HTML_HEAD: <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+
+#+AUTHOR: Tor Erlend Fjelde
+#+TITLE: Case studies & other things
+
+* TODO What have we seen so far?
+
+* Case study
+
+It's time to do a case study!
+
+But on which dataset?
+
+*You're own!*
+
+#+REVEAL: split
+
+But if you don't have one, here are some alternatives:
+1. Lotka-Volterra model for snowhoe hares and Canadian lynxes
+   - A classic example of predator-prey dynamics
+2. Cockroaches in residential buildings throughout New York
+   - Become your landlord's favorite tenant by minimizing cockroach complaints in residential buildings while keeping costs low
+3. Synthetic time-series model
+   - A syncthetic time-series with periodic behavior
+4. S(?)IR modeling of influenza
+   - You already have the data; go knock yourself out!
+5. Pick one from RDatasets.jl
+
+Go to the next slides for more details
+
+** 1. Lotka-Volterra Predator-Prey model
+
+#+HTML: <div class="small-text">
+
+#+HTML: <div class="side-by-side">
+
+#+HTML: <div>
+The species of interest in this case study are:
+- Snowshoe hares, an hervivorous cousin of rabbits
+- Canadian lynxes, a feline predator whose diet consists largely of snowshoe hares
+#+HTML: </div>
+
+#+HTML: <div>
+Use Lotka-Volterra equations to model the population dynamics
+\begin{equation*}
+\begin{aligned}
+\frac{dH}{dt} &= \alpha H - \beta H L \\
+\frac{dL}{dt} &= \delta H L - \gamma L
+\end{aligned}
+\end{equation*}
+
+#+HTML: </div>
+
+#+HTML: </div>
+
+Use Turing.jl to infer the parameters
+- $\alpha$: growth rate of the prey population
+- $\beta$: rate of shrinkage of the prey population
+- $\delta$: rate of growth of the predator population
+- $\gamma$: rate of shrinkage of the predator population
+
+[[https://mc-stan.org/users/documentation/case-studies/lotka-volterra-predator-prey.html][Source (but don't look!)]]
+
+#+RESULTS:
+
+#+HTML: </div>
+
+#+REVEAL: split
+
+#+HTML: <div class="small-text">
+
+#+begin_src julia :exports none
+using DataFrames, CSV, DataDeps
+#+end_src
+
+#+begin_src julia :display text/plain :exports code
+register(DataDep(
+    "hares-and-lynxes",
+    "Numerical data for the number of pelts collected by the Hudson’s Bay Company in the years 1900-1920.",
+    "https://raw.githubusercontent.com/stan-dev/example-models/master/knitr/lotka-volterra/hudson-bay-lynx-hare.csv",
+))
+#+end_src
+
+#+RESULTS:
+: DataDep("hares-and-lynxes", "https://raw.githubusercontent.com/stan-dev/example-models/master/knitr/lotka-volterra/hudson-bay-lynx-hare.csv", nothing, DataDeps.fetch_default, identity, "Numerical data for the number of pelts collected by the Hudson’s Bay Company in the years 1900-1920.")
+
+
+And then we can load it
+
+#+begin_src julia :display text/plain
+df = DataFrame(
+    CSV.File(
+        joinpath(datadep"hares-and-lynxes", "hudson-bay-lynx-hare.csv"),
+        skipto=4,
+        header=3
+    )
+)
+#+end_src
+
+#+RESULTS:
+#+begin_example
+[1m21×3 DataFrame[0m
+[1m Row [0m│[1m Year  [0m[1m  Lynx   [0m[1m  Hare   [0m
+     │[90m Int64 [0m[90m Float64 [0m[90m Float64 [0m
+─────┼─────────────────────────
+   1 │  1900      4.0     30.0
+   2 │  1901      6.1     47.2
+   3 │  1902      9.8     70.2
+   4 │  1903     35.2     77.4
+   5 │  1904     59.4     36.3
+   6 │  1905     41.7     20.6
+   7 │  1906     19.0     18.1
+   8 │  1907     13.0     21.4
+   9 │  1908      8.3     22.0
+  10 │  1909      9.1     25.4
+  11 │  1910      7.4     27.1
+  12 │  1911      8.0     40.3
+  13 │  1912     12.3     57.0
+  14 │  1913     19.5     76.6
+  15 │  1914     45.7     52.3
+  16 │  1915     51.1     19.5
+  17 │  1916     29.7     11.2
+  18 │  1917     15.8      7.6
+  19 │  1918      9.7     14.6
+  20 │  1919     10.1     16.2
+  21 │  1920      8.6     24.7
+#+end_example
+
+#+HTML: </div>
+
+** 2. Cockroaches in New York
+
+#+HTML: <div class="x-small-text">
+
+#+begin_quote
+Imagine that you are a statistician or data scientist working as an independent contractor. One of your clients is a company that owns many residential buildings throughout New York City. The property manager explains that they are concerned about the number of cockroach complaints that they receive from their buildings. Previously the company has offered monthly visits from a pest inspector as a solution to this problem. While this is the default solution of many property managers in NYC, the tenants are rarely home when the inspector visits, and so the manager reasons that this is a relatively expensive solution that is currently not very effective.
+
+One alternative to this problem is to deploy long term bait stations. In this alternative, child and pet safe bait stations are installed throughout the apartment building. Cockroaches obtain quick acting poison from these stations and distribute it throughout the colony. The manufacturer of these bait stations provides some indication of the space-to-bait efficacy, but the manager suspects that this guidance was not calculated with NYC roaches in mind. NYC roaches, the manager rationalizes, have more hustle than traditional roaches; and NYC buildings are built differently than other common residential buildings in the US. This is particularly important as the unit cost for each bait station per year is quite high.
+#+end_quote
+
+[[https://github.com/jgabry/stancon2018helsinki_intro][Source #1]] and [[https://github.com/jgabry/stancon2018helsinki_intro][Source #2]]  _(but don't look!)_
+
+#+HTML: </div>
+
+#+REVEAL: split
+
+#+HTML: <div class="x-small-text">
+
+The manager wishes to employ your services to help them to find the optimal number of roach bait stations they should place in each of their buildings in order to minimize the number of cockroach complaints while also keeping expenditure on pest control affordable.
+
+A subset of the company's buildings have been randomly selected for an experiment:
+- At the beginning of each month, a pest inspector randomly places a number of bait stations throughout the building, without knowledge of the current cockroach levels in the building
+- At the end of the month, the manager records the total number of cockroach complaints in that building.
+- The manager would like to determine the optimal number of traps (=traps=) that balances the lost revenue (=R=) such that complaints (=complaints=) generate with the all-in cost of maintaining the traps (=TC=).
+
+Formally, we are interested in finding
+\begin{equation*}
+\arg \max_{\mathrm{traps} \in \mathbb{N}} \mathbb{E}_{\mathrm{complaints}} \big[ R \big( \mathrm{complaints}(\mathrm{traps}) \big) - \mathrm{TC}(\mathrm{traps}) \big]
+\end{equation*}
+
+The property manager would also, if possible, like to learn how these results generalize to buildings they haven't treated so they can understand the potential costs of pest control at buildings they are acquiring as well as for the rest of their building portfolio.
+
+As the property manager has complete control over the number of traps set, the random variable contributing to this expectation is the number of complaints given the number of traps. We will model the number of complaints as a function of the number of traps.
+
+#+HTML: </div>
+
+#+REVEAL: split
+
+#+begin_src julia :display text/plain
+DataFrame(CSV.File(joinpath("data", "pest_data.csv")))
+#+end_src
+
+#+RESULTS:
+#+begin_example
+[1m120×14 DataFrame[0m
+[1m Row [0m│[1m mus       [0m[1m building_id [0m[1m wk_ind [0m[1m date       [0m[1m traps   [0m[1m floors  [0m[1m sq_footag[0m ⋯
+     │[90m Float64   [0m[90m Int64       [0m[90m Int64  [0m[90m Date       [0m[90m Float64 [0m[90m Float64 [0m[90m Float64  [0m ⋯
+─────┼──────────────────────────────────────────────────────────────────────────
+   1 │ 0.369134            37       1  2017-01-15      8.0      8.0            ⋯
+   2 │ 0.359355            37       2  2017-02-14      8.0      8.0
+   3 │ 0.281783            37       3  2017-03-16      9.0      8.0
+   4 │ 0.129254            37       4  2017-04-15     10.0      8.0
+   5 │ 0.452041            37       5  2017-05-15     11.0      8.0            ⋯
+   6 │ 0.44213             37       6  2017-06-14     11.0      8.0
+   7 │ 0.990865            37       7  2017-07-14     10.0      8.0
+   8 │ 0.785977            37       8  2017-08-13     10.0      8.0
+   9 │ 0.691797            37       9  2017-09-12      9.0      8.0            ⋯
+  10 │ 0.480696            37      10  2017-10-12      9.0      8.0
+  11 │ 0.562431            37      11  2017-11-11      8.0      8.0
+  ⋮  │     ⋮           ⋮         ⋮         ⋮          ⋮        ⋮             ⋮ ⋱
+ 111 │ 0.542095            98       3  2017-03-16      7.0     13.0
+ 112 │ 0.866334            98       4  2017-04-15      6.0     13.0            ⋯
+ 113 │ 1.40571             98       5  2017-05-15      6.0     13.0
+ 114 │ 1.65598             98       6  2017-06-14      5.0     13.0
+ 115 │ 2.2483              98       7  2017-07-14      4.0     13.0
+ 116 │ 2.30359             98       8  2017-08-13      3.0     13.0            ⋯
+ 117 │ 2.253               98       9  2017-09-12      2.0     13.0
+ 118 │ 2.0419              98      10  2017-10-12      2.0     13.0
+ 119 │ 1.90705             98      11  2017-11-11      2.0     13.0
+ 120 │ 2.10317             98      12  2017-12-11      1.0     13.0            ⋯
+[36m                                                   8 columns and 99 rows omitted[0m
+#+end_example
+
+** 3. Synthetic time-series
+:PROPERTIES:
+:header-args:julia: :session timeseries :kernel julia-4-threads-1.9 :async yes :tangle no :exports none
+:END:
+
+Or you can have a go at this synthetic time-series example
+
+#+HTML: <div class="side-by-side small-text">
+
+#+HTML: <div>
+
+#+begin_src julia :exports both :display text/plain
+DataFrame(CSV.File(
+    joinpath("data", "time-series.csv")
+))
+#+end_src
+
+#+RESULTS:
+#+begin_example
+[1m67×2 DataFrame[0m
+[1m Row [0m│[1m t         [0m[1m y         [0m
+     │[90m Float64   [0m[90m Float64   [0m
+─────┼──────────────────────
+   1 │ 0.0        -19.3009
+   2 │ 0.0151515  -18.2195
+   3 │ 0.030303   -17.931
+   4 │ 0.0454545  -18.5562
+   5 │ 0.0606061  -19.2006
+   6 │ 0.0757576  -18.7376
+   7 │ 0.0909091  -16.4586
+   8 │ 0.106061   -15.0723
+   9 │ 0.121212   -12.6583
+  10 │ 0.136364   -11.1347
+  11 │ 0.151515   -10.9626
+  ⋮  │     ⋮          ⋮
+  58 │ 0.863636    -6.70737
+  59 │ 0.878788    -6.59501
+  60 │ 0.893939    -7.91087
+  61 │ 0.909091    -8.78053
+  62 │ 0.924242    -9.81755
+  63 │ 0.939394    -9.06206
+  64 │ 0.954545    -7.48517
+  65 │ 0.969697    -4.72118
+  66 │ 0.984848    -1.85908
+  67 │ 1.0          0.0
+[36m             46 rows omitted[0m
+#+end_example
+
+#+HTML: </div>
+
+#+HTML: <div class="center">
+
+[[./assets/attachments/synthetic-timeseries-data.png]]
+
+#+HTML: </div>
+
+#+HTML: </div>
+
+*** Data generation                                                :noexport:
+
+#+begin_src julia 
+]activate --temp
+#+end_src
+
+#+RESULTS:
+: [32m[1m  Activating[22m[39m new project at `/tmp/jl_SaDhi8`
+
+#+begin_src julia :results silent
+]add Turing FillArrays LinearAlgebra StatsPlots Random Statistics DataFrames CSV
+#+end_src
+
+#+begin_src julia
+using Turing, FillArrays, StatsPlots, LinearAlgebra, Random, Statistics, DataFrames, CSV
+#+end_src
+
+#+begin_src julia
+Random.seed!(12345)
+
+true_sin_freq = 2
+true_sin_amp = 5
+true_cos_freq = 7
+true_cos_amp = 2.5
+tmax = 10
+β_true = 2
+α_true = -1
+tt = 0:0.05:tmax
+f₁(t) = α_true + β_true * t
+f₂(t) = true_sin_amp * sinpi(2 * t * true_sin_freq / tmax)
+f₃(t) = true_cos_amp * cospi(2 * t * true_cos_freq / tmax)
+f(t) = f₁(t) + f₂(t) + f₃(t)
+
+plot(f, tt; label="f(t)", title="Observed time series", legend=:topleft, linewidth=3)
+plot!(
+    [f₁, f₂, f₃],
+    tt;
+    label=["f₁(t)" "f₂(t)" "f₃(t)"],
+    style=[:dot :dash :dashdot],
+    linewidth=1,
+)
+#+end_src
+
+#+RESULTS:
+[[file:./.ob-jupyter/0b26b4ffdbb5a6d6692d6439bbcca36ca293e4a5.svg]]
+
+
+#+begin_src julia :exports output
+σ_true = 0.35
+t = collect(tt[begin:3:end])
+t_min, t_max = extrema(t)
+x = (t .- t_min) ./ (t_max - t_min)
+yf = f.(t) .+ σ_true .* randn(size(t))
+
+p = scatter(x, yf; title="Standardised data", legend=false)
+savefig("assets/attachments/synthetic-timeseries-data.png")
+p
+#+end_src
+
+#+RESULTS:
+[[file:./.ob-jupyter/901b0ff0c5838163d8c7b76abe4158c02d07125b.svg]]
+
+#+begin_src julia :display text/plain :eval no
+CSV.write(joinpath("data", "time-series.csv"), DataFrame(t = x, y = yf))
+#+end_src
+
+#+RESULTS:
+: "data/time-series.csv"
+
+** 4. Influenza at British boarding school (same as before)
+An outbreak of influenza A (H1N1) in 1978 at a British boarding school
+
+- 763 male students -> 512 of which became ill
+- Reported that one infected boy started the epidemic
+- Observations are number of boys in bed over 14 days
+
+Data are freely available in the R package =outbreaks=, maintained as part of the [[http://www.repidemicsconsortium.org/][R Epidemics Consortium]]
+
+#+REVEAL: split
+
+#+begin_src julia :display text/plain
+DataFrame(CSV.File(joinpath("data", "influenza_england_1978_school.csv")))
+#+end_src
+
+#+RESULTS:
+#+begin_example
+[1m14×4 DataFrame[0m
+[1m Row [0m│[1m Column1 [0m[1m date       [0m[1m in_bed [0m[1m convalescent [0m
+     │[90m Int64   [0m[90m Date       [0m[90m Int64  [0m[90m Int64        [0m
+─────┼───────────────────────────────────────────
+   1 │       1  1978-01-22       3             0
+   2 │       2  1978-01-23       8             0
+   3 │       3  1978-01-24      26             0
+   4 │       4  1978-01-25      76             0
+   5 │       5  1978-01-26     225             9
+   6 │       6  1978-01-27     298            17
+   7 │       7  1978-01-28     258           105
+   8 │       8  1978-01-29     233           162
+   9 │       9  1978-01-30     189           176
+  10 │      10  1978-01-31     128           166
+  11 │      11  1978-02-01      68           150
+  12 │      12  1978-02-02      29            85
+  13 │      13  1978-02-03      14            47
+  14 │      14  1978-02-04       4            20
+#+end_example
+
+** 5. Anything from =RDatasets.jl=
+
+Or you can just do =]add RDatasets= and knock yourself out
+
+https://github.com/JuliaStats/RDatasets.jl
+
+** TODO EpimapMini                                                 :noexport:
+
+** Covid19: ImperialReport13                                       :noexport:
+
+* Julia: The Good, the Bad, and the Ugly
+:PROPERTIES:
+:ID:       2023-01-29-16-57-28-Julia-The-Good-the-Bad-and-the-Ugly
+:CUSTOM_ID: 2023-01-29-16-57-28-Julia-The-Good-the-Bad-and-the-Ugly
+:END:
+
+An honest take from a little 27-year old Norwegian boy
+
+*** The Good
+:PROPERTIES:
+:ID:       2023-01-29-16-57-28-The-Good
+:CUSTOM_ID: 2023-01-29-16-57-28-The-Good
+:END:
+- Speed
+- Composability (thank you multiple dispatch)
+- No need to tie yourself to an underlying computational framework
+- Interactive
+- Transparency
+- Very easy to call into other languages
+
+*** Speed
+:PROPERTIES:
+:ID:       2023-01-29-16-57-28-Speed
+:CUSTOM_ID: 2023-01-29-16-57-28-Speed
+:END:
+
+I think you got this already...
+
+*** Composability
+:PROPERTIES:
+:ID:       2023-01-29-16-57-28-Composability
+:CUSTOM_ID: 2023-01-29-16-57-28-Composability
+:END:
+
+We've seen some of that
+
+Defining =infected(problem_wrapper, u)= allowed us to abstract away how to extract the compartment of interest
+
+*** Transparency
+:PROPERTIES:
+:ID:       2023-01-29-16-57-28-Transparency
+:CUSTOM_ID: 2023-01-29-16-57-28-Transparency
+:END:
+
+For starters, almost all the code you'll end up using is pure Julia
+
+Hence, you can always look at the code
+
+You can find the implementation by using =@which=
+
+#+begin_src julia 
+# Without arguments
+@which sum
+#+end_src
+
+#+RESULTS:
+: Base
+
+#+begin_src julia :display text/plain
+# With arguments
+@which sum([1.0])
+#+end_src
+
+#+RESULTS:
+: sum(a::AbstractArray; dims, kw...) in Base at reducedim.jl:994
+
+#+REVEAL: split
+
+And yeah, you can even look into the macros
+
+#+HTML: <div class="small-text">
+
+#+begin_src julia 
+@macroexpand @model f() = x ~ Normal()
+#+end_src
+
+#+RESULTS:
+#+begin_example
+quote
+    function f(__model__::DynamicPPL.Model, __varinfo__::DynamicPPL.AbstractVarInfo, __context__::AbstractPPL.AbstractContext; )
+        #= In[113]:1 =#
+        begin
+            var"##dist#1413" = Normal()
+            var"##vn#1410" = (DynamicPPL.resolve_varnames)((AbstractPPL.VarName){:x}(), var"##dist#1413")
+            var"##isassumption#1411" = begin
+                    if (DynamicPPL.contextual_isassumption)(__context__, var"##vn#1410")
+                        if !((DynamicPPL.inargnames)(var"##vn#1410", __model__)) || (DynamicPPL.inmissings)(var"##vn#1410", __model__)
+                            true
+                        else
+                            x === missing
+                        end
+                    else
+                        false
+                    end
+                end
+            begin
+                #= /home/tor/.julia/packages/DynamicPPL/WBmMU/src/compiler.jl:539 =#
+                var"##retval#1415" = if var"##isassumption#1411"
+                        begin
+                            (var"##value#1414", __varinfo__) = (DynamicPPL.tilde_assume!!)(__context__, (DynamicPPL.unwrap_right_vn)((DynamicPPL.check_tilde_rhs)(var"##dist#1413"), var"##vn#1410")..., __varinfo__)
+                            x = var"##value#1414"
+                            var"##value#1414"
+                        end
+                    else
+                        if !((DynamicPPL.inargnames)(var"##vn#1410", __model__))
+                            x = (DynamicPPL.getvalue_nested)(__context__, var"##vn#1410")
+                        end
+                        (var"##value#1412", __varinfo__) = (DynamicPPL.tilde_observe!!)(__context__, (DynamicPPL.check_tilde_rhs)(var"##dist#1413"), x, var"##vn#1410", __varinfo__)
+                        var"##value#1412"
+                    end
+                #= /home/tor/.julia/packages/DynamicPPL/WBmMU/src/compiler.jl:540 =#
+                return (var"##retval#1415", __varinfo__)
+            end
+        end
+    end
+    begin
+        $(Expr(:meta, :doc))
+        function f(; )
+            #= In[113]:1 =#
+            return (DynamicPPL.Model)(f, NamedTuple(), NamedTuple())
+        end
+    end
+end
+#+end_example
+
+#+HTML: </div>
+
+#+REVEAL: split
+
+I told you didn't want to see that.
+
+Can make it /a bit/ cleaner by removing linenums:
+
+#+HTML: <div class="x-small-text">
+
+#+begin_src julia 
+@macroexpand(@model f() = x ~ Normal()) |> Base.remove_linenums!
+#+end_src
+
+#+RESULTS:
+#+begin_example
+quote
+    function f(__model__::DynamicPPL.Model, __varinfo__::DynamicPPL.AbstractVarInfo, __context__::AbstractPPL.AbstractContext; )
+        begin
+            var"##dist#1419" = Normal()
+            var"##vn#1416" = (DynamicPPL.resolve_varnames)((AbstractPPL.VarName){:x}(), var"##dist#1419")
+            var"##isassumption#1417" = begin
+                    if (DynamicPPL.contextual_isassumption)(__context__, var"##vn#1416")
+                        if !((DynamicPPL.inargnames)(var"##vn#1416", __model__)) || (DynamicPPL.inmissings)(var"##vn#1416", __model__)
+                            true
+                        else
+                            x === missing
+                        end
+                    else
+                        false
+                    end
+                end
+            begin
+                var"##retval#1421" = if var"##isassumption#1417"
+                        begin
+                            (var"##value#1420", __varinfo__) = (DynamicPPL.tilde_assume!!)(__context__, (DynamicPPL.unwrap_right_vn)((DynamicPPL.check_tilde_rhs)(var"##dist#1419"), var"##vn#1416")..., __varinfo__)
+                            x = var"##value#1420"
+                            var"##value#1420"
+                        end
+                    else
+                        if !((DynamicPPL.inargnames)(var"##vn#1416", __model__))
+                            x = (DynamicPPL.getvalue_nested)(__context__, var"##vn#1416")
+                        end
+                        (var"##value#1418", __varinfo__) = (DynamicPPL.tilde_observe!!)(__context__, (DynamicPPL.check_tilde_rhs)(var"##dist#1419"), x, var"##vn#1416", __varinfo__)
+                        var"##value#1418"
+                    end
+                return (var"##retval#1421", __varinfo__)
+            end
+        end
+    end
+    begin
+        $(Expr(:meta, :doc))
+        function f(; )
+            return (DynamicPPL.Model)(f, NamedTuple(), NamedTuple())
+        end
+    end
+end
+#+end_example
+
+#+HTML: </div>
+
+#+REVEAL: split
+
+#+begin_src julia
+f(x) = 2x
+#+end_src
+
+#+RESULTS:
+: f (generic function with 1 method)
+
+You can inspect the type-inferred and lowered code
+
+#+begin_src julia
+@code_typed f(1)
+#+end_src
+
+#+RESULTS:
+: CodeInfo(
+: 1 ─ %1 = Base.mul_int(2, x)::Int64
+: └──      return %1
+: ) => Int64
+
+#+REVEAL: split
+
+You can inspect the LLVM code
+
+#+begin_src julia
+@code_llvm f(1)
+#+end_src
+
+#+RESULTS:
+: ;  @ In[115]:1 within `f`
+: define i64 @julia_f_52767(i64 signext %0) #0 {
+: top:
+: ; ┌ @ int.jl:88 within `*`
+:    %1 = shl i64 %0, 1
+: ; └
+:   ret i64 %1
+: }
+
+#+REVEAL: split
+
+And even the resulting machine code
+
+#+begin_src julia
+@code_native f(1)
+#+end_src
+
+#+RESULTS:
+#+begin_example
+	.text
+	.file	"f"
+	.globl	julia_f_52804                   # -- Begin function julia_f_52804
+	.p2align	4, 0x90
+	.type	julia_f_52804,@function
+julia_f_52804:                          # @julia_f_52804
+; ┌ @ In[115]:1 within `f`
+	.cfi_startproc
+# %bb.0:                                # %top
+; │┌ @ int.jl:88 within `*`
+	leaq	(%rdi,%rdi), %rax
+; │└
+	retq
+.Lfunc_end0:
+	.size	julia_f_52804, .Lfunc_end0-julia_f_52804
+	.cfi_endproc
+; └
+                                        # -- End function
+	.section	".note.GNU-stack","",@progbits
+#+end_example
+
+It really just depends on which level of "I hate my life" you're currently at
+
+*** Calling into other languages
+:PROPERTIES:
+:ID:       2023-01-29-16-57-28-Calling-into-other-languages
+:CUSTOM_ID: 2023-01-29-16-57-28-Calling-into-other-languages
+:END:
+- [[https://docs.julialang.org/en/v1/manual/calling-c-and-fortran-code/][C and Fortran comes built-in stdlib]]
+- [[https://juliainterop.github.io/RCall.jl/stable/][RCall.jl]]: call into =R=
+- [[https://github.com/JuliaPy/PyCall.jl][PyCall.jl]]: call into =python=
+- Etc.
+
+When working with =Array=, etc. memory is usually shared ⟹ fairly low overhead
+
+*** C and Fortran
+:PROPERTIES:
+:ID:       2023-01-29-16-57-28-C-and-Fortran
+:CUSTOM_ID: 2023-01-29-16-57-28-C-and-Fortran
+:END:
+#+begin_src julia 
+# Define the Julia function
+function mycompare(a, b)::Cint
+    println("mycompare($a, $b)")  # NOTE: Let's look at the comparisons made.
+    return (a < b) ? -1 : ((a > b) ? +1 : 0)
+end
+
+# Get the corresponding C function pointer.
+mycompare_c = @cfunction(mycompare, Cint, (Ref{Cdouble}, Ref{Cdouble}))
+
+# Array to sort.
+arr = [1.3, -2.7, 4.4, 3.1];
+
+# Call in-place quicksort.
+ccall(:qsort, Cvoid, (Ptr{Cdouble}, Csize_t, Csize_t, Ptr{Cvoid}),
+      arr, length(arr), sizeof(eltype(arr)), mycompare_c)
+#+end_src
+
+#+RESULTS:
+: mycompare(1.3, -2.7)
+: mycompare(4.4, 3.1)
+: mycompare(-2.7, 3.1)
+: mycompare(1.3, 3.1)
+
+#+begin_src julia 
+# All sorted!
+arr
+#+end_src
+
+#+RESULTS:
+: 4-element Vector{Float64}:
+:  -2.7
+:   1.3
+:   3.1
+:   4.4
+
+[[https://docs.julialang.org/en/v1/manual/calling-c-and-fortran-code/#Creating-C-Compatible-Julia-Function-Pointers][Example is from Julia docs]]
+
+*** RCall.jl                                                       :noexport:
+:PROPERTIES:
+:ID:       2023-01-29-16-57-28-RCall-dot-jl
+:CUSTOM_ID: 2023-01-29-16-57-28-RCall-dot-jl
+:END:
+
+*** PyCall.jl                                                      :noexport:
+:PROPERTIES:
+:ID:       2023-01-29-16-57-28-PyCall-dot-jl
+:CUSTOM_ID: 2023-01-29-16-57-28-PyCall-dot-jl
+:END:
+
+*** The Bad
+:PROPERTIES:
+:ID:       2023-01-29-16-57-28-The-Bad
+:CUSTOM_ID: 2023-01-29-16-57-28-The-Bad
+:END:
+Sometimes
+- your code might just slow down without a seemingly good reason,
+- someone did bad, and Julia can't tell which method to call, or
+- someone forces the Julia compiler to compile insane amounts of code
+
+*** "Why is my code suddenly slow?"
+:PROPERTIES:
+:ID:       2023-01-29-16-57-28-Why-is-my-code-suddenly-slow
+:CUSTOM_ID: 2023-01-29-16-57-28-Why-is-my-code-suddenly-slow
+:END:
+
+One word: *type-instability*
+
+Sometimes the Julia compiler can't quite infer what types fully
+
+#+HTML: <div class="fragment (appear)">
+
+*Result:* python-like performance (for those particular function calls)
+
+#+begin_src julia 
+# NOTE: this is NOT `const`, and so it could become some other type
+# at any given point without `my_func` knowing about it!
+global_variable = 1
+my_func_unstable(x) = global_variable * x
+#+end_src
+
+#+RESULTS:
+: my_func_unstable (generic function with 1 method)
+
+#+begin_src julia 
+@btime my_func_unstable(2.0);
+#+end_src
+
+#+RESULTS:
+:   30.668 ns (2 allocations: 32 bytes)
+
+#+HTML: </div>
+
+#+REVEAL: split
+
+Luckily there are tools for inspecting this
+
+#+begin_src julia 
+@code_warntype my_func_unstable(2.0)
+#+end_src
+
+#+RESULTS:
+: MethodInstance for my_func_unstable(::Float64)
+:   from my_func_unstable(x) in Main at In[121]:4
+: Arguments
+:   #self#::Core.Const(my_func_unstable)
+:   x::Float64
+: Body::Any
+: 1 ─ %1 = (Main.global_variable * x)::Any
+: └──      return %1
+: 
+
+See that =Any= there? _'tis a big no-no!_
+
+#+REVEAL: split
+
+Once discovered, it can be fixed
+
+#+begin_src julia 
+const constant_global_variable = 1
+my_func_fixed(x) = constant_global_variable * x
+@code_warntype my_func_fixed(2.0)
+#+end_src
+
+#+RESULTS:
+: MethodInstance for my_func_fixed(::Float64)
+:   from my_func_fixed(x) in Main at In[124]:2
+: Arguments
+:   #self#::Core.Const(my_func_fixed)
+:   x::Float64
+: Body::Float64
+: 1 ─ %1 = (Main.constant_global_variable * x)::Float64
+: └──      return %1
+: 
+
+So long Python performance!
+
+#+begin_src julia 
+@btime my_func_fixed(2.0);
+#+end_src
+
+#+RESULTS:
+:   1.696 ns (0 allocations: 0 bytes)
+
+
+#+REVEAL: split
+
+/But/ this is not always so easy to discover (though this is generally rare)
+
+#+begin_src julia 
+# HACK: Here we explicitly tell Julia what type `my_func_unstable`
+# returns. This is _very_ rarely a good idea because it just hides
+# the underlying problem from `@code_warntype`!
+my_func_forced(x) = my_func_unstable(x)::typeof(x)
+@code_warntype my_func_forced(2.0)
+#+end_src
+
+#+RESULTS:
+#+begin_example
+MethodInstance for my_func_forced(::Float64)
+  from my_func_forced(x) in Main at In[126]:4
+Arguments
+  #self#::Core.Const(my_func_forced)
+  x::Float64
+Body::Float64
+1 ─ %1 = Main.my_func_unstable(x)::Any
+│   %2 = Main.typeof(x)::Core.Const(Float64)
+│   %3 = Core.typeassert(%1, %2)::Float64
+└──      return %3
+#+end_example
+
+We can still see the =Any= in there, but on a first glance it looks like =my_func_forced= is type-stable
+
+There are more natural cases where this might occur, e.g. unfortunate closures deep in your callstack
+
+#+REVEAL: split
+
+To discovery these there are a couple of more advanced tools:
+- [[https://github.com/JuliaDebug/Cthulhu.jl][Cthulhu.jl]]: Allows you to step through your code like a debugger and perform =@code_warntype=
+- [[https://github.com/aviatesk/JET.jl][JET.jl]]: Experimental package which attempts to automate the process
+
+And even simpler: profile using [[https://github.com/timholy/ProfileView.jl][ProfileView.jl]] and look for code-paths that /should/ be fast but take up a lot of the runtime
+
+#+REVEAL: split
+
+#+begin_src julia 
+using ProfileView
+#+end_src
+
+#+RESULTS:
+
+#+begin_src julia :eval no
+@profview foreach(_ -> my_func_unstable(2.0), 1_000_000)
+#+end_src
+
+#+DOWNLOADED: file:///tmp/Spectacle.wcviMK/Screenshot_20230125_011603.png @ 2023-01-25 01:16:13
+#+ATTR_HTML: :height 350px
+#+ATTR_ORG: :width 600
+[[file:assets/attachments/2023-01-25_01-16-13_Screenshot_20230125_011603.png]]
+
+Note that there's no sign of multiplication here
+
+But most of the runtime is the =./reflection.jl= at the top there
+
+That's Julia looking up the type at runtime
+
+*** Method ambiguity
+:PROPERTIES:
+:ID:       2023-01-29-16-57-28-Method-ambiguity
+:CUSTOM_ID: 2023-01-29-16-57-28-Method-ambiguity
+:END:
+#+begin_src julia 
+ambiguous_function(x, y::Int) = y
+ambiguous_function(x::Int, y) = x
+
+# NOTE: Here we have `ambiguous_function(x::Int, y::Int)`
+# Which one should we hit?!
+ambiguous_function(1, 2)
+#+end_src
+
+#+RESULTS:
+:RESULTS:
+# [goto error]
+: MethodError: ambiguous_function(::Int64, ::Int64) is ambiguous. Candidates:
+:   ambiguous_function(x, y::Int64) in Main at In[128]:1
+:   ambiguous_function(x::Int64, y) in Main at In[128]:2
+: Possible fix, define
+:   ambiguous_function(::Int64, ::Int64)
+: 
+: Stacktrace:
+:  [1] top-level scope
+:    @ In[128]:6
+:END:
+
+But here Julia warns us, and so we can fix this by just doing as it says: define =ambiguous_function(::Int64, ::Int64)=
+
+#+begin_src julia 
+ambiguous_function(::Int64, ::Int64) = "neato"
+ambiguous_function(1, 2)
+#+end_src
+
+#+RESULTS:
+: "neato"
+
+*** Long compilation times
+:PROPERTIES:
+:ID:       2023-01-29-16-57-28-Long-compilation-times
+:CUSTOM_ID: 2023-01-29-16-57-28-Long-compilation-times
+:END:
+In Julia, for better or worse, we can generate code
+
+*Problem:* it can be /lots/ of code of we really want to
+
+*Result:* first execution can be /slow/
+
+#+HTML: <div class="fragment (appear)">
+
+*Time to first plot (TTFP)* is Julia's worst enemy
+
+But things are always improving
+
+#+DOWNLOADED: file:///tmp/Spectacle.wcviMK/Screenshot_20230125_012853.png @ 2023-01-25 01:29:05
+[[file:assets/attachments/2023-01-25_01-29-05_Screenshot_20230125_012853.png]]
+
+#+HTML: </div>
+
+*** Another example: mis-use of =@generated=
+:PROPERTIES:
+:ID:       2023-01-29-16-57-28-Another-example-mis-use-of-generated
+:CUSTOM_ID: 2023-01-29-16-57-28-Another-example-mis-use-of-generated
+:END:
+
+#+begin_src julia 
+# NOTE: `@generated` only has access to static information, e.g. types of arguments.
+# Here I'm using the special type `Val` to make a number `N` static.
+@generated function unrolled_addition(::Val{N}) where {N}
+    expr = Expr(:block)
+    push!(expr.args, :(x = 0))
+    for i = 1:N
+        push!(expr.args, :(x += $(3.14 * i)))
+    end
+
+    return expr
+end
+#+end_src
+
+#+RESULTS:
+: unrolled_addition (generic function with 1 method)
+
+When I call this with some =Val(N)=, Julia will execute this /at compile-time/!
+
+#+begin_src julia 
+# NOTE: At runtime, it then just returns the result immediately
+@code_typed unrolled_addition(Val(10))
+#+end_src
+
+#+RESULTS:
+: CodeInfo(
+: 1 ─     return 172.70000000000002
+: ) => Float64
+
+But if I just change the value =10= to =11=, it's a /completely/ different type!
+
+#+REVEAL: split
+
+So Julia has to compile =unrolled_addition= from scratch
+
+#+begin_src julia 
+@time @eval unrolled_addition(Val(11));
+#+end_src
+
+#+RESULTS:
+:   0.010027 seconds (11.61 k allocations: 654.885 KiB, 8.32% compilation time)
+
+Or a bit crazier
+
+#+begin_src julia 
+@time @eval unrolled_addition(Val(10_001));
+#+end_src
+
+#+RESULTS:
+:   0.429549 seconds (1.19 M allocations: 48.946 MiB, 99.94% compilation time)
+
+Here it took ~0.4s, of which 99.95% was compilation time
+
+I think you get the idea
+
+#+REVEAL: split
+
+But boy is it fast to run!
+
+#+begin_src julia 
+@btime unrolled_addition(Val(10_001));
+#+end_src
+
+#+RESULTS:
+:   1.637 ns (0 allocations: 0 bytes)
+
+#+begin_src julia 
+function not_unrolled_addition(N)
+    x = 0
+    for i = 1:N
+        x += 3.14 * i
+    end
+
+    return x
+end
+#+end_src
+
+#+RESULTS:
+: not_unrolled_addition (generic function with 1 method)
+
+#+begin_src julia 
+@btime not_unrolled_addition(10_001);
+#+end_src
+
+#+RESULTS:
+:   11.138 μs (0 allocations: 0 bytes)
+
+#+REVEAL: split
+
+*Funny side-note:* at first I did the following
+
+#+begin_src julia 
+@generated function unrolled_addition_old(::Val{N}) where {N}
+    expr = Expr(:block)
+    push!(expr.args, :(x = 0))
+    for i = 1:N
+        push!(expr.args, :(x += $i))  # NOTE: No 3.14!
+    end
+    return expr
+end
+function not_unrolled_addition_old(N)
+    x = 0
+    for i = 1:N
+        x += i  # NOTE: No 3.14!
+    end
+    return x
+end
+#+end_src
+
+#+RESULTS:
+: not_unrolled_addition_old (generic function with 1 method)
+
+#+begin_src julia 
+@btime unrolled_addition_old(Val(10_001));
+@btime not_unrolled_addition_old(10_001);
+#+end_src
+
+#+RESULTS:
+:   1.538 ns (0 allocations: 0 bytes)
+:   3.495 ns (0 allocations: 0 bytes)
+
+LLVM probably recognized the pattern of =not_unrolled_addition_old= and unrolls it for us
+
+Let's check!
+
+#+REVEAL: split
+
+#+begin_src julia 
+# NOTE: The one LLVM failed to unroll
+@code_llvm not_unrolled_addition(10_001)
+#+end_src
+
+#+RESULTS:
+#+begin_example
+;  @ In[135]:1 within `not_unrolled_addition`
+define { {}*, i8 } @julia_not_unrolled_addition_53856([8 x i8]* noalias nocapture align 8 dereferenceable(8) %0, i64 signext %1) #0 {
+top:
+;  @ In[135]:3 within `not_unrolled_addition`
+; ┌ @ range.jl:5 within `Colon`
+; │┌ @ range.jl:393 within `UnitRange`
+; ││┌ @ range.jl:400 within `unitrange_last`
+     %.inv = icmp sgt i64 %1, 0
+     %. = select i1 %.inv, i64 %1, i64 0
+; └└└
+  br i1 %.inv, label %L18.preheader, label %union_move16
+
+L18.preheader:                                    ; preds = %top
+;  @ In[135]:5 within `not_unrolled_addition`
+; ┌ @ range.jl:883 within `iterate`
+; │┌ @ promotion.jl:477 within `==`
+    %.not30 = icmp eq i64 %., 1
+; └└
+  br i1 %.not30, label %union_move, label %L51
+
+L51:                                              ; preds = %L51, %L18.preheader
+  %value_phi1032 = phi double [ %value_phi10, %L51 ], [ 3.140000e+00, %L18.preheader ]
+  %value_phi431 = phi i64 [ %2, %L51 ], [ 1, %L18.preheader ]
+; ┌ @ range.jl:883 within `iterate`
+   %2 = add i64 %value_phi431, 1
+; └
+;  @ In[135]:4 within `not_unrolled_addition`
+; ┌ @ promotion.jl:389 within `*`
+; │┌ @ promotion.jl:359 within `promote`
+; ││┌ @ promotion.jl:336 within `_promote`
+; │││┌ @ number.jl:7 within `convert`
+; ││││┌ @ float.jl:146 within `Float64`
+       %3 = sitofp i64 %2 to double
+; │└└└└
+; │ @ promotion.jl:389 within `*` @ float.jl:385
+   %4 = fmul double %3, 3.140000e+00
+; └
+;  @ In[135] within `not_unrolled_addition`
+  %value_phi10 = fadd double %value_phi1032, %4
+;  @ In[135]:5 within `not_unrolled_addition`
+; ┌ @ range.jl:883 within `iterate`
+; │┌ @ promotion.jl:477 within `==`
+    %.not = icmp eq i64 %2, %.
+; └└
+  br i1 %.not, label %L18.union_move_crit_edge, label %L51
+
+post_union_move:                                  ; preds = %union_move16, %union_move
+  %tindex_phi1429 = phi i8 [ 2, %union_move16 ], [ 1, %union_move ]
+;  @ In[135]:7 within `not_unrolled_addition`
+  %5 = insertvalue { {}*, i8 } { {}* null, i8 undef }, i8 %tindex_phi1429, 1
+  ret { {}*, i8 } %5
+
+L18.union_move_crit_edge:                         ; preds = %L51
+;  @ In[135]:5 within `not_unrolled_addition`
+  %phi.cast = bitcast double %value_phi10 to i64
+  br label %union_move
+
+union_move:                                       ; preds = %L18.union_move_crit_edge, %L18.preheader
+  %value_phi10.lcssa = phi i64 [ %phi.cast, %L18.union_move_crit_edge ], [ 4614253070214989087, %L18.preheader ]
+;  @ In[135]:7 within `not_unrolled_addition`
+  %6 = bitcast [8 x i8]* %0 to i64*
+  store i64 %value_phi10.lcssa, i64* %6, align 8
+  br label %post_union_move
+
+union_move16:                                     ; preds = %top
+  %7 = bitcast [8 x i8]* %0 to i64*
+  store i64 0, i64* %7, align 8
+  br label %post_union_move
+}
+#+end_example
+
+#+REVEAL: split
+
+#+begin_src julia 
+# NOTE: The one LLVM seems to have unrolled.
+@code_llvm not_unrolled_addition_old(10_001)
+#+end_src
+
+#+RESULTS:
+#+begin_example
+;  @ In[137]:9 within `not_unrolled_addition_old`
+define i64 @julia_not_unrolled_addition_old_53858(i64 signext %0) #0 {
+top:
+;  @ In[137]:11 within `not_unrolled_addition_old`
+; ┌ @ range.jl:5 within `Colon`
+; │┌ @ range.jl:393 within `UnitRange`
+; ││┌ @ range.jl:400 within `unitrange_last`
+     %.inv = icmp sgt i64 %0, 0
+     %. = select i1 %.inv, i64 %0, i64 0
+; └└└
+  br i1 %.inv, label %L18.preheader, label %L35
+
+L18.preheader:                                    ; preds = %top
+;  @ In[137]:13 within `not_unrolled_addition_old`
+  %1 = shl nuw i64 %., 1
+  %2 = add nsw i64 %., -1
+  %3 = zext i64 %2 to i65
+  %4 = add nsw i64 %., -2
+  %5 = zext i64 %4 to i65
+  %6 = mul i65 %3, %5
+  %7 = lshr i65 %6, 1
+  %8 = trunc i65 %7 to i64
+  %9 = add i64 %1, %8
+  %10 = add i64 %9, -1
+;  @ In[137]:14 within `not_unrolled_addition_old`
+  br label %L35
+
+L35:                                              ; preds = %L18.preheader, %top
+  %value_phi10 = phi i64 [ 0, %top ], [ %10, %L18.preheader ]
+  ret i64 %value_phi10
+}
+#+end_example
+
+*** The Ugly
+:PROPERTIES:
+:ID:       2023-01-29-16-57-28-The-Ugly
+:CUSTOM_ID: 2023-01-29-16-57-28-The-Ugly
+:END:
+
+#+REVEAL: split
+
+_*Reverse-mode automatic differentiation*_
+
+ForwardDiff.jl is a pure joy, but slows down as dimensionality grows
+
+Then one should reach for ReverseDiff.jl or Zygote.jl
+
+#+HTML: <div class="fragment (appear)">
+Most of the time it works really well, but sometimes you hit a real sharp edge
+
+And sharp edges cut; they cut /deep/
+
+Like _"16X slower when the function is implemented more efficiently"-deep_
+
+#+DOWNLOADED: file:///tmp/Spectacle.wcviMK/Screenshot_20230125_010111.png @ 2023-01-25 01:01:31
+[[file:assets/attachments/2023-01-25_01-01-31_Screenshot_20230125_010111.png]]
+
+#+HTML: </div>
+
+#+HTML: <div class="fragment (appear)">
+
+If you want to see a man in pain, you can find the full issue [[https://github.com/TuringLang/Turing.jl/issues/1934][here]]
+
+On the flip-side, once addressed (a type-instability), it's [[https://github.com/TuringLang/DistributionsAD.jl/pull/231][3X faster than before]]
+
+#+HTML: </div>
+
+*** Overall
+:PROPERTIES:
+:ID:       2023-01-29-16-57-28-Overall
+:CUSTOM_ID: 2023-01-29-16-57-28-Overall
+:END:
+
+Julia is pretty darn awesome
+
+Easy to get going, and you can always make it faster by just optimizing _Julia_ code
+
+No need to drop down to C++
+
+#+REVEAL: split
+Buuuut it can't beat Python at deep learning
+
+#+REVEAL: split
+Otherwise, it's worth a try
+
+Godspeed to you
+
+* Fin
+
