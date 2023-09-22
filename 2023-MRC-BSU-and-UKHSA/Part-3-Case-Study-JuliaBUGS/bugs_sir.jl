@@ -99,7 +99,7 @@ model = compile(sir_bugs_model, data, inits);
 # Plot with Makie
 # Makie is a large package, so we didn't include it in the Project.toml
 # you can install it with `] add GLMakie, GraphMakie`
-using GLMakie, GraphMakie, NetworkLayout
+using GLMakie, GraphMakie # only work if you installed Makie
 graphplot(model.g, model.parameters)
 
 # use `ForwardDiff` this time
