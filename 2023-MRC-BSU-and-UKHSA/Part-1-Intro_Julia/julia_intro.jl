@@ -160,6 +160,8 @@ t[1]
 getindex(t, 2)
 
 # NamedTuples in Julia
+() # empty tuple
+(;) # empty NamedTuple
 nt = (name = "Julia", version = 1.10)
 nt.name  # Accessing elements in a NamedTuple
 nt[:version]
@@ -178,13 +180,18 @@ function increment(a::Int)
     return a + 1 
 end
 
-function increment(a::Float64)
+function increment(a::Float64)::Int
     # return a + 2
     a + 2 # last line is returned if no explicit return
 end
 
+function increment2(a::Float64)::Int
+    return a + 2
+end
+
 increment(1) == 2
 increment(1.0) == 3.0
+increment2(1.5) # will error
 
 # Mutation on the Function theme
 
@@ -193,6 +200,7 @@ function add(x; a, b = 2)
     return x + a + b
 end
 
+add(1, 2)
 add(1; a = 2)
 add(1; a = 2, b = 3)
 
@@ -201,6 +209,7 @@ function add(x, a = 1, b = 2)
     return x + a + b
 end
 
+add(1)
 add(1, 2, 3)
 
 # Varargs
@@ -222,8 +231,8 @@ sum_values(1; a = 2, b = 3, c = 4)
 # Example of broadcasting
 a = [1, 2, 3]
 b = a .+ 2
-c = ones(Int, 3)
-c .= a .+ 2
+c = ones(Int, 4)
+c .= 2 # assigns every element of c to be 2
 c == b
 
 # Example of comprehensions
@@ -231,8 +240,8 @@ c == b
 [x^2 for x in a if x > 1]
 
 # Anonymous functions (lambda functions)
-(x -> x + 1)(x) == 2
-
+(x -> x + 1)(1) == 2
+f(x) = x + 1 # these two are equivalent
 # Example of map function, also fold/reduce, mapreduce ... 
 map(x -> x * 2, a)
 
@@ -259,7 +268,12 @@ try
     println("Trying to read a file...")
     open("non_existent_file.txt", "r")
 catch e
-    println("Caught an error: ", e)
+    if e isa SystemError
+        println("Caught an error: ", e)
+        rethrow(e) # without `rethrow`, the program will not stop but carry on
+    else
+        println("NA")
+    end
 finally
     println("This finally block gets executed no matter what!")
 end

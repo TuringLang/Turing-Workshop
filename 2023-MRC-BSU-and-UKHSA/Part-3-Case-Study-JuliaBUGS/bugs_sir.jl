@@ -98,9 +98,9 @@ model = compile(sir_bugs_model, data, inits);
 
 # Plot with Makie
 # Makie is a large package, so we didn't include it in the Project.toml
-# you can install it with `] add Makie, GraphMakie`
-# using GLMakie, GraphMakie
-# graphplot(model; layout =Spring(; dim=3))
+# you can install it with `] add GLMakie, GraphMakie`
+using GLMakie, GraphMakie, NetworkLayout
+graphplot(model.g, model.parameters)
 
 # use `ForwardDiff` this time
 ad_model = ADgradient(:ForwardDiff, model)
@@ -119,10 +119,12 @@ samples_and_stats = AbstractMCMC.sample(
     discard_initial = n_adapts,
 )
 
+samples_and_stats[[:β, :γ, :ϕ⁻¹]]
+
 # MH
 using AdvancedMH, LinearAlgebra
 
- # AdvancedMH is functional, but the bundle_samples method is not yet implemented
+# AdvancedMH is functional, but the bundle_samples method is not yet implemented
 samples_and_stats = AbstractMCMC.sample(
     model,
     AdvancedMH.RWMH(MvNormal(zeros(3), I)), # A simple random walk proposal
@@ -136,7 +138,8 @@ samples_and_stats = AbstractMCMC.sample(
 # Parallel sampling with AdvancedHMC
 # Start Julia with multiple threads
 # julia -t 4
-n_chains = Threads.nthreads()
+Threads.nthreads()
+n_chains = 4
 samples_and_stats = AbstractMCMC.sample(
     ad_model,
     AdvancedHMC.NUTS(0.65),
@@ -145,7 +148,7 @@ samples_and_stats = AbstractMCMC.sample(
     n_chains;
     chain_type = Chains,
     n_adapts = n_adapts,
-    init_params = [initial_θ for _ = 1:4],
+    init_params = [initial_θ for _ = 1:n_chains],
     discard_initial = n_adapts,
 )
 
