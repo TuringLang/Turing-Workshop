@@ -127,8 +127,8 @@ data=(
     ],
 )
 inits=(
-    alpha=ones(Integer, 30) .* 250,
-    beta=ones(Integer, 30) .* 6,
+    alpha=ones(Int, 30) .* 250,
+    beta=ones(Int, 30) .* 6,
     var"alpha.c"=150, var"beta.c"=10, var"tau.c"=1,
     var"alpha.tau"=1, var"beta.tau"=1,
 )
