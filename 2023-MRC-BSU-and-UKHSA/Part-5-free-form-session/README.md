@@ -83,6 +83,10 @@ Status `/tmp/MyResearch/Project.toml` (empty project)
 
 (7) From here we can add dependenices that we want, e.g. type `add Turing DataFrames StatsPlots DifferentialEquations Distributions Dates LinearAlgebra CSV`
 
+```julia
+(MyResearch) pkg> add Turing DataFrames StatsPlots DifferentialEquations Distributions Dates LinearAlgebra CSV
+```
+
 You subsequently see the following output
 
 ```julia
