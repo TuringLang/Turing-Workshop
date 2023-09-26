@@ -1,8 +1,12 @@
-# A research project from scratch
+# Free-form session
 
-This is a simple example of getting set up with a project.
+In this session, we set up a "research" project from scratch and started doing a bit of inference.
 
-## Setting up the project environment
+## A research project from scratch
+
+Here's the guide we followed to set up the project `MyResearch`.
+
+### Setting up the project environment
 
 (1) Navigate to directory where you want the project to be, for example `/tmp`.
 
@@ -120,7 +124,7 @@ Status `/tmp/MyResearch/Project.toml`
   [37e2e46d] LinearAlgebra
 ```
 
-## Editing code
+### Editing code
 
 If we look at the files in the project, we'll see the following:
 
@@ -171,6 +175,10 @@ julia> MyResearch.greet()
 Hello MRC!
 ```
 
-## Scripts
+## Live-coding
 
-TBC
+The result of the live-coding you can find in:
+- `MyResearch/src/MyResearch.jl`: module `MyResearch` + `load_data`.
+- `MyResearch/scripts/inference.jl`: script where we did the following:
+  - Perform inference on for the SIR model with influenza data from the presentation.
+  - Condition the model only one the first 7 days, perform inference, and then use some of initial states from this to perform inference on the subsequent 7 days.
