@@ -11,25 +11,23 @@
     - [Survival Function](#survival-function)
     - [Hazard Function](#hazard-function)
   - [Kaplan-Meier (KM) Estimator and Plot](#kaplan-meier-km-estimator-and-plot)
-  - [The First Model](#the-first-model)
-    - [What is this model saying?](#what-is-this-model-saying)
+  - [A First Model -- AFT Weibull Model](#a-first-model----aft-weibull-model)
+    - [Meaning of the Model](#meaning-of-the-model)
     - [Simulate](#simulate)
   - [Prior Predictive Checks](#prior-predictive-checks)
   - [Adjust Prior](#adjust-prior)
-    - [with missing values](#with-missing-values)
+    - [Handling missing values](#handling-missing-values)
   - [Posterior Sampling](#posterior-sampling)
   - [Convergence Diagnostics](#convergence-diagnostics)
-    - [Numerical Diagnostics](#numerical-diagnostics)
+    - [Diagnostic Statistics](#diagnostic-statistics)
     - [Trace Plot](#trace-plot)
     - [Rank Plot](#rank-plot)
   - [Posterior Predictive Checks](#posterior-predictive-checks)
   - [Model Checking](#model-checking)
     - [LOO](#loo)
-  - [heavier tails (Log‑Normal baseline)](#heavier-tails-lognormal-baseline)
-    - [Log‑Normal AFT model](#lognormal-aft-model)
+  - [Heavier tails (Log‑Normal baseline) -- Log‑Normal AFT model](#heavier-tails-lognormal-baseline----lognormal-aft-model)
     - [Posterior sampling](#posterior-sampling-1)
     - [Posterior predictive check](#posterior-predictive-check)
-    - [LOO and LOO‑PIT ECDF](#loo-and-loopit-ecdf)
   - [Gamma Frailty Model](#gamma-frailty-model)
   - [Other Possible Topic](#other-possible-topic)
     - [Turing Model as Log Density Function](#turing-model-as-log-density-function)
@@ -43,12 +41,14 @@
 
 ## Primer on Julia
 
+This section provides a very brief primer on Julia. So audience can follow the talk.
+
 ### Functions
 
 Julia uses multiple dispatch, meaning that a single function name can have many specialized *methods* distinguished by the types of its arguments. This allows highly expressive and fast generic code.
 
 ```julia
-# Concise one-line definition
+# One-line definition
 square(x) = x^2
 
 # Specialize on complex numbers
@@ -57,7 +57,7 @@ square(x::Complex) = abs2(x)
 # Broadcasting applies the method element-wise
 square.(1:5)                    # → [1, 4, 9, 16, 25]
 
-# A function can be defined with several methods up-front
+# Multiline function definition
 function logit(p::Real)
     @assert 0 < p < 1 "p must lie in (0,1)"
     return log(p / (1 - p))
@@ -156,7 +156,7 @@ For a `Weibull(α, θ)` distribution the closed-form expression is
 $$ S(t \mid α, θ) = \exp\!\bigl(-(t/θ)^{α}\bigr). $$
 
 ```julia
-using Distributions, Plots
+using Distributions, Plots, StatsPlots
 
 α, θ = 1.5, 500.0
 t = range(0, 2000; length=200)
@@ -248,16 +248,13 @@ plot!(p2,
 plot(p1, p2, layout=(1, 2), size=(1000, 450))
 ```
 
-## The First Model
+## A First Model -- AFT Weibull Model
 
 ```julia
-using Turing, Distributions
+using Turing, Distributions, DynamicPPL
 
 @model function aft_weibull_model(X, event, y_obs)
-    # Get dimensions from data
     n, p = size(X)
-    
-    # Initialize survival times vector
     y = Vector{Float64}(undef, n)
     
     # Priors
@@ -273,45 +270,53 @@ using Turing, Distributions
         weibull_dist = Weibull(α, θ[i])
         
         if event[i]
-            # Observed event (death) - sample directly from distribution
+            # Event (death)
             y[i] ~ weibull_dist
         else
-            # Right-censored observation - use censored distribution
+            # Right-censored observation
             y[i] ~ censored(weibull_dist; upper = y_obs[i])
         end
     end
     
-    return (; α, β, y) 
+    return (; α, β, y)
 end
 ```
 
-### What is this model saying?
+### Meaning of the Model
 
-`y_obs` only used for censoring
+This is an Accelerated Failure Time (AFT) model where:
+- Survival times `y` follow a Weibull distribution.
+- The Weibull shape `α` is shared across individuals.
+- The Weibull scale `θᵢ` for individual `i` depends on covariates `X` and coefficients `β` (`θᵢ = exp(Xᵢᵀβ)`).
+- It handles right-censoring based on the `event` status and observed times `y_obs`.
+- Priors are defined for `α` and `β`.
 
 ### Simulate
 
 ```julia
-# Create the generative model using our prepared data
+# Create a model instance without data
 model = aft_weibull_model(X, event, y)
 
-# Sample from the prior to check model specification
-prior_sample = model()
+# Simulate from the prior
+sampled_return_values = model()
+sample_of_model_parameters = rand(model)
 ```
 
 ## Prior Predictive Checks
 
 ```julia
+# Sample from the prior predictive distribution
 prior_samples = sample(model, Prior(), 100)
+
+# Get returned values with the sampled parameters
+returned_values = returned(model, prior_samples)
 ```
 
 ```julia
-using DynamicPPL
-
 function plot_prior_pred_check(
     model::DynamicPPL.Model, 
     prior_samples::MCMCChains.Chains, 
-    y, 
+    y,
     event
 )    
     returned_values = returned(model, prior_samples)
@@ -322,7 +327,6 @@ function plot_prior_pred_check(
         legend = :bottomright
     )
 
-    # Plot the observed KM curve
     km_obs = fit(KaplanMeier, y, event)
     plot!(p_prior, 
         km_obs.events.time, 
@@ -334,25 +338,18 @@ function plot_prior_pred_check(
     )
 
     for returned_value in returned_values
-        # Extract simulated survival times from prior
         y_sim = returned_value.y
-
-        # Fit KM to the simulated data
         km_sim = fit(KaplanMeier, y_sim, event)
-
-        # Plot the KM curve for this simulation
         plot!(p_prior, 
             km_sim.events.time, 
             km_sim.survival,
             seriestype = :steppost,
             label = "",
             color = :lightblue,
-            xlims = (0, maximum(y) * 1.1),  # Cut off x-axis at 1.1 times the maximum observed time
+            xlims = (0, maximum(y) * 1.1),
             alpha = 0.3
         )
     end
-
-    # Display the plot
     display(p_prior)
 end
 
@@ -361,8 +358,9 @@ plot_prior_pred_check(model, prior_samples, y, event)
 
 ![Prior predictive check showing observed survival curve (black) and simulated curves from prior (blue)](prior_check.svg)
 
-* The prior can cover the data, but the survival curves plunge way too quickly in general
-* Reason is that `beta[0]` is centered at `0`, so `theta = exp(beta[0] + ...)` centered around `1`, $h(t) = \alpha t^{\alpha-1} \theta^{-\alpha}$ is far too large when `alpha` is typically around 1.
+* **Observation:** The prior predictive check shows that while the prior *can* generate survival curves consistent with the observed data, most simulated curves drop much faster than the observed data. This indicates the prior distribution implies unrealistically short survival times on average.
+* **Reason:** The prior for the intercept term, `beta[0]`, was centered at 0 (`Normal(0, 1)`). Since the Weibull scale parameter $\theta$ is calculated as $\theta = \exp(\beta_0 + \dots)$, a baseline `beta[0]` near 0 results in a baseline $\theta$ near $\exp(0) = 1$.
+* **Implication:** For a Weibull distribution, the scale parameter $\theta$ represents a characteristic survival time. A baseline $\theta \approx 1$ (days), combined with the prior for the shape parameter $\alpha$ (which was also centered around 1), leads to extremely short median survival times (median = $\theta (\ln 2)^{1/\alpha} \approx 1 \cdot (\ln 2)^1 \approx 0.7$ days). This is why the simulated survival curves plunge rapidly, inconsistent with the observed data where survival extends over hundreds of days.
 
 ## Adjust Prior
 
@@ -370,10 +368,7 @@ plot_prior_pred_check(model, prior_samples, y, event)
 using Turing, Distributions, LinearAlgebra
 
 @model function aft_weibull_model_improved(X, event, y_obs)
-    # Get dimensions from data
     n, p = size(X)
-    
-    # Initialize survival times vector
     y = Vector{Float64}(undef, n)
     
     # prior for Weibull shape parameter (heavier‑tailed; mean ≈ 0.8 on original scale)
@@ -393,10 +388,10 @@ using Turing, Distributions, LinearAlgebra
         weibull_dist = Weibull(α, θ[i])
         
         if event[i]
-            # Observed event (death) - sample directly from distribution
+            # Event (death)
             y[i] ~ weibull_dist
         else
-            # Right-censored observation - use censored distribution
+            # Right-censored observation
             y[i] ~ censored(weibull_dist; upper = y_obs[i])
         end
     end
@@ -406,7 +401,7 @@ end
 ```
 
 ```julia
-using DynamicPPL
+# Model checking function, useful for debugging
 DynamicPPL.DebugUtils.check_model_and_trace(model)
 ```
 
@@ -418,16 +413,23 @@ plot_prior_pred_check(model, prior_samples, y, event)
 
 ![Improved prior predictive check](prior_check_improved.svg)
 
-### with missing values
+* Looks much better!
+* The tail is too optimistic, but we'll move on for now.
+
+### Handling missing values
+
+* When some data points are missing, we treat them as model parameters.
+* The following model is functionally equivalent to the previous unconditioned model.
 
 ```julia
 missing_model = model | (; y = similar(y, Missing))
-missing_model()
+rand(missing_model)
 ```
 
 ## Posterior Sampling
 
 ```julia
+# Condition the model on the observed data
 conditioned_model = model | (; y = y)
 ```
 
@@ -447,11 +449,12 @@ sample_chains = sample(
 ```julia
 using ReverseDiff
 
+# Draw 500 samples from the posterior, 6 chains, using the NUTS sampler with reverse-mode AD
 posterior_chains = sample(
     conditioned_model, 
     NUTS(; adtype = AutoReverseDiff(; compile = true)), 
     MCMCThreads(), 
-    1000, 
+    500, 
     6; 
     n_adapt = 500
 )
@@ -461,24 +464,24 @@ posterior_chains = sample(
 
 ```
 ┌ Info: Found initial step size
+└   ϵ = 3.814697265625e-7
+┌ Info: Found initial step size
 └   ϵ = 0.025
-┌ Info: Found initial step size
-└   ϵ = 0.05
-┌ Info: Found initial step size
-└   ϵ = 0.2
 ┌ Info: Found initial step size
 └   ϵ = 0.003125
 ┌ Info: Found initial step size
-└   ϵ = 0.000390625
+└   ϵ = 0.025
 ┌ Info: Found initial step size
-└   ϵ = 9.765625e-5
-Chains MCMC chain (1000×16×6 Array{Float64, 3}):
+└   ϵ = 0.025
+┌ Info: Found initial step size
+└   ϵ = 0.00625
+Chains MCMC chain (500×16×6 Array{Float64, 3}):
 
-Iterations        = 501:1:1500
+Iterations        = 251:1:750
 Number of chains  = 6
-Samples per chain = 1000
-Wall duration     = 2.58 seconds
-Compute duration  = 14.29 seconds
+Samples per chain = 500
+Wall duration     = 5.89 seconds
+Compute duration  = 33.88 seconds
 parameters        = α, β[1], β[2], β[3]
 internals         = lp, n_steps, is_accept, acceptance_rate, log_density, hamiltonian_energy, hamiltonian_energy_error, max_hamiltonian_energy_error, tree_depth, numerical_error, step_size, nom_step_size
 
@@ -486,35 +489,39 @@ Summary Statistics
   parameters      mean       std      mcse    ess_bulk    ess_tail      rhat   ess_per_sec 
       Symbol   Float64   Float64   Float64     Float64     Float64   Float64       Float64 
 
-           α    1.2995    0.0807    0.0011   5892.0666   4907.4407    1.0012      412.3787
-        β[1]    5.8974    0.0735    0.0011   4201.8177   4574.9750    1.0009      294.0802
-        β[2]   -0.1155    0.0643    0.0008   6019.0069   4444.9421    1.0013      421.2631
-        β[3]    0.3900    0.1305    0.0020   4179.7216   4285.1129    1.0009      292.5337
+           α    1.3005    0.0826    0.0015   3176.5584   2327.6059    1.0026       93.7702
+        β[1]    5.8957    0.0752    0.0016   2190.2029   2218.9017    1.0007       64.6535
+        β[2]   -0.1156    0.0652    0.0012   3127.1951   2082.9506    1.0005       92.3130
+        β[3]    0.3938    0.1323    0.0029   2117.4403   1999.0650    1.0008       62.5056
 
 Quantiles
   parameters      2.5%     25.0%     50.0%     75.0%     97.5% 
       Symbol   Float64   Float64   Float64   Float64   Float64 
 
-           α    1.1430    1.2456    1.2970    1.3533    1.4585
-        β[1]    5.7541    5.8486    5.8961    5.9453    6.0447
-        β[2]   -0.2430   -0.1589   -0.1146   -0.0719    0.0065
-        β[3]    0.1399    0.3016    0.3864    0.4774    0.6508
+           α    1.1450    1.2414    1.2993    1.3566    1.4614
+        β[1]    5.7547    5.8450    5.8945    5.9472    6.0439
+        β[2]   -0.2416   -0.1588   -0.1142   -0.0711    0.0101
+        β[3]    0.1452    0.3015    0.3916    0.4828    0.6579
+        
 ```
 
-### Numerical Diagnostics
+### Diagnostic Statistics
 
-* `R-hat`
-* `ess`
+* **`rhat` (Potential Scale Reduction Factor):** Measures convergence by comparing within-chain and between-chain variance. Values close to 1.0 indicate good convergence. A common threshold is `rhat` < 1.01 (Vehtari et al., 2021). Our summary shows all `rhat` values are ≈ 1.00 (the maximum observed is 1.0026), well within this threshold, suggesting the chains have converged well.
+* **`ess` (Effective Sample Size):** Estimates the number of independent samples equivalent to the autocorrelated MCMC samples. Higher values mean better exploration and more reliable estimates. `ess_bulk` focuses on the center of the distribution (mean, variance), while `ess_tail` focuses on the tails (quantiles). A common guideline suggests a total ESS > $100 \times M$ (where $M$ is the number of chains) for stable estimates (Vehtari et al., 2021). Our summary shows $M=6$ chains. The `ess_bulk` and `ess_tail` values are generally > 1900 (e.g., for $\alpha$, ESS_bulk ≈ 3177, ESS_tail ≈ 2328), which is well above the $100 \times 6 = 600$ threshold. This indicates good mixing and reliable parameter estimates.
 
 ### Trace Plot
 
 ```julia
 using StatsPlots, Plots
 
+# MCMCChains integrates with StatsPlots
 plot(posterior_chains)
 ```
 
 ![Posterior trace plot](posterior_trace_plot.svg)
+
+Alternatively, we can use ArviZ to plot the trace plot.
 
 ```julia
 using ArviZ, ArviZPythonPlots
@@ -556,7 +563,6 @@ function plot_posterior_pred_check(
         legend = :bottomright
     )
 
-    # Plot the observed KM curve
     km_obs = fit(KaplanMeier, y, event)
     plot!(p_post, 
         km_obs.events.time, 
@@ -579,38 +585,35 @@ function plot_posterior_pred_check(
         # Fix the model with parameters from posterior
         fixed_model = fix(model, (; 
             α = params_chain.α[idx], 
-            β = [params_chain.β[i][idx] for i in 1:p]
+            β = [params_chain.β[i][idx] for i in 1:size(X, 2)]
         ))
         
         # Generate simulated data
         sim_data = fixed_model()
+
         y_sim = sim_data.y
 
-        # Fit KM to the simulated data
         km_sim = fit(KaplanMeier, y_sim, event)
-
-        # Plot the KM curve for this simulation
         plot!(p_post, 
             km_sim.events.time, 
             km_sim.survival,
             seriestype = :steppost,
             label = "",
             color = :lightblue,
-            xlims = (0, maximum(y) * 1.1),  # Cut off x-axis at 1.1 times the maximum observed time
+            xlims = (0, maximum(y) * 1.1),
             alpha = 0.3
         )
     end
 
-    # Display the plot
     display(p_post)
 end
-```
 
-```julia
 plot_posterior_pred_check(model, posterior_chains, y, event)
 ```
 
 ![Posterior predictive check plot](posterior_check_plot.svg)
+
+* The posterior predictive check shows that the model fits the data pretty well. But the model is putting too little probability on the right tail.
 
 ## Model Checking
 
@@ -620,23 +623,20 @@ plot_posterior_pred_check(model, posterior_chains, y, event)
 using ArviZ
 using DynamicPPL
 using MCMCChains
-using DimensionalData # Often needed for ArviZ coords/dims
-
-println("Computing pointwise log likelihoods...")
+using DimensionalData
 
 # Extract parameter samples from the chain
 parameter_samples = MCMCChains.get_sections(posterior_chains, :parameters)
 
-# Compute the dictionary of pointwise log likelihoods
+# Compute pointwise log likelihoods (returns an `OrderedDict`)
 log_likelihood_dict = DynamicPPL.pointwise_loglikelihoods(
     conditioned_model,
     parameter_samples
 )
 
 # Compute posterior predictive samples
-println("Computing posterior predictive samples...")
 posterior_predictive_chain = DynamicPPL.predict(
-    model, # Use the original model for prediction
+    model, # Use the unconditioned model for prediction
     parameter_samples
 )
 
@@ -645,68 +645,50 @@ posterior_predictive_chain = DynamicPPL.predict(
 n_draws, n_params, n_chains = size(posterior_chains)
 n_obs = length(y)
 log_lik_values = Array{Float64}(undef, n_draws, n_chains, n_obs)
-# Reformat posterior predictive samples
 post_pred_values = Array{Float64}(undef, n_draws, n_chains, n_obs)
 
 for i in 1:n_obs
     vn_str = "y[$i]"
-    @assert haskey(log_likelihood_dict, vn_str) "Log likelihood not found for y[$i]"
-    log_lik_values[:, :, i] .= log_likelihood_dict[vn_str]
+    vn_sym = Symbol(vn_str)
 
-    # Extract predictive samples for y[i] by creating a sub-chain
-    vn_sym = Symbol("y[$i]")
-    @assert vn_sym in names(posterior_predictive_chain) "Posterior predictive sample not found for y[$i]"
-    sub_chain = posterior_predictive_chain[[vn_sym],] # Create sub-chain for the specific parameter
-    # Access the .value field (draws x 1 x chains) and drop the parameter dim (dim 2)
-    post_pred_values[:, :, i] .= dropdims(sub_chain.value, dims = 2)
+    log_lik_values[:, :, i] .= log_likelihood_dict[vn_str]
+    post_pred_values[:, :, i] .= dropdims(posterior_predictive_chain[[vn_sym],].value, dims = 2)
 end
 
 log_likelihood_data = (; y = log_lik_values)
 posterior_predictive_data = (; y = post_pred_values)
 
-# Create InferenceData object
 idata_loo = ArviZ.from_mcmcchains(
     posterior_chains;
     log_likelihood = log_likelihood_data,
-    posterior_predictive = posterior_predictive_data, # Add posterior predictive samples
-    observed_data = (; y = y), # Observed data must be included for LOO
+    posterior_predictive = posterior_predictive_data,
+    observed_data = (; y = y),
     coords = (obs_id = 1:n_obs, coef_dim = 1:size(X, 2)),
-    dims = (y = [:obs_id], β = [:coef_dim]) # Specify dimensions for y and β
+    dims = (y = [:obs_id], β = [:coef_dim])
 )
 
-println("Computing LOO...")
-# Compute LOO
 loo_result = ArviZ.loo(idata_loo)
 display(loo_result)
 
-# Extract necessary components for loo_pit
 log_weights = loo_result.psis_result.log_weights
-
-# Compute LOO-PIT values explicitly
-println("Computing LOO-PIT values...")
 loo_pit_values = ArviZ.loo_pit(idata_loo, log_weights)
 display(loo_pit_values)
 
-println("Plotting LOO-PIT...")
-# Plot LOO-PIT (which computes values internally again, but provides the plot)
 plot_loo_pit(idata_loo; y = "y", ecdf = true, color = "maroon")
 gcf()
 ```
 
 ![LOO-PIT ECDF plot](loo-pit_ecdf.png)
 
-## heavier tails (Log‑Normal baseline)
+* The LOO-PIT ECDF plot verifies the previous concern about the tail.
 
-### Log‑Normal AFT model
+## Heavier tails (Log‑Normal baseline) -- Log‑Normal AFT model
 
 ```julia
 using Turing, Distributions, LinearAlgebra
 
 @model function aft_lognormal_model(X, event, y_obs)
-    # Dimensions
     n, p = size(X)
-
-    # Storage
     y = Vector{Float64}(undef, n)
 
     # Priors
@@ -718,13 +700,12 @@ using Turing, Distributions, LinearAlgebra
     # Individual location parameters on the log‑time scale
     μ = X * β                               # vector length n
 
-    # Likelihood with right‑censoring
     for i in 1:n
         d = LogNormal(μ[i], σ)
         if event[i]
-            y[i] ~ d                        # observed death
+            y[i] ~ d                   
         else
-            y[i] ~ censored(d; upper = y_obs[i])  # right‑censored
+            y[i] ~ censored(d; upper = y_obs[i])
         end
     end
 
@@ -735,11 +716,9 @@ end
 ### Posterior sampling
 
 ```julia
-# Build and condition the model
 model_ln = aft_lognormal_model(X, event, y)
 conditioned_model_ln = model_ln | (; y = y)
 
-# Draw posterior samples (6 chains × 1000 draws, 500 warm‑up)
 posterior_chains_ln = sample(
     conditioned_model_ln,
     NUTS(; adtype = AutoReverseDiff(; compile = true)),
@@ -776,106 +755,38 @@ function plot_posterior_pred_check_ln(
         linewidth = 2
     )
 
-    # Get parameter samples from the posterior
     params_chain = get(posterior_samples; section = :parameters)
     
-    # Generate multiple posterior predictive samples
     n_samples = 100
     for i in 1:n_samples
-        # Get a random sample index from the flattened chain
-        # Note: MCMCChains stores samples as draws x parameters x chains
-        # We need a single index across all draws and chains
-        total_samples = length(params_chain) # Total number of posterior samples (draws * chains)
-        idx = rand(1:total_samples)
+        idx = rand(1:length(params_chain))
         
-        # Extract parameters for the selected sample
-        # MCMCChains flattens chains, so direct indexing works for single parameters like σ
         σ_sample = params_chain.σ[idx] 
-        # Access β components as in the original selection, assuming β[1], β[2], β[3] exist
-        # This assumes params_chain.β is structured such that β[coef_idx][sample_idx] works,
-        # or that MCMCChains overloads getindex this way. Check MCMCChains documentation if unsure.
-        # Also assumes exactly 3 coefficients.
         β_sample = [params_chain.β[1][idx], params_chain.β[2][idx], params_chain.β[3][idx]]
-
-        # Fix the model with parameters from posterior
-        # Using σ based on the aft_lognormal_model definition
         fixed_model = fix(model, (; 
             σ = σ_sample, 
             β = β_sample
         ))
         
-        # Generate simulated data (predictive sample)
         sim_data = fixed_model()
-        y_sim = sim_data.y # Extract the simulated survival times
+        y_sim = sim_data.y
 
-        # Fit KM to the simulated data
-        # Using original 'event' vector is common for visual checks.
         km_sim = fit(KaplanMeier, y_sim, event)
-
-        # Plot the KM curve for this simulation
         plot!(p_post, 
             km_sim.events.time, 
             km_sim.survival,
             seriestype = :steppost,
-            label = "", # No label for individual simulations
+            label = "",
             color = :lightblue,
-            xlims = (0, maximum(y) * 1.1),  # Consistent x-axis limits
-            alpha = 0.3 # Use transparency
+            xlims = (0, maximum(y) * 1.1),
+            alpha = 0.3
         ) 
     end
 
-    # Display the plot
     display(p_post)
 end
 
 plot_posterior_pred_check_ln(model_ln, posterior_chains_ln, y, event)
-```
-
-### LOO and LOO‑PIT ECDF
-
-```julia
-using DynamicPPL, MCMCChains, ArviZ, DimensionalData
-
-# Point‑wise log‑likelihoods
-param_samples_ln = MCMCChains.get_sections(posterior_chains_ln, :parameters)
-loglik_dict_ln = DynamicPPL.pointwise_loglikelihoods(
-    conditioned_model_ln,
-    param_samples_ln
-)
-
-# Posterior predictive draws
-post_pred_chain_ln = DynamicPPL.predict(model_ln, param_samples_ln)
-
-# Reshape for ArviZ
-n_draws, _, n_chains = size(posterior_chains_ln)
-n_obs = length(y)
-loglik_vals_ln = Array{Float64}(undef, n_draws, n_chains, n_obs)
-postpred_vals_ln = similar(loglik_vals_ln)
-
-for i in 1:n_obs
-    vn_str = "y[$i]"
-    vn_sym = Symbol(vn_str)
-
-    loglik_vals_ln[:, :, i] .= loglik_dict_ln[vn_str]
-    postpred_vals_ln[:, :, i] .= dropdims(post_pred_chain_ln[[vn_sym],].value, dims = 2)
-end
-
-idata_ln = ArviZ.from_mcmcchains(
-    posterior_chains_ln;
-    log_likelihood = (; y = loglik_vals_ln),
-    posterior_predictive = (; y = postpred_vals_ln),
-    observed_data = (; y = y),
-    coords = (obs_id = 1:n_obs, coef_dim = 1:size(X, 2)),
-    dims = (y = [:obs_id], β = [:coef_dim])
-)
-
-# LOO
-loo_ln = ArviZ.loo(idata_ln)
-display(loo_ln)
-
-# LOO‑PIT ECDF
-plot_loo_pit(idata_ln; y = "y", ecdf = true, color = "maroon")
-gcf()
 ```
 
 ## Gamma Frailty Model
@@ -898,8 +809,8 @@ gcf()
     v = Vector{Float64}(undef, n)
 
     for i in 1:n
-        v[i] ~ DynamicPPL.to_submodel(gamma_frailty(i, k))
-        # v[i] ~ Gamma(k, k)
+        # v[i] ~ DynamicPPL.to_submodel(gamma_frailty(i, k))
+        v[i] ~ Gamma(k, k)
 
         d = Weibull(α, θ[i] / v[i]^(1/α))     # frailty-adjusted scale
         if event[i]
@@ -917,6 +828,7 @@ end
 model_sub = aft_weibull_frailty_sub(X, event, y)
 conditioned_sub = model_sub | (; y = y)
 
+# The model with submodels behaves as expected, notice the name prefix
 rand(model_sub)
 model_sub()
 ```
@@ -950,7 +862,6 @@ function plot_posterior_pred_check_frail(
         legend = :bottomright
     )
 
-    # Plot the observed KM curve
     km_obs = fit(KaplanMeier, y, event)
     plot!(p_post, 
         km_obs.events.time, 
@@ -960,17 +871,13 @@ function plot_posterior_pred_check_frail(
         color = :black,
         linewidth = 2
     )
-
-    # Get parameter samples from the posterior
+    
     params_chain = get(posterior_samples; section = :parameters)
     
-    # Generate multiple posterior predictive samples
     n_samples = 100
     for i in 1:n_samples
-        # Get a random sample index
-        idx = rand(1:length(params_chain.α))
+        idx = rand(1:length(params_chain))
         
-        # Fix the model with parameters from posterior
         fixed_model = fix(model, (; 
             α = params_chain.α[idx], 
             β = [params_chain.β[i][idx] for i in 1:size(X, 2)],
@@ -978,26 +885,21 @@ function plot_posterior_pred_check_frail(
             v = [params_chain.v[i][idx] for i in 1:size(X, 1)]
         ))
         
-        # Generate simulated data
         sim_data = fixed_model()
         y_sim = sim_data.y
 
-        # Fit KM to the simulated data
         km_sim = fit(KaplanMeier, y_sim, event)
-
-        # Plot the KM curve for this simulation
         plot!(p_post, 
             km_sim.events.time, 
             km_sim.survival,
             seriestype = :steppost,
             label = "",
             color = :lightblue,
-            xlims = (0, maximum(y) * 1.1),  # Cut off x-axis at 1.1 times the maximum observed time
+            xlims = (0, maximum(y) * 1.1),
             alpha = 0.3
         )
     end
 
-    # Display the plot
     display(p_post)
 end
 
