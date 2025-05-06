@@ -255,7 +255,7 @@ using Turing, Distributions, DynamicPPL
 
 @model function aft_weibull_model(X, event, y_obs)
     n, p = size(X)
-    y = Vector{Float64}(undef, n)
+    y = Vector{Real}(undef, n)
     
     # Priors
     α ~ LogNormal(0, 2)             # Weibull shape parameter
@@ -369,7 +369,7 @@ using Turing, Distributions, LinearAlgebra
 
 @model function aft_weibull_model_improved(X, event, y_obs)
     n, p = size(X)
-    y = Vector{Float64}(undef, n)
+    y = Vector{Real}(undef, n)
     
     # prior for Weibull shape parameter (heavier‑tailed; mean ≈ 0.8 on original scale)
     α ~ LogNormal(-0.223143551, 0.5)
@@ -689,7 +689,7 @@ using Turing, Distributions, LinearAlgebra
 
 @model function aft_lognormal_model(X, event, y_obs)
     n, p = size(X)
-    y = Vector{Float64}(undef, n)
+    y = Vector{Real}(undef, n)
 
     # Priors
     σ ~ LogNormal(0, 1)                     # shape (σ > 0), sd on log‑time scale
@@ -805,12 +805,11 @@ plot_posterior_pred_check_ln(model_ln, posterior_chains_ln, y, event)
     θ = exp.(X * β)                           # individual scales
 
     # storage
-    y = Vector{Float64}(undef, n)
-    v = Vector{Float64}(undef, n)
+    y = Vector{Real}(undef, n)
+    v = Vector{Real}(undef, n)
 
     for i in 1:n
-        # v[i] ~ DynamicPPL.to_submodel(gamma_frailty(i, k))
-        v[i] ~ Gamma(k, k)
+        v[i] ~ to_submodel(gamma_frailty(i, k))
 
         d = Weibull(α, θ[i] / v[i]^(1/α))     # frailty-adjusted scale
         if event[i]
