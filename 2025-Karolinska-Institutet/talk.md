@@ -356,7 +356,7 @@ end
 plot_prior_pred_check(model, prior_samples, y, event)
 ```
 
-![Prior predictive check showing observed survival curve (black) and simulated curves from prior (blue)](prior_check.svg)
+![Prior predictive check showing observed survival curve (black) and simulated curves from prior (blue)](images/prior_check.svg)
 
 * **Observation:** The prior predictive check shows that while the prior *can* generate survival curves consistent with the observed data, most simulated curves drop much faster than the observed data. This indicates the prior distribution implies unrealistically short survival times on average.
 * **Reason:** The prior for the intercept term, `beta[0]`, was centered at 0 (`Normal(0, 1)`). Since the Weibull scale parameter $\theta$ is calculated as $\theta = \exp(\beta_0 + \dots)$, a baseline `beta[0]` near 0 results in a baseline $\theta$ near $\exp(0) = 1$.
@@ -411,7 +411,7 @@ prior_samples = sample(model, Prior(), 100)
 plot_prior_pred_check(model, prior_samples, y, event)
 ```
 
-![Improved prior predictive check](prior_check_improved.svg)
+![Improved prior predictive check](images/prior_check_improved.svg)
 
 * Looks much better!
 * The tail is too optimistic, but we'll move on for now.
@@ -519,7 +519,7 @@ using StatsPlots, Plots
 plot(posterior_chains)
 ```
 
-![Posterior trace plot](posterior_trace_plot.svg)
+![Posterior trace plot](images/posterior_trace_plot.svg)
 
 Alternatively, we can use ArviZ to plot the trace plot.
 
@@ -545,7 +545,7 @@ plot_rank(idata)
 gcf()
 ```
 
-![Rank plot](rank_plot.png)
+![Rank plot](images/rank_plot.png)
 
 ## Posterior Predictive Checks
 
@@ -611,7 +611,7 @@ end
 plot_posterior_pred_check(model, posterior_chains, y, event)
 ```
 
-![Posterior predictive check plot](posterior_check_plot.svg)
+![Posterior predictive check plot](images/posterior_check_plot.svg)
 
 * The posterior predictive check shows that the model fits the data pretty well. But the model is putting too little probability on the right tail.
 
@@ -678,7 +678,7 @@ plot_loo_pit(idata_loo; y = "y", ecdf = true, color = "maroon")
 gcf()
 ```
 
-![LOO-PIT ECDF plot](loo-pit_ecdf.png)
+![LOO-PIT ECDF plot](images/loo-pit_ecdf.png)
 
 * The LOO-PIT ECDF plot verifies the previous concern about the tail.
 
@@ -809,7 +809,8 @@ plot_posterior_pred_check_ln(model_ln, posterior_chains_ln, y, event)
     v = Vector{Real}(undef, n)
 
     for i in 1:n
-        v[i] ~ to_submodel(gamma_frailty(i, k))
+        # v[i] ~ to_submodel(gamma_frailty(i, k))
+        v[i] ~ Gamma(k, k)
 
         d = Weibull(α, θ[i] / v[i]^(1/α))     # frailty-adjusted scale
         if event[i]
@@ -855,7 +856,8 @@ function plot_posterior_pred_check_frail(
     event,
 )
     p_post = plot(
-        title = "Posterior Predictive Check",
+        # title = "Posterior Predictive Check",
+        title = "Predictions vs Observed Data",
         xlabel = "Time (days)",
         ylabel = "Survival Probability",
         legend = :bottomright
