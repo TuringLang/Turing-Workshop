@@ -32,3 +32,12 @@ docs/site/
 
 # Emacs
 *~undo-tree~
+
+# Conda
+.CondaPkg/
+
+# VSCode
+.vscode/
+
+# Cursor
+.cursor/
