@@ -19,11 +19,13 @@ m = linear_regression(x) | (; y=y)
 # MCMC sampling with
 # ... NUTS
 sample(m, NUTS(), 1000)
-# ... SMC
-# sample(m, SMC(), 1000)
+# ... MH
+sample(m, MH(), 1000)
 # ... a Gibbs sampler that uses a different subsampler for each parameter
 sampler = Gibbs(:α => HMC(0.1, 10), :β => ESS(), :σ² => MH())
 sample(m, sampler, 1000)
+# ... particle Gibbs
+sample(m, PG(20), 1000)
 
 # Variational inference
 q_init = q_fullrank_gaussian(m)
